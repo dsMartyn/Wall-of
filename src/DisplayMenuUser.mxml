@@ -208,7 +208,9 @@
 		</mx:FormItem>
 		
 		<mx:FormItem alpha="0.6" id="itmdOB" label="Birthday" required="true"  includeIn="register"   width="334">
-			<s:TextInput id="Test" text="@{memberFieds.Company}" width="210"/>
+			<s:Group>
+				
+			</s:Group>
 		</mx:FormItem>
 
 		
