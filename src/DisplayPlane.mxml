@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo" 
+		 xmlns:utils="com.utils.*"
+		 xmlns:maps="com.google.maps.*" 
+		 width="940" height="415" xmlns:ns1="*"
+		 initialize="DisplayPlane_Init(event)"
+		  
+		 >
+
+	<fx:Metadata>
+		/** display_show raised when the display should be rendered again */	
+		[Event(name="displayShow",type="flash.events.Event")]
+		
+	</fx:Metadata>
+	
+	
+	<fx:Script>
+		<![CDATA[
+			import com.google.maps.*;
+			import com.google.maps.controls.MapTypeControl;
+			import com.google.maps.controls.PositionControl;
+			import com.google.maps.controls.ZoomControl;
+			import com.google.maps.overlays.*;
+			import com.google.maps.services.*;
+			import com.utils.*;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			private const pcs_Display3D_Show:String = "displayShow";//event dispatcher
+
+			private var po_YouTube:VideoPlayer=null;
+			
+			private var po_vidOrig:Rectangle=new Rectangle();
+			private var po_mapOrig:Rectangle=new Rectangle();
+			private var po_mapFull:Boolean = false;
+			
+			private var pg_Zoom:ZoomControl = new ZoomControl();
+			private var pg_Position:PositionControl = new PositionControl();
+			private var pg_MapType:MapTypeControl = new MapTypeControl();
+			
+			private var pb_MapReady:Boolean = false;
+			
+			/**
+			 * Stop DisplayPlane Actions (youtube, maps..) 
+			 * Called when another page is displayed on the main control
+			 */
+			public function DisplayPlane_Stop():void
+			{				
+				po_mapFull=false;
+				po_YouTube.stop();
+			
+			}
+
+			
+			protected function btnBack_Click(event:MouseEvent):void
+			{
+				po_mapFull=false;
+				po_YouTube.stop();
+				
+				dispatchEvent(new Event(pcs_Display3D_Show));
+				
+			}
+
+			protected function DisplayPlane_Init(event:FlexEvent):void
+			{
+				
+			//	InitVideo();//if video is enabled
+			}
+
+			
+			
+			/** youTube video functionality 
+			 * Init YouTube video player
+			 * TODO - make sure youtube is enabled on account
+			 * */
+			public function InitVideo():void
+			{
+
+				trace('init');
+				//check if this plane has youtube!
+				if (!po_YouTube)
+				{
+					po_YouTube = new VideoPlayer();
+					po_YouTube.addEventListener("onTimeChange", onPlayerTimeChange);
+					this.addElement ( po_YouTube ); //, this.numChildren  );
+					this.addElement( brdVideo);
+					
+					po_YouTube.x = brdVideo.x+3;
+					po_YouTube.y = brdVideo.y+1;		
+					po_YouTube.width = brdVideo.width-3;
+					po_YouTube.height = brdVideo.height-28;
+				
+					po_YouTube.volume = 50;
+					toolBar.SetStartX(po_YouTube.x + 42);
+					
+					po_YouTube.autoPlay = true;
+				}else{
+					if (pb_MapReady)
+						map_mapevent_mapreadyHandler(null);
+					
+				}
+					po_YouTube.videoID = "VuqZ8AqmLPY";
+					po_YouTube.play();
+			}
+
+			
+			protected function map_mapevent_mapreadyHandler(event:MapEvent):void
+			{
+				pb_MapReady = true;
+				map.enableScrollWheelZoom();
+				map.enableContinuousZoom();
+				
+				map.setMapType(MapType.HYBRID_MAP_TYPE);
+				map.setCenter(new LatLng(42.366662,-71.106262), 11, MapType.NORMAL_MAP_TYPE);
+				
+				doGeocode("1 Infinite Loop Cupertino, CA 95014");
+				
+			}
+			
+			private function doGeocode(address:String):void {
+								
+				var geocoder:ClientGeocoder = new ClientGeocoder();
+				
+				geocoder.addEventListener(
+					GeocodingEvent.GEOCODING_SUCCESS,
+					function(event:GeocodingEvent):void {
+						var placemarks:Array = event.response.placemarks;
+						if (placemarks.length > 0) {
+							map.setCenter(placemarks[0].point);
+							var marker:Marker = new Marker(placemarks[0].point);
+							
+							marker.addEventListener(MapMouseEvent.CLICK, function (event:MapMouseEvent):void {
+								marker.openInfoWindow(new InfoWindowOptions({content: placemarks[0].address}));
+							});
+							map.addOverlay(marker);
+						}
+					});
+				geocoder.addEventListener(
+					GeocodingEvent.GEOCODING_FAILURE,
+					function(event:GeocodingEvent):void {
+						Alert.show("Geocoding failed");
+						trace(event);
+						trace(event.status);
+					});
+				geocoder.geocode(address);
+			}
+
+
+			protected function button_Click(event:CustomEvent):void
+			{
+				
+				switch(event.buttonType)
+				{
+					case ButtonType.FULLSCREEN:
+						
+						this.addElement ( po_YouTube );
+						this.addElement( brdVideo);
+						
+						if (po_YouTube)
+						{
+							if (po_YouTube.isFullScreen)
+							{
+								po_YouTube.ExitFullScreen();
+								brdVideo.x = po_vidOrig.x;
+								toolBar.x = po_vidOrig.height;
+								toolBar.y = po_vidOrig.y;
+								toolBar.width = po_vidOrig.width;
+								toolBar.SetStartX(po_YouTube.x + 42);
+							}else{
+								po_vidOrig.x = brdVideo.x;
+								po_vidOrig.y = toolBar.y;
+								po_vidOrig.width = toolBar.width;
+								po_vidOrig.height = toolBar.x;
+								
+								po_YouTube.fullscreen();	
+								
+								
+								brdVideo.x=-2;
+								toolBar.x=2;
+								toolBar.y= ((po_YouTube.height)-(toolBar.height))-1; 
+								toolBar.width = po_YouTube.width;
+								toolBar.SetStartX(po_YouTube.x + 42);
+								
+								po_YouTube.height = po_YouTube.height -25;
+							}
+							
+						}
+					break;
+					
+					case ButtonType.PLAY:
+						var ln_Val:Number = po_YouTube.GetPlayerState()
+						if (ln_Val == 2)
+							po_YouTube.play();
+						else
+							po_YouTube.pause();
+					break;
+					case ButtonType.QUALITY:
+					break;
+					case ButtonType.VOLUME:
+						if (po_YouTube.isMuted())
+							po_YouTube.unMute();
+						else
+							po_YouTube.mute();
+					break;
+				}
+			}
+			
+			protected function onPlayerTimeChange(e:Event):void
+			{
+				toolBar.Max(po_YouTube.duration);
+				if (po_YouTube.duration > 0)
+					toolBar.SetValue(po_YouTube.currentTime);
+			}
+
+			protected function toolBar_seekTo(event:CustomEvent):void
+			{
+				
+				if (po_YouTube)
+					po_YouTube.seekTo(event.numericVal/1000,true);
+			}
+
+			protected function toolBar_VolumeTo(event:CustomEvent):void
+			{
+				if (po_YouTube)
+					po_YouTube.volume = event.numericVal;
+			}
+
+
+
+
+			private function mapSize_Click(event:Event):void
+			{
+				if (po_mapFull)
+				{
+					btnMapSize.label = "Maximize"
+					brdMap.x = po_mapOrig.x;
+					brdMap.y = po_mapOrig.y;
+					brdMap.width = po_mapOrig.width;
+					brdMap.height = po_mapOrig.height;
+					
+					map.removeControl(pg_Zoom);
+					map.removeControl(pg_Position);
+					map.removeControl(pg_MapType);
+					
+					po_mapFull = false;
+				}else{
+					btnMapSize.label = "Minimize"
+					po_mapFull = true;
+					po_mapOrig.x = brdMap.x;
+					po_mapOrig.y = brdMap.y;
+					po_mapOrig.width = brdMap.width;
+					po_mapOrig.height = brdMap.height;
+					
+					brdMap.x = 0;
+					brdMap.y = 0;
+					brdMap.width = this.width;
+					brdMap.height = this.height;
+
+					map.addControl(pg_Zoom);
+					map.addControl(pg_Position);
+					map.addControl(pg_MapType);
+					
+					addElement(brdMap);
+				}
+			}
+			
+			private function mapPrint_Click(event:Event):void 
+			{
+				var printJob:PrintJob = new PrintJob();
+				printJob.start();
+				var sprite:Sprite = new Sprite();
+				sprite.addChild(map.getPrintableBitmap());
+				
+				try {
+					printJob.addPage(sprite);
+				} catch (error:Error) {
+					// Show alert
+					return;
+				}
+				printJob.send();
+			}
+		]]>
+	</fx:Script>
+	
+	
+	
+	<s:Border id="brdLogo" x="0" y="0" width="200" height="200" borderWeight="2">
+		<mx:Image source="@Embed('assets/logo3.png')" maintainAspectRatio="true" top="0" left="0" right="0" bottom="0" smoothBitmapContent="true" />
+	</s:Border>
+	
+
+	
+	<s:Border id="brdDetails" width="432"  x="214" y="0" height="410" borderWeight="2" >
+		<mx:Text  top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="19"   fontWeight="bold"  color="#0036FF">
+			<mx:htmlText>
+				<![CDATA[
+				<p align="center">
+				Apple
+				</p>
+				]]>
+			</mx:htmlText>
+		</mx:Text>
+		
+		<mx:Text  top="32" left="0" right="0" bottom="0" condenseWhite="true"   fontAntiAliasType="advanced" text="About Apple&#xd;Incorporated January 4, 1977 Apple is the main manufacturer of a line of personal computers under the Apple Macintosh (Mac) brand name, peripherals, and computer software. ">
+			<mx:htmlText>
+				<![CDATA[
+				
+				About Apple Inc<br>
+				Incorporated January 4, 1977 Apple is the main manufacturer of a line of personal computers under the Apple Macintosh (Mac) brand name, peripherals, and computer software.
+				<br><br>
+				Apple Inc. is an American multinational corporation that designs and manufactures consumer electronics and computer software products. The company's best-known hardware products include Macintosh computers, the iPod, and the iPhone. Apple software includes the Mac OS X operating system, the iTunes media browser, the iLife suite of multimedia and creativity software, the iWork suite of productivity software, Final Cut Studio, a suite of professional audio and film-industry software products, and Logic Studio, a suite of audio tools. The company operates more than 250 retail stores in nine countries, and an online store where hardware and software products are sold.
+				
+				]]>
+			</mx:htmlText>
+		</mx:Text>
+		
+		<s:Button label="Back"  click="btnBack_Click(event)" x="10" y="379"/>
+	</s:Border>
+	
+	
+	
+	
+	<s:Border id="brdContactDetails" width="200"  x="0" y="210" height="200" borderWeight="2">
+		
+		<mx:Text  top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF">
+			<mx:htmlText>
+				<![CDATA[
+				<p align="center">
+					Contact Details
+				</p>
+				]]>
+			</mx:htmlText>
+		</mx:Text>
+		
+		
+		<mx:Text  top="28" left="0" right="4" bottom="67" condenseWhite="true" textAlign="center" fontAntiAliasType="advanced" >
+			<mx:htmlText>
+				<![CDATA[
+				<p align="center">
+
+				Apple Inc.<br>
+				1 Infinite Loop<br>
+				Cupertino, CA 95014<br>
+				United States<br>
+				</p>
+				]]>
+			</mx:htmlText>
+		</mx:Text>
+		
+		
+		<mx:Text  top="135" left="0" right="0" bottom="79" condenseWhite="true" textAlign="center" fontAntiAliasType="advanced"  >
+			<mx:htmlText>
+				<![CDATA[
+				<p align="center">
+					<a href="mailto:sales@apple.com">Click to Email</a>
+				</p>
+				]]>
+			</mx:htmlText>
+		</mx:Text>
+	
+		<mx:Text  top="150" left="0" right="0" bottom="49" condenseWhite="true" textAlign="center" fontAntiAliasType="advanced"  >
+			<mx:htmlText>
+				<![CDATA[
+				<p align="center">
+				Tel:  0800 048 0408
+				</p>
+				]]>
+			</mx:htmlText>
+		</mx:Text>
+		<mx:Text  top="165" left="0" right="0" bottom="49" condenseWhite="true" textAlign="center"  fontAntiAliasType="advanced"  >
+			<mx:htmlText>
+				<![CDATA[
+				<p align="center">
+				Mob: 
+				</p>
+				]]>
+			</mx:htmlText>
+		</mx:Text>
+		
+		<mx:Text  top="180" left="0" right="0" bottom="49" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" >
+			<mx:htmlText>
+				<![CDATA[
+				<p align="center">
+				Fax: 
+				</p>
+				]]>
+			</mx:htmlText>
+		</mx:Text>
+		
+	</s:Border>
+	
+	<s:Border id="brdMap" x="659" y="210" width="280" height="200" borderWeight="2" >
+		<maps:Map 
+			id="map" 
+			key="ABQIAAAAHwh9srwjPeuXQxD4mp-h2xSLqpdYARPcqm42NaxkNDpu43T8ZRR_faH5tvSCMzUAmKWyn66_k1IUbQ" 
+			top="0" left="0" right="0" bottom="0"
+		   mapevent_mapready="map_mapevent_mapreadyHandler(event)"
+		/>
+		
+		<s:Button id="btnMapPrint" click="mapPrint_Click(event);" label="Print" height="21" width="66" bottom="25" right="94"/>
+		<s:Button id="btnMapSize" click="mapSize_Click(event);" label="Maximize" height="21" width="77" right="12" bottom="25"/>
+		
+	</s:Border>
+	
+
+	<s:Border id="brdVideoTemp" x="659" y="0" width="280" height="200" borderWeight="2" >
+	</s:Border>
+			
+	<s:Border id="brdVideo" x="658" y="1" width="279" height="199" borderVisible="false"  >	
+		<utils:PlayerToolBar  seekTo="toolBar_seekTo(event)" 
+							  buttonClick="button_Click(event)"
+							  volumeTo="toolBar_VolumeTo(event)"
+							  id="toolBar" 
+							  x="3" y="172" width="{brdVideo.width-3}"
+							  >
+			
+		</utils:PlayerToolBar>
+		
+		<!--video player added by code -->
+	</s:Border>
+		
+	<!--
+		
+
+	<mx:Image id="logo_header" width="210" height="90"  source="@Embed('assets/embedded/gui/logoheader.png')"  x="33" y="1"/> 
+	-->
+	
+</s:Group>

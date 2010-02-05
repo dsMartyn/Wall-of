@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo" 
+		 width="940" height="415" xmlns:events="flashx.textLayout.events.*" 
+		 currentState="menu"
+		 xmlns:local="*">
+	
+	<s:states>
+		<s:State name="menu" />
+		<s:State name="register"/>
+	</s:states>
+	
+	
+	<fx:Metadata>
+		/** display_show raised when the display should be rendered again */	
+		[Event(name="displayShow",type="flash.events.Event")]
+		
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			private const gcs_Display3D_Show:String = "displayShow";//event dispatcher
+			
+			protected function btnBack_Click(event:MouseEvent):void
+			{
+				dispatchEvent(new Event(gcs_Display3D_Show));
+			}
+			
+			protected function btnRegister_Click(event:MouseEvent):void
+			{
+				currentState = "register";
+			}
+
+			protected function Register_Hide(event:Event):void
+			{
+				currentState = "menu";
+			}
+
+		]]>
+	</fx:Script>
+	
+	<fx:Declarations>
+		
+
+		
+		<!-- Place non-visual elements (e.g., services, value objects) here -->
+	</fx:Declarations>
+	
+	<s:Button  includeIn="menu" id="btnBack" x="10" y="384" label="Back"  click="btnBack_Click(event)"/>
+	<mx:LinkButton includeIn="menu" x="412.25" y="161.95" label="Login"/>
+	<mx:LinkButton includeIn="menu" x="163.45" y="162" label="Register" click="btnRegister_Click(event)" />
+	<mx:LinkButton includeIn="menu" x="657.75" y="162.45" label="Products"/>
+	<mx:LinkButton includeIn="menu" x="396.85" y="290.8" label="Email a friend"/>
+	
+	<local:DisplayMenuUser id="dispRegister"  includeIn="register"  displayShow="Register_Hide(event)" />
+		
+</s:Group>

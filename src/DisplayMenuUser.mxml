@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo" 
+		 width="940" height="415" xmlns:events="flashx.textLayout.events.*" 
+		 currentState="login"
+		 xmlns:valueObjects="valueObjects.*" xmlns:crud="services.crud.*">
+
+	<s:states>
+		<s:State name="register" />
+		<s:State name="login" />
+		<s:State name="update" />
+	</s:states>
+	
+	<fx:Metadata>
+		/** display_show raised when the display should be rendered again */	
+		[Event(name="displayShow",type="flash.events.Event")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import com.utils.DatabaseCRUD;
+			
+			import mx.controls.Alert;
+			import mx.events.ValidationResultEvent;
+			import mx.validators.EmailValidator;
+
+			[bindable]
+			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
+			
+			private var pa_InvalidFields:Array = [];
+			
+			private const gcs_Display3D_Show:String = "displayShow";//event dispatcher
+			
+			protected function btnBack_Click(event:MouseEvent):void
+			{
+				dispatchEvent(new Event(gcs_Display3D_Show));
+			}
+			
+			
+			protected function cfnValid(e:ValidationResultEvent):void
+			{
+				var p:String = "";
+				RemoveField(e.target.toString());
+				
+				for each (p in pa_InvalidFields)
+				{
+					if (p == e.target.toString())
+						return;
+				}
+				
+				if (pa_InvalidFields.length <= 0)
+				{
+					if (currentState == "login")
+					{
+						btnRegister.enabled = true;
+					}else{
+						btnRegister.enabled = true;
+					}
+					
+				}
+			}
+			
+			
+			//recursivly remove all fields from array
+			private function RemoveField(e:String):void
+			{
+				var li_ctr:Number = 0;
+				for (li_ctr = 0;  li_ctr < pa_InvalidFields.length; li_ctr++)
+				{
+					if (pa_InvalidFields[li_ctr] == e)
+					{
+						pa_InvalidFields.splice(li_ctr,1);
+						RemoveField(e);
+						return;
+					}
+					
+				}
+			}
+			
+			protected function cfnInvalid(e:ValidationResultEvent):void
+			{
+				pa_InvalidFields.push(e.target.toString());
+				btnRegister.enabled = false;
+			}
+
+			
+			protected function Register_Click():void
+			{
+				
+				if (memberFieds.FirstName.length < 3)
+				{
+					Alert.show("First name required.","Invalid Entry");
+					return;
+				}
+				if (memberFieds.LastName.length < 3)
+				{
+					Alert.show("Last name required.","Invalid Entry");
+					return;
+				}
+				if (memberFieds.DOB.length < 3)
+				{
+					Alert.show("Date of birth required.","Invalid Entry");
+					return;
+				}
+				
+				//validate form
+				if (memberFieds.Password != confirm_passwordTextInput.text)
+				{
+					Alert.show("Password does not match.","Invalid Entry");
+					return;
+				}
+				if (memberFieds.Password.length < 3)
+				{
+					Alert.show("Password required.","Invalid Entry");
+					return;
+				}
+			}
+			
+		]]>
+	</fx:Script>
+	
+	
+	<fx:Declarations>
+		<valueObjects:MemberFields id="memberFieds" RowID="0"/>
+
+		<!-- Validate email -->
+		<mx:EmailValidator
+			id="emailValidator"
+			source="{userNameTextInput}" property="text"
+			valid="cfnValid(event);"
+			invalid="cfnInvalid(event);"
+			/>
+		
+		<mx:StringValidator 
+			id="nameValidator"
+			source="{firstNameTextInput}" 
+			property="text"
+			minLength="2"
+			maxLength="32"
+			valid="cfnValid(event);"
+			invalid="cfnInvalid(event);"
+			/>
+		
+		<mx:StringValidator 
+			id="lastnameValidator"
+			source="{lastNameTextInput}" 
+			property="text"
+			minLength="2"
+			maxLength="32"
+			valid="cfnValid(event);"
+			invalid="cfnInvalid(event);"
+			/>
+<!--		<mx:StringValidator 
+			id="passValidator"
+			source="{passwordTextInput}" 
+			property="text"
+			minLength="2"
+			maxLength="32"
+			valid="cfnValid(event);"
+			invalid="cfnInvalid(event);"
+			/>
+-->
+		<mx:StringValidator 
+			id="cpassValidator"
+			source="{confirm_passwordTextInput}" 
+			property="text"
+			minLength="2"
+			maxLength="32"
+			valid="cfnValid(event);"
+			invalid="cfnInvalid(event);"
+			/>
+		
+	</fx:Declarations>
+	
+	
+	
+	<s:transitions>
+		<s:Transition toState="register">    
+			<s:Sequence>
+				<s:Fade alphaFrom="0.0" alphaTo="1.0" duration="1000" 
+						targets="{[itmCompany, itmlastName, itmfirstName, itmconfirm_password, itmdOB]}"/>                
+			</s:Sequence>
+		</s:Transition>    
+		
+		<s:Transition toState="signin">    
+			<s:Sequence>
+				<s:Fade alphaFrom="1.0" alphaTo="0.0" duration="500" 
+						targets="{[itmCompany, itmlastName, itmfirstName, itmconfirm_password, itmdOB]}"/>                
+			</s:Sequence>
+		</s:Transition>   
+		
+	</s:transitions>
+	
+	
+	
+	<mx:Form id="form" defaultButton="{btnRegister}"  x="11" y="14" backgroundColor="#FFFFFF" width.register="368" x.login="324" y.login="134" x.register="296" y.register="54" x.update="330" y.update="134">
+		<mx:FormHeading label.register="Register at Wall Of" label.login="Sign in Wall Of" width="249"/>
+		
+		<mx:FormItem alpha="0.5" id="itmfirstName" label="FirstName" required="true" includeIn="register" >
+			<s:TextInput id="firstNameTextInput" text="@{memberFieds.FirstName}" width="210"/>
+		</mx:FormItem>
+		<mx:FormItem alpha="0.5" id="itmlastName" label="LastName" required="true" includeIn="register" >
+			<s:TextInput id="lastNameTextInput"   text="@{memberFieds.LastName}" width="210"/>
+		</mx:FormItem>		
+		<mx:FormItem alpha="0.5" id="itmCompany" label="Company" includeIn="register"  >
+			<s:TextInput id="companyTextInput" text="@{memberFieds.Company}" width="210"/>
+		</mx:FormItem>
+		
+		<mx:FormItem alpha="0.6" id="itmdOB" label="Birthday" required="true"  includeIn="register"   width="334">
+			<s:TextInput id="Test" text="@{memberFieds.Company}" width="210"/>
+		</mx:FormItem>
+
+		
+		<mx:FormItem label="Email Address" required="true">
+			<s:TextInput id="userNameTextInput"   text="@{memberFieds.UserName}" width.register="210"/>
+		</mx:FormItem>
+
+		<mx:FormItem label="Password"  required="true">
+			<s:TextInput displayAsPassword="true"   id="passwordTextInput" text="@{memberFieds.Password}"  width.register="210"/>
+		</mx:FormItem>
+
+		<mx:FormItem alpha="0.0" id="itmconfirm_password" label="Confirm Password"   required="true" includeIn="register" >
+			<s:TextInput displayAsPassword="true"  id="confirm_passwordTextInput" text=""  width="210"/>
+		</mx:FormItem>
+		
+		<s:Group  width.login="261" height.login="27" height.register="22" width.register="328">
+			<!-- <s:Button label="Register" id="button" click="button_clickHandler(event)"/> -->
+			
+			<s:Button enabled="true" label="Sign in" label.register="Register" id="btnRegister" 
+					  click.login="trace('login')" click.register="Register_Click()" x.login="2" y.login="3" enabled.login="false"/>
+			
+			<mx:LinkButton label="Return to signin"
+						   click="currentState = 'login'" 
+						   includeIn="register" width="129" x="195" y="0"/>
+			
+			<s:Button includeIn="login" x="78" y="3" label="Cancel" click.register="btnBack_Click(event)" click.login="btnBack_Click(event)" />
+			
+			<mx:LinkButton label="Need to register?" 
+						   click="currentState = 'register'" 
+						   includeIn="login" width="115" x="151" y="3"/>
+		</s:Group>
+		
+		<mx:CheckBox id="rememberMe" includeIn="register" label="Remember me on this computer"  x="10" y="300" width.register="246" selected="false"/>
+		
+	</mx:Form>
+	
+
+	
+	<s:Button id="btnBack" x="10" y="384" label="Back"  click="btnBack_Click(event)"/>
+
+</s:Group>

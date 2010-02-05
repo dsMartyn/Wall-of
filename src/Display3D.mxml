@@ -1,0 +1,625 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo" 
+		 width="940" height="415"
+		 currentState="ImagesLoading">
+	
+	<s:states>
+		<s:State name="ImagesLoading" enterState="Display3D_LoadImages(event)" />
+		<s:State name="ViewDisplay" enterState="Display3D_ViewDisplay(event)" />
+	</s:states>
+	
+	<mx:ProgressBar x="376" y="196" id="prgImages" mode="manual" minimum="0" maximum="18" includeIn="ImagesLoading"/>
+	
+	<fx:Metadata>			
+		/** display_hidden raised when the display has stopped rendering completly */	
+		[Event(name="displayVisible",type="flash.events.Event")]
+		
+		/** display_plane raised when a product has been clicked */
+		[Event(name="displayPlane",type="flash.events.Event")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import caurina.transitions.Tweener;
+			
+			import com.utils.ImageLoader;
+			
+			import flash.filters.*;
+			
+			import mx.controls.Label;
+			import mx.core.UIComponent;
+			import mx.events.FlexEvent;
+			
+			import org.papervision3d.Papervision3D;
+			import org.papervision3d.core.culling.ViewportObjectFilter;
+			import org.papervision3d.core.culling.ViewportObjectFilterMode;
+			import org.papervision3d.core.effects.view.ReflectionView;
+			import org.papervision3d.events.FileLoadEvent;
+			import org.papervision3d.events.InteractiveScene3DEvent;
+			import org.papervision3d.materials.BitmapFileMaterial;
+			import org.papervision3d.materials.BitmapMaterial;
+			import org.papervision3d.materials.MovieMaterial;
+			import org.papervision3d.objects.DisplayObject3D;
+			import org.papervision3d.objects.primitives.Plane;
+			
+			
+			/*
+			import caurina.transitions.Tweener;
+			import com.utils.ImageLoader;
+			import flash.filters.*;
+			import mx.controls.Label;
+			import mx.core.UIComponent;
+			import mx.events.FlexEvent;
+			import org.papervision3d.Papervision3D;
+			import org.papervision3d.core.culling.ViewportObjectFilter;
+			import org.papervision3d.core.culling.ViewportObjectFilterMode;
+			import org.papervision3d.core.effects.view.ReflectionView;
+			import org.papervision3d.events.FileLoadEvent;
+			import org.papervision3d.events.InteractiveScene3DEvent;
+			import org.papervision3d.materials.BitmapFileMaterial;
+			import org.papervision3d.materials.BitmapMaterial;
+			import org.papervision3d.objects.DisplayObject3D;
+			import org.papervision3d.objects.primitives.Plane;
+			
+				[scopes]
+				 Public   = g+_name
+				 Private  = p+_name
+				 Local    = l+_name
+	
+				[types]
+				 Class Objects  *o_name
+				 PaperVision3D  *p_name
+				 Variable types *[i,l,s,b,a]_name
+					integer, long, string, boolean, array
+				
+				Constant = *c+_name
+			
+				* = scope
+				+ = type
+				
+			*/
+	
+			private var pp_View:ReflectionView;
+			private var po_Images:ImageLoader;
+
+			private var pb_Render:Boolean = false;
+			private var pi_Pitch:Number = 90;
+			private var pi_Yaw:Number = -60;
+			private var pi_angle:Number = 0;
+			
+			private var pi_lastFrametime:int;
+			private var pi_MaxFps:int;
+			
+			private var pi_Index:Number;
+			/**
+			 * Debug variable determines which class has debug enabled
+			 * @default 0
+			 * <p>
+			    <b>Debug 1</b> = Debug only PaperVision3D.<br>
+			 	<b>Debug 2</b> = Debug only this module.<br>
+			 	<b>Debug 3</b> = Debug only custom classes.<br>
+			 	<b>Debug 4</b> = Debug All classes.<br>
+			 	<b>Debug 5</b> = this + custom classes.<br>
+			 	<b>Debug 6</b> = this + papervision.<br>
+			 	<b>Debug 7</b> = custom classes + Papervision.<br>
+			 * </p>
+			*/
+			
+
+			private var pi_Debug:Number = 0;
+			
+			private var po_lblFps:Label;
+			private var po_comp:UIComponent = new UIComponent();
+			private var pp_Holder:DisplayObject3D = null;
+			private var pa_PlaneClicked:Array = new Array();
+			
+			private const pcs_ErrorImage:String = "assets/error.png";
+			private const pcs_BorderImage:String = "assets/border.png";
+			private const pci_angle:Number = Math.PI * 2 * 3 / 54;
+			private const pci_rad:Number = 180 / Math.PI;
+			private const pcb_DoubleSided:Boolean = true;//used to yaw selected plane
+			private const pci_TileWidth:Number = 110;
+			private const pci_TileHeight:Number = 110;
+			private const pcs_DisplayVisible:String = "displayVisible";//event dispatcher
+			private const pcs_DisplayPlane:String = "displayPlane";//event dispatcher
+			
+			private var TileOrder:Array = new Array();
+			
+			/**
+			 * Initialize Display3D, setup event handlers, image loader and PV3D Objects 
+			 * Caches the border and error image
+			 * this is called after all component objects have been added.
+			 * 
+			 * @param lblFps label box for optional FPS Counter. <br>
+			 * 
+			 * @see pi_Debug
+			*/
+			public function Display3D_Init(lblFps:Label = null, Debug:Number = 2):void
+			{	
+				pi_Debug = Debug;
+				
+				if (lblFps)
+					po_lblFps = lblFps;
+				
+				//papervision debug
+				if (!DebugEnable("papervision"))
+					Papervision3D.PAPERLOGGER.unregisterLogger(Papervision3D.PAPERLOGGER.traceLogger);
+				
+				pp_View = new ReflectionView(this.width,this.height,false, true );				
+				pp_View.viewportReflection.viewportObjectFilter = new ViewportObjectFilter(ViewportObjectFilterMode.INCLUSIVE);
+				
+				po_Images = new ImageLoader(DebugEnable("custom"));
+				po_Images.addEventListener(po_Images.gs_ImageLoaded,Images_Loaded);
+				
+				pp_View.addEventListener(Event.ENTER_FRAME, Display3D_Render);
+				pp_View.viewport.interactiveSceneManager.addEventListener(InteractiveScene3DEvent.OBJECT_PRESS, Display3D_MouseEvent);	
+				pp_View.viewport.interactiveSceneManager.addEventListener(InteractiveScene3DEvent.OBJECT_OVER, Display3D_MouseEvent);	
+				pp_View.viewport.interactiveSceneManager.addEventListener(InteractiveScene3DEvent.OBJECT_OUT, Display3D_MouseEvent);	
+	
+				_trace('Display3D Initialize');
+				
+				//eighteen tiles per row of three total 18*3=54 tiles, load the first 5 tiles of each row then the rest
+				TileOrder = [3,4,5,6,7,8,        21,22,23,24,25,26, 39,40,41,42,43,44,
+							 16,17,18,19,20,28,  10,11,12,13,14,15, 9,27,45,0,1,2,
+							 48,49,50,51,52,53,  35,36,37,38,46,47, 29,30,31,32,33,34
+							];
+			
+				
+				//cache images ready for image loading
+				po_Images.AddImage(pcs_BorderImage,true,true);//cache border image
+				po_Images.AddImage(pcs_ErrorImage,true,false);//cache error image
+
+			}
+
+
+			/**
+			 * Initialize camera, setup angle and reflection before adding to scene 
+			 * 
+			 * this is called when the state is initialized and after <code>Display3d_ViewDisplay</code> process is complete
+			 * 
+			 * @param event The Event object that is dispatched into the event flow. 
+			*/
+			protected function Display3D_ViewDisplay(event:Event):void
+			{
+				//setup stage scaling
+				stage.scaleMode = StageScaleMode.EXACT_FIT;
+				stage.align = StageAlign.TOP_LEFT;
+	
+				pp_View.camera.useClipping = true;
+				pp_View.cameraReflection.useClipping = true;
+				//setup the camera
+				pp_View.camera.x = -10;
+				pp_View.camera.z = 20;
+				
+				//setup reflection view
+				pp_View.setReflectionColor(0.5,0.5,0.5);
+				pp_View.surfaceHeight = -115;
+				addDropOff(this.width, this.height);
+				//pp_View.viewportReflection.filters = [new BlurFilter(10,10,1)];
+
+				po_comp = new UIComponent();
+				po_comp.addChild(pp_View);
+				addElement(po_comp);
+
+				var distance_x:Number = (539  - this.stage.width * 0.5) * 0.003;
+				pi_angle -= distance_x;
+				pp_View.camera.orbit(pi_Pitch, pi_Yaw + pi_angle);
+				
+			}
+			
+			protected function Display3D_MouseEvent(event:InteractiveScene3DEvent):void
+			{
+				switch (event.type)
+				{
+					case "mousePress":
+						if (!event.face3d)
+							return;
+						
+						
+						//set back previous clicked plane
+						if (pa_PlaneClicked.length > 0)
+						{
+							for each (var lp_Plane:Plane in pa_PlaneClicked as Plane)
+							{
+								var li_Idx:Number = int(lp_Plane.name.substr(7));
+								lp_Plane.rotationY = - (li_Idx * pci_angle) * (pci_rad) + 90;
+							}
+
+						}
+						
+						pp_Holder = pp_View.scene.getChildByName(event.face3d.material.name);
+						if (pp_Holder)
+						{
+							pa_PlaneClicked.push(pp_Holder.getChildByName(event.face3d.material.name));
+							dispatchEvent( new Event(pcs_DisplayPlane));
+						}
+						
+					break;
+					
+					case "mouseOver":
+						
+						//set everything back to normal
+						if (pp_Holder)
+							pp_Holder.filters = [];
+						
+						if (!event.face3d)
+							return;
+						
+						//add a border filter
+						pp_Holder = pp_View.scene.getChildByName(event.face3d.material.name);
+						if (pp_Holder)
+							pp_Holder.filters = [new GlowFilter(0x005cc3, 20, 10, 10, 40, 1,true)];
+					break;
+
+					case "mouseOut":
+						if (pp_Holder)
+							pp_Holder.filters = [];
+					break;
+				}
+				
+			}
+			
+			
+			/**
+			 * Queue images for loading
+			 * Called after database returns search results
+			 * 
+			 * @param Images is an array of relative paths for the image location <br>
+			 */
+			public function Display3D_LoadImages(event:FlexEvent):void
+			{
+				prgImages.setProgress(0,prgImages.maximum);
+				currentState = "ImagesLoading";
+				pi_Index = 0;
+				pp_View.alpha = 0;
+ 
+				//test load some images
+				var lb_ctr:Number = 0;
+				for (;lb_ctr<54;lb_ctr++)
+					po_Images.AddImage("assets/logo" + lb_ctr.toString() + ".png");
+
+			}
+			
+
+			public function ClearUp():void
+			{
+				
+			}
+			/**
+			 * Stop Display3D rendering 
+			 * Called when another page is displayed on the main control
+			 */
+			public function Display3D_Hide():void
+			{
+				//var k:Tweener
+				if (currentState == "ViewDisplay")
+					Tweener.addTween( pp_View, {alpha: 0, time: 1.8, transition:"easeOutExpo"} );
+			}
+
+			/**
+			 * Start Display3D rendering 
+			 * Called when Display3D is displayed again
+			 */
+			public function Display3D_Show(e:Event = null):void
+			{
+				if (currentState == "ViewDisplay")
+				{
+					pb_Render = true;
+					pp_View.alpha = 0.1;
+					Tweener.addTween( pp_View, {alpha: 1, time: 1.0, transition:"easeInExpo"} );
+					dispatchEvent(new Event(pcs_DisplayVisible,true));	
+				}
+			}
+			
+			/**
+			 * Dev use only, ges the max FPS
+			 */
+			protected function Display3D_FPSTEST(event:Event):void
+			{
+				var i:Number = 0;
+				for (i=0;i<100;i++)
+					Display3D_Render(null);
+					
+			}
+			
+			
+			/**
+			 * Render on every render tick
+			 */
+			protected function Display3D_Render(event:Event):void
+			{
+				if (pb_Render)
+				{
+					if (pp_View.alpha == 0)
+					{
+						pb_Render = false;
+						dispatchEvent(new Event(pcs_DisplayVisible,false));	
+						return;
+					}
+
+					//trace(pa_PlaneClicked.length);
+					if (pa_PlaneClicked.length > 0)
+					{
+						var lp_Plane:Plane = null;
+						for each (lp_Plane in pa_PlaneClicked.reverse())
+						{
+							lp_Plane.yaw(((400/2))/(400/2)*2);
+						}
+					}
+					//calculate fps
+				    var li_currentFrameTime:int =  getTimer();
+					var fps:int =  1000/(li_currentFrameTime - pi_lastFrametime);
+					pi_lastFrametime = li_currentFrameTime;
+
+					if (pi_MaxFps < fps)
+						pi_MaxFps = fps;
+
+					//show fps
+					if(po_lblFps)
+						po_lblFps.text = "fps " + fps + " max fps " + pi_MaxFps ;
+					
+					//rotation calculated from mouse
+					var ori:Number = stage.mouseX;
+					if (ori < 15 || ori > 1000 || stage.mouseY > 530 || stage.mouseY < 100)
+					{
+						//_trace('no mouse');
+					}else{
+						var distance_x:Number = (ori  - this.stage.width * 0.5) * 0.003;
+						pi_angle -= distance_x;
+						pp_View.camera.orbit(pi_Pitch, pi_Yaw + pi_angle);
+					}
+					
+					//render scene and debug info
+					//trace(	pi_Pitch + " " + pi_Yaw + " " + pp_Cam.x + " " + pp_Cam.z + " " + pp_Cam.zoom + " " + pp_Cam.focus );
+					pp_View.singleRender();
+				}
+				
+			}
+			
+			/**
+			 * Images Loaded event is raised everytime an image is loaded
+			 */
+			protected function Images_Loaded(event:FileLoadEvent):void
+			{
+				var li_ctr:Number = 0;
+				if (event.file == pcs_BorderImage)
+				{
+					//use a temporary place holder..
+					for (;li_ctr<54;li_ctr++)
+						AddImage(li_ctr, po_Images.GetImage(pcs_BorderImage), true);
+					
+					return;
+				}
+				
+				
+				if (event.message=="error")
+				{
+					_trace('error loading image' + event.file);
+					AddImage(TileOrder[pi_Index], po_Images.GetImage(pcs_ErrorImage));
+				}else{
+					AddImage(TileOrder[pi_Index], po_Images.GetImage(event.file));
+				}
+				pi_Index++;
+				
+				if (prgImages.value != prgImages.maximum)
+				{
+					var li_Index:Number = prgImages.value;					
+					prgImages.setProgress(prgImages.value+1,prgImages.maximum);
+	
+					//change state and display images
+					if (currentState != "ViewDisplay" &&  (prgImages.value >= prgImages.maximum))
+					{
+						currentState = "ViewDisplay";  
+						Display3D_Show(null);
+					}
+				}
+			}
+			
+			
+			/**
+			 * Draws border to Img and returns a new BitmapMaterial with scaled image
+			 * 
+			 * @param img the BitmapFileMaterial containing the loaded image
+			 * @param justBorder only draw the border not the image (content holder)
+			 */
+			private function CreateImage(img:BitmapFileMaterial, justBorder:Boolean = false):BitmapMaterial
+			{
+				
+				//create a bitmap to draw border and image too
+				var lp_Bitmap:BitmapMaterial = new BitmapMaterial( new BitmapData(pci_TileWidth,pci_TileHeight,false) );
+				if (!lp_Bitmap)//make sure bitmap was created (out of memory?)
+					return null; 
+				
+				lp_Bitmap.smooth = true;
+				lp_Bitmap.interactive = true;
+				lp_Bitmap.oneSide = !pcb_DoubleSided;
+				lp_Bitmap.doubleSided = pcb_DoubleSided;
+				
+				//get the border
+				var lp_border:BitmapFileMaterial = po_Images.GetImage(pcs_BorderImage);
+				if (!lp_border)//make sure border image was received
+					return null;
+				
+				lp_border.smooth = true;
+				
+				var mtrx:Matrix = new Matrix();
+				var mtrx1:Matrix = new Matrix();
+				
+				if (!justBorder)
+				{
+					//draw image scaled 
+					mtrx.scale(1.1,1.1);
+					mtrx.tx = 5;
+					mtrx.ty = 5;
+					mtrx.scale(93 / (img.bitmap.width),   93 / (img.bitmap.height) );
+					lp_Bitmap.bitmap.draw(img.bitmap,mtrx,null,BlendMode.NORMAL,null,true);
+				}
+				
+				//draw border scaled 
+				mtrx1.scale(1.1,1.1);
+				lp_Bitmap.bitmap.draw(lp_border.bitmap,mtrx1,null,null,null,true);
+				
+				return lp_Bitmap;
+			}
+
+			
+			/**
+			 * Add Image to display3D scene after it's rendered to the Bitmap
+			 * 
+			 * @param idx index of the image this is relative to the location displayed in the cube
+			 * @param img the BitmapFileMaterial containing the loaded image
+			 * @param justBorder only draw the border not the image (content holder)
+			 */
+			private function AddImage(idx:Number, img:BitmapFileMaterial, justBorder:Boolean = false):void
+			{
+				if (!img)//no image 
+					return;
+
+				var lp_Bitmap:BitmapMaterial = CreateImage(img,justBorder);
+				lp_Bitmap.name =  "bmpTile" + idx.toString();
+				//create a plane to hold bitmap
+				var lp_plane:Plane = new Plane(lp_Bitmap, pci_TileWidth,pci_TileHeight,2,2);
+				if (!lp_plane)//error creating plane! (out of mem?)
+					return;
+			
+				lp_plane.name = "bmpTile" + idx.toString();
+				lp_plane.rotationY = - (idx * pci_angle) * (180 / Math.PI) + 90;
+				lp_plane.x = (Math.cos(idx * pci_angle ) * 320)  ;
+				lp_plane.z = (Math.sin(idx * pci_angle) * 320);
+				lp_plane.y = Math.floor( idx / 18 ) * 115 - 100;
+				
+				var lp_holder:DisplayObject3D = new DisplayObject3D();
+				if (!lp_holder)//error creating displayObject! (out of mem?)
+					return;
+				
+				lp_holder.name = "bmpTile" + idx.toString();
+				lp_holder.useOwnContainer=true;
+				lp_holder.addChild(lp_plane);
+			
+
+				//remove any old images
+				pp_View.scene.removeChildByName(lp_holder.name);//garbage will clear this up?
+				pp_View.scene.addChild(lp_holder);
+				
+				if(idx<18)
+					pp_View.viewportReflection.viewportObjectFilter.addObject(lp_holder);
+			}
+			
+			/**
+			 * Renders an alpha gradient to the reflection camera view 
+			 * 
+			 * @param width StageWidth
+			 * @param height StageHeight
+			 */
+			protected function addDropOff(width:Number, height:Number):void
+			{
+				var shape:Sprite = new Sprite();
+				var mxBox:Matrix = new Matrix();
+				mxBox.createGradientBox( width, height , Math.PI/2 , 0 , 0 );
+				shape.graphics.beginGradientFill(GradientType.LINEAR ,[0x000000, 0x000000], [0, 1], [0x00, 0x7E], mxBox);
+				shape.graphics.drawRect( 0, 0, width, height );
+				shape.graphics.endFill();
+				shape.cacheAsBitmap=true;
+				shape.filters.push(new BlurFilter(10,10,1));
+				shape.y = 150;
+				
+				pp_View.viewportReflection.cacheAsBitmap = true;
+				pp_View.viewportReflection.addChild(shape);
+				pp_View.viewportReflection.mask = shape;
+			}
+
+			
+
+			/**
+			 * Writes debug infomation into the console if debug is enabled on this class
+			 * <p><i>See pi_Debug Variable for more information</i></p>
+			 */
+			protected function _trace(str:String):void
+			{
+				if (DebugEnable("this"))
+					trace(str);
+			}
+
+			public function CamZ(val:Number):void
+			{
+				pp_View.camera.z = val;
+				//po_renderer.renderScene(po_scene,po_cam,po_view);	
+			}
+			
+			public function CamX(val:Number):void
+			{
+				pp_View.camera.x = val;
+				//po_renderer.renderScene(po_scene,po_cam,po_view);
+			}
+			
+			public function Zoom(val:Number):void
+			{
+				pp_View.camera.zoom = val;
+				//po_renderer.renderScene(po_scene,po_cam,po_view);	
+			}
+			
+			public function Focus(val:Number):void
+			{
+				pp_View.camera.focus = val;
+				//po_renderer.renderScene(po_scene,po_cam,po_view);
+			}
+			
+			
+			public function Yaw(val:Number):void
+			{
+
+				pi_Yaw = val;
+				pp_View.camera.orbit(pi_Pitch, pi_Yaw);
+				///po_renderer.renderScene(po_scene,po_cam,po_view);	
+			}
+			
+			public function Pitch(val:Number):void
+			{
+				pi_Pitch = val;
+				pp_View.camera.orbit(pi_Pitch, pi_Yaw);
+				//po_renderer.renderScene(po_scene,po_cam,po_view);
+			}
+			
+			
+			/**
+			 * determine if debug is enabled for this class
+			 * 
+			 * @param debugWhere the class name to enable debugging information<br>
+			 *  <b>debugWhere 'papervision'</b> = Debug only PaperVision3D.<br>
+			 *  <b>debugWhere 'this'</b> = Debug only this class.<br>
+			 *  <b>debugWhere 'custom'</b> = Debug all custom classes.<br>
+			 * 
+			 * @see pi_Debug
+			 * 
+			 * @return <code>true</code> if debug is enabled for this class
+			 */
+			private function DebugEnable(debugWhere:String):Boolean
+			{
+			
+				switch (debugWhere)
+				{	
+					case 'papervision':
+						if (pi_Debug == 4 || pi_Debug == 1 || pi_Debug == 6 || pi_Debug == 7)
+							return true;
+						break;
+					
+					case 'this':
+						if (pi_Debug == 4 || pi_Debug == 2 || pi_Debug == 5 || pi_Debug == 6)
+							return true;
+						break;
+					
+					case 'custom':
+						if (pi_Debug == 4 || pi_Debug == 3 || pi_Debug == 5 || pi_Debug == 7)
+							return true;
+						break;
+				}
+				return false;
+			}
+			
+			
+		]]>
+	</fx:Script>
+
+</s:Group>

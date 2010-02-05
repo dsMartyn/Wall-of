@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo" width="22" height="18"
+		 currentState="none"
+		 >
+	
+	<s:states>
+		<s:State name="none"  />
+		<s:State name="normal" enterState="StateChanged(event)" />
+		<s:State name="over" enterState="StateChanged(event)" />
+		<s:State name="down" enterState="StateChanged(event)" />
+	</s:states>
+	
+	<mx:Image includeIn="normal" id="imgPlayNormal" visible="false" source="@Embed('assets/embedded/player/btnPlay.png')"  mouseOver="Image_Over(event)"	/>
+	<mx:Image includeIn="over" id="imgPlayOver" visible="false" source="@Embed('assets/embedded/player/btnPlayOver.png')"  mouseDown="Clicked=true;currentState='down';"  mouseOut="if(!Clicked)currentState='normal';" />
+	<mx:Image includeIn="down" id="imgPlayDown" visible="false" source="@Embed('assets/embedded/player/btnPlayClick.png')" mouseOut="currentState='normal';Clicked=false;"  mouseUp="Image_Click(event);" />
+	
+	<mx:Image includeIn="normal" id="imgFullNormal" visible="false" source="@Embed('assets/embedded/player/btnFullScreen.png')"  mouseOver="Image_Over(event)"	/>
+	<mx:Image includeIn="over" id="imgFullOver" visible="false" source="@Embed('assets/embedded/player/btnFullScreenOver.png')"  mouseDown="Clicked=true;currentState='down';"  mouseOut="if(!Clicked)currentState='normal';" />
+	<mx:Image includeIn="down" id="imgFullDown" visible="false" source="@Embed('assets/embedded/player/btnFullScreenClick.png')" mouseOut="currentState='normal';Clicked=false;"  mouseUp="Image_Click(event);" />
+	
+	<mx:Image includeIn="normal" id="imgQualityNormal" visible="false" source="@Embed('assets/embedded/player/btnQuality.png')"  mouseOver="Image_Over(event)"	/>
+	<mx:Image includeIn="over" id="imgQualityOver" visible="false" source="@Embed('assets/embedded/player/btnQualityOver.png')"  mouseDown="Clicked=true;currentState='down';"  mouseOut="if(!Clicked)currentState='normal';" />
+	<mx:Image includeIn="down" id="imgQualityDown" visible="false" source="@Embed('assets/embedded/player/btnQualityClick.png')" mouseOut="currentState='normal';Clicked=false;"  mouseUp="Image_Click(event);" />
+	
+	<mx:Image includeIn="normal" id="imgVolumeNormal" visible="false" source="@Embed('assets/embedded/player/btnVolume.png')"  mouseOver="Image_Over(event)"	/>
+	<mx:Image includeIn="over" id="imgVolumeOver" visible="false" source="@Embed('assets/embedded/player/btnVolumeOver.png')"  mouseDown="Clicked=true;currentState='down';"  mouseOut="if(!Clicked)currentState='normal';" />
+	<mx:Image includeIn="down" id="imgVolumeDown" visible="false" source="@Embed('assets/embedded/player/btnVolumeClick.png')" mouseOut="currentState='normal';Clicked=false;"  mouseUp="Image_Click(event);" />
+	
+	
+	
+	<fx:Metadata>
+		/** raise mouse click event only if mouse has clicked within region */	
+		[Event(name="buttonClick",type="com.utils.CustomEvent")]
+
+		/** raise mouse over event only if mouse has clicked within region */	
+		[Event(name="buttonOver",type="com.utils.CustomEvent")]
+	</fx:Metadata>
+	
+	
+	<fx:Script>
+		<![CDATA[			
+			import com.utils.ButtonType;
+			
+			private var po_ButtonType:ButtonType;
+			private var po_CurrentButton:Image = null;
+			
+			private var Clicked:Boolean = false;
+			
+			public var MouseClicked:String = "buttonClick";
+			public var MouseOver:String = "buttonClick";
+			
+			protected function Image_Click(e:MouseEvent):void
+			{
+				Clicked = true;
+				if (currentState == "down")
+					dispatchEvent(new CustomEvent(CustomEvent.BUTTON_CLICK, po_ButtonType));
+				currentState='normal';
+
+			}
+				
+			
+			protected function Image_Over(e:MouseEvent):void
+			{
+				currentState='over';
+				Clicked=false;
+				dispatchEvent(new CustomEvent(CustomEvent.BUTTON_OVER, po_ButtonType));
+			//	dispatchEvent(new ButtonEvent(ButtonEvent.BUTTON_OVER,po_ButtonType) );
+			}
+			
+			
+			public function SetButtonType(type:ButtonType):void
+			{
+				po_ButtonType = type;
+				currentState = "normal";
+			}
+
+			protected function StateChanged(e:Event):void
+			{
+				var lv_PrButton:Image = po_CurrentButton;
+				
+				switch (po_ButtonType)
+				{
+					case ButtonType.PLAY:
+						switch (currentState)
+						{
+							case "normal":
+								po_CurrentButton = imgPlayNormal;
+							break;
+							case "over":
+								po_CurrentButton = imgPlayOver;
+							break;
+							case "down":
+								po_CurrentButton = imgPlayDown;
+							break;
+						}
+						
+					break;
+					
+					case ButtonType.FULLSCREEN:
+						switch (currentState)
+						{
+							case "normal":
+								po_CurrentButton = imgFullNormal;
+								break;
+							case "over":
+								po_CurrentButton = imgFullOver;
+								break;
+							case "down":
+								po_CurrentButton = imgFullDown;
+								break;
+						}
+					break;
+					
+					case ButtonType.QUALITY:
+						switch (currentState)
+						{
+							case "normal":
+								po_CurrentButton = imgQualityNormal;
+								break;
+							case "over":
+								po_CurrentButton = imgQualityOver;
+								break;
+							case "down":
+								po_CurrentButton = imgQualityDown;
+								break;
+						}
+					break;
+					
+					
+					case ButtonType.VOLUME:
+						switch (currentState)
+						{
+							case "normal":
+								po_CurrentButton = imgVolumeNormal;
+								break;
+							case "over":
+								po_CurrentButton = imgVolumeOver;
+								break;
+							case "down":
+								po_CurrentButton = imgVolumeDown;
+								break;
+						}
+					break;
+				}
+				
+				if (lv_PrButton)
+					lv_PrButton.visible = false;
+				po_CurrentButton.visible = true;
+
+			}
+
+
+
+		]]>
+	</fx:Script>
+	
+	
+	
+</s:Group>
