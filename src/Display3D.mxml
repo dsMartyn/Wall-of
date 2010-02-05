@@ -40,7 +40,6 @@
 			import org.papervision3d.events.InteractiveScene3DEvent;
 			import org.papervision3d.materials.BitmapFileMaterial;
 			import org.papervision3d.materials.BitmapMaterial;
-			import org.papervision3d.materials.MovieMaterial;
 			import org.papervision3d.objects.DisplayObject3D;
 			import org.papervision3d.objects.primitives.Plane;
 			
@@ -120,8 +119,8 @@
 			private const pci_angle:Number = Math.PI * 2 * 3 / 54;
 			private const pci_rad:Number = 180 / Math.PI;
 			private const pcb_DoubleSided:Boolean = true;//used to yaw selected plane
-			private const pci_TileWidth:Number = 110;
-			private const pci_TileHeight:Number = 110;
+			private const pci_TileWidth:Number = 112;
+			private const pci_TileHeight:Number = 111;
 			private const pcs_DisplayVisible:String = "displayVisible";//event dispatcher
 			private const pcs_DisplayPlane:String = "displayPlane";//event dispatcher
 			
@@ -457,8 +456,9 @@
 					lp_Bitmap.bitmap.draw(img.bitmap,mtrx,null,BlendMode.NORMAL,null,true);
 				}
 				
+				
 				//draw border scaled 
-				mtrx1.scale(1.1,1.1);
+				//mtrx1.scale(1.1,1.1);
 				lp_Bitmap.bitmap.draw(lp_border.bitmap,mtrx1,null,null,null,true);
 				
 				return lp_Bitmap;
@@ -486,7 +486,7 @@
 			
 				lp_plane.name = "bmpTile" + idx.toString();
 				lp_plane.rotationY = - (idx * pci_angle) * (180 / Math.PI) + 90;
-				lp_plane.x = (Math.cos(idx * pci_angle ) * 320)  ;
+				lp_plane.x = (Math.cos(idx * pci_angle ) * 326)  ;
 				lp_plane.z = (Math.sin(idx * pci_angle) * 320);
 				lp_plane.y = Math.floor( idx / 18 ) * 115 - 100;
 				
