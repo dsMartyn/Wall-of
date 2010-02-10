@@ -10,6 +10,7 @@
 		<s:State name="menu" />
 		<s:State name="userMenu" enterState="userMenu_enterstate(event)"/>
 		<s:State name="emailFriend"/>
+		<s:State name="productsMenu"/>
 	</s:states>
 	
 	
@@ -22,6 +23,7 @@
 	<fx:Script>
 		<![CDATA[
 			import com.utils.DatabaseCRUD;
+			
 			import mx.events.*;
 			
 			private const gcs_Display3D_Show:String = "displayShow";//event dispatcher
@@ -29,6 +31,11 @@
 			[bindable]
 			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
 			
+			
+			protected function btnProducts_Click(event:MouseEvent):void
+			{
+				currentState = "productsMenu";	
+			}
 			
 			protected function btnEmailFriend_Click(event:MouseEvent):void
 			{
@@ -89,10 +96,11 @@
 	
 	<s:Button  includeIn="menu" id="btnBack" x="10" y="384" label="Back"  click="btnBack_Click(event)"/>
 	<mx:LinkButton includeIn="menu" x="437.25" y="223.95" label="Logout" click="btnLogout_Click(event)" />
-	<mx:LinkButton includeIn="menu" x="430.75" y="172.45" label="Products"/>
+	<mx:LinkButton includeIn="menu" x="430.75" y="172.45" label="Products" click="btnProducts_Click(event)"/>
 	<mx:LinkButton includeIn="menu" x="417.85" y="115.8" label="Email a friend" click="btnEmailFriend_Click(event)"/>
 	<mx:LinkButton includeIn="menu" x="414.85" y="270.8" label="Account Settings" click="btnUserSettings_Click(event)"/>
 	
-	<local:DisplayMenuUser id="DisplayUserMenu"  includeIn="userMenu"  displayShow="Register_Hide(event)"  menuShow="menu_Show(event)" />
-	<local:DisplayEmailFriend id="DisplayEmail" includeIn="emailFriend" menuShow="menu_Show(event);" />
+	<local:DisplayUser id="DisplayUserMenu" includeIn="userMenu"  displayShow="Register_Hide(event)"  menuShow="menu_Show(event)" />
+	<local:DisplayEmailFriend  includeIn="emailFriend" menuShow="menu_Show(event);" />
+	<local:DisplayProducts  includeIn="productsMenu" menuShow="menu_Show(event);"/>
 </s:Group>

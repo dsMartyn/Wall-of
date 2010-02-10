@@ -117,7 +117,7 @@
 	<mx:HRule x="250.4" y="77.5" width="440" height="7"/>
 	<s:TextArea x="300" y="270" width="340" height="57" text="Check out Wall-of!!"/>
 	<s:Label x="198.4" y="271.55" text="Send a message:" id="txtComment"/>
-	<s:Label x="410.8" y="33.4" text="Email Friends" fontSize="18" verticalAlign="middle" fontWeight="bold"/>
+	<s:Label x="410.8" y="23.4" text="Email Friends" fontSize="18" verticalAlign="middle" fontWeight="bold"/>
 	<s:Button id="btnBack" x="10" y="384" label="Back"  click="btnBack_Click(event)"/>
 
 </s:Group>

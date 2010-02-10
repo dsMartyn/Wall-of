@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo" 
+		 width="940" height="415" xmlns:events="flashx.textLayout.events.*" 
+		 xmlns:local="*" xmlns:utils="com.utils.*" >
+	
+	
+	<s:states>
+		<s:State name="viewProducts" />
+	</s:states>
+	<fx:Metadata>
+		/** menu_show raised when the menu should be shown again */	
+		[Event(name="menuShow",type="flash.events.Event")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+			import mx.events.ValidationResultEvent;
+			import com.utils.DatabaseCRUD;
+			import spark.events.*;
+			private const gcs_DisplayMenu_Show:String = "menuShow";//event dispatcher
+			
+			[bindable]
+			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
+			
+			protected function btnBack_Click(event:MouseEvent):void
+			{
+				dispatchEvent(new Event(gcs_DisplayMenu_Show));
+			}
+
+		]]>
+	</fx:Script>
+	
+	
+	<fx:Declarations>
+
+	</fx:Declarations>
+	
+	
+
+	<mx:DataGrid includeIn="viewProducts" 
+				 id="dataGrid" 
+				 width="708"
+				 doubleClickEnabled="true" x="116.15" y="76" height="262">
+		<mx:columns>
+			<mx:DataGridColumn headerText="Friendly Name" dataField="Friendly_Name"/>
+			<mx:DataGridColumn headerText="Company Name" dataField="Panel2_CompanyName"/>
+			<mx:DataGridColumn headerText="Clicks" dataField="Clicks"/>
+		</mx:columns>
+	</mx:DataGrid>
+	<s:Label x="410.8" y="23.4" text="View Products" fontSize="18" verticalAlign="middle" fontWeight="bold"/>
+	<s:Button includeIn="viewProducts" label="New Product"  id="btnNewProuct" x="655.65" y="345.3" />
+	<s:Button includeIn="viewProducts" x="753.75" y="345.3" id="btnDelete"  label="Delete"  />
+	
+	<s:Button id="btnBack" x="10" y="384" label="Back"  click="btnBack_Click(event)"/>
+	<s:Button x="116" y="346" label="Edit Product" id="btnEditProduct"/>
+	
+</s:Group>
