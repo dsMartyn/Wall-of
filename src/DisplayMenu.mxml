@@ -9,6 +9,7 @@
 	<s:states>
 		<s:State name="menu" />
 		<s:State name="userMenu" enterState="userMenu_enterstate(event)"/>
+		<s:State name="emailFriend"/>
 	</s:states>
 	
 	
@@ -21,14 +22,18 @@
 	<fx:Script>
 		<![CDATA[
 			import com.utils.DatabaseCRUD;
+			import mx.events.*;
 			
-			import mx.events.FlexEvent;
 			private const gcs_Display3D_Show:String = "displayShow";//event dispatcher
 			
 			[bindable]
 			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
 			
 			
+			protected function btnEmailFriend_Click(event:MouseEvent):void
+			{
+				currentState = "emailFriend";
+			}
 			protected function btnUserSettings_Click(event:MouseEvent):void
 			{
 				DisplayUserMenu.currentState = "update";
@@ -53,7 +58,7 @@
 				dispatchEvent(new Event(gcs_Display3D_Show));
 			}
 
-			protected function Menu_Show(event:Event):void
+			protected function menu_Show(event:Event):void
 			{
 				if (Database.go_LoginFields.MemberID == 0 || Database.go_LoginFields.MemberID == 0)
 					currentState = "userMenu"; //failed to login!
@@ -85,9 +90,9 @@
 	<s:Button  includeIn="menu" id="btnBack" x="10" y="384" label="Back"  click="btnBack_Click(event)"/>
 	<mx:LinkButton includeIn="menu" x="437.25" y="223.95" label="Logout" click="btnLogout_Click(event)" />
 	<mx:LinkButton includeIn="menu" x="430.75" y="172.45" label="Products"/>
-	<mx:LinkButton includeIn="menu" x="417.85" y="115.8" label="Email a friend"/>
+	<mx:LinkButton includeIn="menu" x="417.85" y="115.8" label="Email a friend" click="btnEmailFriend_Click(event)"/>
 	<mx:LinkButton includeIn="menu" x="414.85" y="270.8" label="Account Settings" click="btnUserSettings_Click(event)"/>
 	
-	<local:DisplayMenuUser id="DisplayUserMenu"  includeIn="userMenu"  displayShow="Register_Hide(event)"  menuShow="Menu_Show(event)" />
-		
+	<local:DisplayMenuUser id="DisplayUserMenu"  includeIn="userMenu"  displayShow="Register_Hide(event)"  menuShow="menu_Show(event)" />
+	<local:DisplayEmailFriend id="DisplayEmail" includeIn="emailFriend" menuShow="menu_Show(event);" />
 </s:Group>

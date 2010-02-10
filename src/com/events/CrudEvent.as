@@ -15,6 +15,8 @@ package com.events
 		public static const GET_SESSIONID:String = "getSessionID";
 		public static const GET_MEMBERINFO:String = "getMemberInfo";
 		
+		public static const EMAIL_FRIEND:String = "emailFriend";
+		
 		/**
 		 * returns true if VALID_EMAIL and email is valid
 		 * */

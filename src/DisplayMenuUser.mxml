@@ -25,9 +25,9 @@
 	<fx:Script>
 		<![CDATA[
 			import com.events.CrudEvent;
-			
-			import flash.desktop.Clipboard;
 			import com.utils.*;
+			
+			import flash.desktop.Clipboard;			
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			import mx.events.ValidationResultEvent;
@@ -357,6 +357,11 @@
 				Database.removeEventListener(CrudEvent.USER_LOGIN, userlogin);
 			}
 			
+			protected function show_Menu(event:MouseEvent):void
+			{
+				currentState='login'; 
+				dispatchEvent(new Event(gcs_DisplayMenu_Show));
+			}
 			protected function Login_Click():void
 			{
 				//send data to database
@@ -374,8 +379,13 @@
 			
 			protected function btnBack_Click(event:MouseEvent):void
 			{
-				//this.memberFields = null;
-				dispatchEvent(new Event(gcs_Display3D_Show));
+				if (currentState == 'update')
+				{
+					this.show_Menu(null);
+				}else{
+					//this.memberFields = null;
+					dispatchEvent(new Event(gcs_Display3D_Show));
+				}
 			}
 			
 			
@@ -596,10 +606,10 @@
 			
 
 			<mx:LinkButton label.register="Return to signin" label.update="Return to menu"
-						   click.register="btn_BacktoLogin(event)" click.update="currentState='login'; dispatchEvent(new Event(gcs_DisplayMenu_Show));"
+						   click.register="btn_BacktoLogin(event)" click.update="show_Menu(event)"
 						   includeIn="register,update" width="129" x="195" y="0" x.register="203" y.register="0" x.update="201" y.update="0"/>
 			
-			<s:Button includeIn="login" x="78" y="3" label="Cancel" click="btnBack_Click(event)" />
+			<s:Button includeIn="login" x="78" y="3" label="Cancel" click="show_Menu(event)" />
 			
 			<mx:LinkButton label="Need to register?" 
 						   click="currentState = 'register'" 

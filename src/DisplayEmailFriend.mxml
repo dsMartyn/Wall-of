@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
+		 xmlns:s="library://ns.adobe.com/flex/spark" 
+		 xmlns:mx="library://ns.adobe.com/flex/halo" 
+		 width="940" height="415" xmlns:events="flashx.textLayout.events.*" 
+		 xmlns:local="*" xmlns:utils="com.utils.*" >
+
+	<fx:Metadata>
+		/** menu_show raised when the menu should be shown again */	
+		[Event(name="menuShow",type="flash.events.Event")]
+	</fx:Metadata>
+	
+	<fx:Script>
+		<![CDATA[
+			import mx.collections.ArrayList;
+			import mx.events.ValidationResultEvent;
+			import com.utils.DatabaseCRUD;
+			import spark.events.*;
+			private const gcs_DisplayMenu_Show:String = "menuShow";//event dispatcher
+			
+			[bindable]
+			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
+			
+			[bindable]
+			private var pa_lstEmails:ArrayList = new ArrayList();
+
+			protected function btnApply_Click(event:MouseEvent):void
+			{
+				var li_ctr:Number = 0;
+				for (li_ctr; li_ctr < pa_lstEmails.length; li_ctr++)
+				{
+					Database.EmailFriend(null,pa_lstEmails.getItemAt(li_ctr).toString(),Database.go_MemberFields.FirstName, txtComment.text);
+				}
+				dispatchEvent(new Event(gcs_DisplayMenu_Show));
+			}
+			
+			
+			protected function btnDelete_Click(event:MouseEvent):void
+			{
+				pa_lstEmails.removeItemAt(lstEmails.selectedIndex);
+				btnDelete.enabled = false;
+			}
+			
+			protected function btnBack_Click(event:MouseEvent):void
+			{
+				dispatchEvent(new Event(gcs_DisplayMenu_Show));
+			}
+
+
+			protected function btnAdd_Click(event:MouseEvent):void
+			{
+				lstEmails.dataProvider = pa_lstEmails;
+				
+				if (pa_lstEmails.getItemIndex(txtEmail.text) == -1)
+				{
+					dupeValidator.duplicated = false;
+					pa_lstEmails.addItem(txtEmail.text);
+				}else{
+					dupeValidator.duplicated = true;
+					dupeValidator.validate(txtEmail);
+				}
+			}
+			
+			protected function input_Valid(e:ValidationResultEvent):void
+			{
+				btnAdd.enabled = true;
+			}
+			
+			protected function input_Invalid(e:ValidationResultEvent):void
+			{
+				btnAdd.enabled = false;
+			}
+
+
+			protected function lstEmails_change(event:spark.events.IndexChangeEvent):void
+			{
+				if (event.oldIndex == -1 && event.newIndex == -1)
+				{
+					btnDelete.enabled = false;
+				}else{
+					btnDelete.enabled = true
+				}
+				
+			}
+
+		]]>
+	</fx:Script>
+	
+	
+	<fx:Declarations>
+		<utils:DupeEmailValidator
+			id="dupeValidator"
+			source="{txtEmail}" 
+			property="text"
+			duplicated="false"
+			/>
+		<mx:EmailValidator
+			id="emailValidator"
+		    source="{txtEmail}"
+			property="text"
+			valid="input_Valid(event);"
+			invalid="input_Invalid(event);"
+			/>
+			
+	</fx:Declarations>
+	
+	
+	<s:List x="300.6" y="106.45" width="339" height="114" id="lstEmails"  change="lstEmails_change(event)" ></s:List>
+	<s:Label x="220.9" y="110" text="List of emails:"/>
+	<mx:TextInput x="300.8" y="229.35" width="188" id="txtEmail"/>
+	<s:Label x="143.3" y="233.9" text="Enter friends email address:"/>
+	<s:Button x="497.35" y="228.85" label="Add" click="btnAdd_Click(event)" enabled="true" id="btnAdd"/>
+	<s:Button x="569.6" y="228.4" label="Remove" id="btnDelete" enabled="false" click="btnDelete_Click(event)" />
+	<s:Button x="300.45" y="336.1" label="Apply" id="btnApply" click="btnApply_Click(event)"/>
+	<s:Button x="378.4" y="336" label="Cancel" id="btnCancel" click="btnBack_Click(event)" />
+	<mx:HRule x="250" y="257" width="440" height="9"/>
+	<mx:HRule x="250.4" y="77.5" width="440" height="7"/>
+	<s:TextArea x="300" y="270" width="340" height="57" text="Check out Wall-of!!"/>
+	<s:Label x="198.4" y="271.55" text="Send a message:" id="txtComment"/>
+	<s:Label x="410.8" y="33.4" text="Email Friends" fontSize="18" verticalAlign="middle" fontWeight="bold"/>
+	<s:Button id="btnBack" x="10" y="384" label="Back"  click="btnBack_Click(event)"/>
+
+</s:Group>

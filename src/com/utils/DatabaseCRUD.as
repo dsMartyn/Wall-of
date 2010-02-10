@@ -58,6 +58,22 @@ package com.utils
 			return DatabaseCRUD.instance;
 		}
 		
+		
+		
+		public function Logout():void
+		{
+			pc_Crud.logout(go_LoginFields.SessionID);
+			go_LoginFields.SessionID = 0;
+			go_LoginFields.MemberID = 0;
+			this.StoreSessionID();
+			
+			var le_Event:CrudEvent = new CrudEvent(CrudEvent.GET_MEMBERINFO);
+			le_Event.memberFields = null;
+			le_Event.sessionId = 0;
+			le_Event.memberId =0;
+			dispatchEvent(le_Event);
+		}
+		
 		protected function GotMemberID(event:CrudEvent):void
 		{
 			//get the user name
@@ -334,19 +350,38 @@ package com.utils
 			pc_GetMember.removeEventListener(FaultEvent.FAULT, GetMember);
 		}
 	
-		public function Logout():void
+		
+		
+		private var pc_EmailFriends:CallResponder = new CallResponder();
+		public function EmailFriend(event:Object, email:String="", name:String="", comment:String=""):void
 		{
-			pc_Crud.logout(go_LoginFields.SessionID);
-			go_LoginFields.SessionID = 0;
-			go_LoginFields.MemberID = 0;
-			this.StoreSessionID();
+			if (email)
+			{
+				pc_EmailFriends.addEventListener(ResultEvent.RESULT, EmailFriend);
+				pc_EmailFriends.addEventListener(FaultEvent.FAULT, EmailFriend);
+				pc_EmailFriends.token = pc_Crud.email_friend(email,name,comment);
+				return;
+			}
 			
-			var le_Event:CrudEvent = new CrudEvent(CrudEvent.GET_MEMBERINFO);
-			le_Event.memberFields = null;
-			le_Event.sessionId = 0;
-			le_Event.memberId =0;
-			dispatchEvent(le_Event);
+			var le_Event:CrudEvent = new CrudEvent(CrudEvent.EMAIL_FRIEND);
+			
+			if (event is ResultEvent)	
+			{
+				dispatchEvent(le_Event);
+			}
+			
+			if (event is FaultEvent)
+			{
+				var fault:FaultEvent = event as FaultEvent;
+				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
+				le_Event.errored = true;
+				dispatchEvent(le_Event);
+			}
+			
+			pc_EmailFriends.removeEventListener(ResultEvent.RESULT, EmailFriend);
+			pc_EmailFriends.removeEventListener(FaultEvent.FAULT, EmailFriend);
 		}
+		
 		
 	}
 }
