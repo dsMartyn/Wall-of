@@ -21,6 +21,25 @@
 	</fx:Declarations>
 	
 	
+	<s:transitions>
+		<s:Transition toState="Display3D">    
+			<s:Sequence>
+				<s:Fade alphaFrom="0.0" alphaTo="1.0" duration="100" 
+						targets="{[cmpDisplayPlane, cmpDisplayMenu]}"/>
+			</s:Sequence>
+		</s:Transition> 
+		
+		<s:Transition toState="DisplayPlane">    
+			<s:Sequence>
+				<s:Fade alphaFrom="0.0" alphaTo="1.0" duration="1000" 
+						targets="{[cmpDisplayPlane]}"/>
+			</s:Sequence>
+		</s:Transition>  
+		
+
+		
+	</s:transitions>
+	
 	<mx:HRule width="950" strokeColor="#000000" shadowColor="#2F2F2F" x="38" y="74"/>
 	<mx:Image id="logo_header" width="210" height="90"  source="@Embed('assets/embedded/gui/logoheader.png')"  x="33" y="1"/>
 	<s:Label  text="Business" color="#ABABAB" width="143" textAlign="right" x="37" y="77" />
@@ -54,9 +73,10 @@
 	<s:Border  id="brdDisplay" backgroundColor="0xFFFFFF" height="437" width="964"  x="32" y="92" cornerRadius="10" />
 	<!-- Display components to be shown inside the tv display region -->
 	<ns1:Display3D id="cmpDisplay3D" displayVisible="Display3D_Visible(event)" displayPlane="Display3D_Plane(event)" initialize="Display3D_Init(event);" includeIn="Display3D"  x="42" y="103"  width="945" height="415"/>
-	<ns1:DisplayMenu id="cmpMenuPlane" displayShow="cmpDisplay3D.Display3D_Show(event)" includeIn="MenuPlane"  x="42" y="103"  width="945" height="415"/>
+	<ns1:DisplayMenu id="cmpDisplayMenu" displayShow="cmpDisplay3D.Display3D_Show(event)" includeIn="MenuPlane"  x="42" y="103"  width="945" height="415"/>
 	<ns1:DisplayPlane id="cmpDisplayPlane" displayShow="cmpDisplay3D.Display3D_Show(event)" includeIn="DisplayPlane"  x="42" y="103"  width="945" height="415"/>
 
+	
 
 	<s:DropDownList width="99"
 					id="ddlSort"
@@ -86,7 +106,8 @@
 	<mx:TextInput height="20" width="288" x="334" y="552"/>
 	<s:Button id="btnSearch" x="623" y="551" label="Search"/>
 	<mx:HRule width="950" strokeColor="#000000" shadowColor="#2F2F2F" x="38" y="540"/>
-	<mx:LinkButton  click="btnMenu_Click(event)"  label="Menu" id="btnMenu"  fontAntiAliasType="advanced" color="#0631D1" fontSize="18" width="76" x="919.95" y="48"/>
+	<mx:LinkButton  click="btnMenu_Click(event)"  label="Menu" id="btnMenu"  fontAntiAliasType="advanced" color="#0631D1" fontSize="18" width="76" x="919.95" y="48" enabled="false"/>
+	<s:Label  x="694" y="33" text="Not logged in." color="#C10000" width="291" textAlign="right" id="lblLoggedIn"/>
 
 	<!--
 	<s:HSlider x="457" y="11"  id="sldZoomer" maximum="15" minimum="5" change="c_Display3D.Zoom(sldZoomer.value)" />
@@ -108,15 +129,16 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import flash.filters.*;
+			import com.events.CrudEvent;
 			import com.utils.DatabaseCRUD;
+			
+			import flash.filters.*;
 			
 			private var ps_CurrentState:String = "";
 			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
 			
 			protected function Display3D_Init(event:Event):void
 			{
-	
 				//setup display border effects
 				var myBevel:BevelFilter = new BevelFilter(3.0,45,0x000000,1.0,0,1.0,10,4.0,1,1,BitmapFilterType.FULL);
 				var myGlow:GlowFilter = new GlowFilter(0xFFFFFF,0.1,6.0,6.0,2,1,false,false);
@@ -129,9 +151,21 @@
 				cmpDisplay3D.Display3D_Init(lblFps);
 
 				//c_Display3D.Display3D_LoadImages(null);
+				Database.addEventListener(CrudEvent.GET_MEMBERINFO, GotMemberInfo);
+				Database.CheckLoggedIn();
 			}
 			
-
+			protected function GotMemberInfo(event:CrudEvent):void
+			{
+				btnMenu.enabled = true;
+				
+				if (event.memberFields)
+					this.lblLoggedIn.text = "Welcome "  + event.memberFields.FirstName + ' ' + event.memberFields.LastName + ".";
+				else
+					this.lblLoggedIn.text = "Not logged in."
+			}
+				
+			
 			//hide Display3D and show DisplayPlane
 			protected function Display3D_Plane(event:Event):void
 			{

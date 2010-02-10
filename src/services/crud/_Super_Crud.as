@@ -7,6 +7,7 @@ package services.crud
 import mx.rpc.AsyncToken;
 import com.adobe.fiber.core.model_internal;
 import mx.rpc.AbstractOperation;
+import valueObjects.LoginFields;
 import valueObjects.MemberFields;
 import valueObjects.ProductFields;
 import mx.collections.ItemResponder;
@@ -67,7 +68,7 @@ internal class _Super_Crud extends RemoteObjectServiceWrapper
          
      valueObjects.MemberFields._initRemoteClassAlias();
         operation = new Operation(null, "getMember");
-		 operation.resultElementType = valueObjects.MemberFields;
+		 operation.resultType = valueObjects.MemberFields; 		 
         operations["getMember"] = operation;
          
      valueObjects.MemberFields._initRemoteClassAlias();
@@ -101,9 +102,10 @@ internal class _Super_Crud extends RemoteObjectServiceWrapper
         operations["logout"] = operation;
          
         operation = new Operation(null, "login");
-		 operation.resultType = int; 		 
+		 operation.resultType = valueObjects.LoginFields; 		 
         operations["login"] = operation;
          
+     valueObjects.LoginFields._initRemoteClassAlias();
         operation = new Operation(null, "CheckSession");
 		 operation.resultType = int; 		 
         operations["CheckSession"] = operation;
@@ -115,6 +117,10 @@ internal class _Super_Crud extends RemoteObjectServiceWrapper
         operation = new Operation(null, "getIPAddress");
 		 operation.resultType = String; 		 
         operations["getIPAddress"] = operation;
+         
+        operation = new Operation(null, "FindEmail");
+		 operation.resultType = Boolean; 		 
+        operations["FindEmail"] = operation;
          
     
         _serviceControl.operations = operations;   
@@ -542,6 +548,25 @@ internal class _Super_Crud extends RemoteObjectServiceWrapper
 	{
 		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getIPAddress");
 		var _internal_token:AsyncToken = _internal_operation.send() ;
+
+		return _internal_token;
+	}   
+	 
+	/**
+	  * This method is a generated wrapper used to call the 'FindEmail' operation. It returns an AsyncToken whose 
+	  * result property will be populated with the result of the operation when the server response is received. 
+	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+	  */          
+	public function FindEmail(Email:String) : AsyncToken
+	{
+		var _internal_operation:AbstractOperation = _serviceControl.getOperation("FindEmail");
+		var _internal_token:AsyncToken = _internal_operation.send(Email) ;
 
 		return _internal_token;
 	}   

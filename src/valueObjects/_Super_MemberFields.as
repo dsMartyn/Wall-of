@@ -40,11 +40,12 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
 	/**
 	 * properties
 	 */
+	private var _internal_Company : String;
+	private var _internal_ContactNumber : String;
 	private var _internal_Password : String;
 	private var _internal_FirstName : String;
 	private var _internal_RowID : int;
-	private var _internal_StartDate : Object;
-	private var _internal_Company : String;
+	private var _internal_StartDate : String;
 	private var _internal_UserName : String;
 	private var _internal_DOB : String;
 	private var _internal_LastName : String;
@@ -70,6 +71,16 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
      * data property getters
      */
 	[Bindable(event="propertyChange")] 
+    public function get Company() : String    
+    {
+            return _internal_Company;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get ContactNumber() : String    
+    {
+            return _internal_ContactNumber;
+    }    
+	[Bindable(event="propertyChange")] 
     public function get Password() : String    
     {
             return _internal_Password;
@@ -85,14 +96,9 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
             return _internal_RowID;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get StartDate() : Object    
+    public function get StartDate() : String    
     {
             return _internal_StartDate;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get Company() : String    
-    {
-            return _internal_Company;
     }    
 	[Bindable(event="propertyChange")] 
     public function get UserName() : String    
@@ -113,6 +119,48 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
     /**
      * data property setters
      */      
+    public function set Company(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_Company == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_Company;               
+        if (oldValue !== value)
+        {
+        	_internal_Company = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Company", oldValue, _internal_Company));
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set ContactNumber(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_ContactNumber == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_ContactNumber;               
+        if (oldValue !== value)
+        {
+        	_internal_ContactNumber = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ContactNumber", oldValue, _internal_ContactNumber));
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
     public function set Password(value:String) : void 
     {    	
         var recalcValid:Boolean = false;
@@ -172,7 +220,7 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set StartDate(value:Object) : void 
+    public function set StartDate(value:String) : void 
     {    	
         var recalcValid:Boolean = false;
     	if (value == null || _internal_StartDate == null)
@@ -181,32 +229,11 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
     	}	
     	
     	
-    	var oldValue:Object = _internal_StartDate;               
+    	var oldValue:String = _internal_StartDate;               
         if (oldValue !== value)
         {
         	_internal_StartDate = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "StartDate", oldValue, _internal_StartDate));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set Company(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_Company == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_Company;               
-        if (oldValue !== value)
-        {
-        	_internal_Company = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Company", oldValue, _internal_Company));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -309,6 +336,16 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
         var violatedConsts:Array = new Array();    
         var validationFailureMessages:Array = new Array();    
 
+		if (_model.isCompanyAvailable && _internal_Company == null)
+		{
+			violatedConsts.push("CompanyIsRequired");
+			validationFailureMessages.push("Company is required");
+		}
+		if (_model.isContactNumberAvailable && _internal_ContactNumber == null)
+		{
+			violatedConsts.push("ContactNumberIsRequired");
+			validationFailureMessages.push("ContactNumber is required");
+		}
 		if (_model.isPasswordAvailable && _internal_Password == null)
 		{
 			violatedConsts.push("PasswordIsRequired");
@@ -323,11 +360,6 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
 		{
 			violatedConsts.push("StartDateIsRequired");
 			validationFailureMessages.push("StartDate is required");
-		}
-		if (_model.isCompanyAvailable && _internal_Company == null)
-		{
-			violatedConsts.push("CompanyIsRequired");
-			validationFailureMessages.push("Company is required");
 		}
 		if (_model.isUserNameAvailable && _internal_UserName == null)
 		{
@@ -346,6 +378,7 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
 		}
 
 		var styleValidity:Boolean = true;
+	
 	
 	
 	

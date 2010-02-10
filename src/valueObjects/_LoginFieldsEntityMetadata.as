@@ -17,49 +17,42 @@ import mx.events.PropertyChangeEvent;
 use namespace model_internal;
 
 [ExcludeClass]
-internal class _MemberFieldsEntityMetadata extends AbstractEntityMetadata
+internal class _LoginFieldsEntityMetadata extends AbstractEntityMetadata
 {
 	private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("Company", "ContactNumber", "Password", "FirstName", "RowID", "StartDate", "UserName", "DOB", "LastName");
+    model_internal static var allProperties:Array = new Array("SessionID", "MemberID");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("Company", "ContactNumber", "Password", "FirstName", "RowID", "StartDate", "UserName", "DOB", "LastName");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("Company", "ContactNumber", "Password", "FirstName", "RowID", "StartDate", "UserName", "DOB", "LastName");
+    model_internal static var allRequiredProperties:Array = new Array("SessionID", "MemberID");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("SessionID", "MemberID");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("Company", "ContactNumber", "Password", "FirstName", "RowID", "StartDate", "UserName", "DOB", "LastName");
+    model_internal static var dataProperties:Array = new Array("SessionID", "MemberID");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;    
-    model_internal static var entityName:String = "MemberFields";
+    model_internal static var entityName:String = "LoginFields";
     model_internal static var dependentsOnMap:Object;    
     model_internal static var dependedOnServices:Array =  new Array();
     
     
-    model_internal var _instance:_Super_MemberFields;
+    model_internal var _instance:_Super_LoginFields;
     model_internal static var _nullStyle:Style = new Style();
     
-    public function _MemberFieldsEntityMetadata(memberFields : _Super_MemberFields)
+    public function _LoginFieldsEntityMetadata(loginFields : _Super_LoginFields)
     {
         // initialize property maps
         if (model_internal::dependentsOnMap == null)
         {
             // depenents map
             model_internal::dependentsOnMap = new Object();
-            model_internal::dependentsOnMap["Company"] = new Array();
-            model_internal::dependentsOnMap["ContactNumber"] = new Array();
-            model_internal::dependentsOnMap["Password"] = new Array();
-            model_internal::dependentsOnMap["FirstName"] = new Array();
-            model_internal::dependentsOnMap["RowID"] = new Array();
-            model_internal::dependentsOnMap["StartDate"] = new Array();
-            model_internal::dependentsOnMap["UserName"] = new Array();
-            model_internal::dependentsOnMap["DOB"] = new Array();
-            model_internal::dependentsOnMap["LastName"] = new Array();
+            model_internal::dependentsOnMap["SessionID"] = new Array();
+            model_internal::dependentsOnMap["MemberID"] = new Array();
                         
             // collection base map
             model_internal::collectionBaseMap = new Object()
         }                        
         
-        model_internal::_instance = memberFields;     
+        model_internal::_instance = loginFields;     
     }
     
     override public function getEntityName():String
@@ -100,7 +93,7 @@ internal class _MemberFieldsEntityMetadata extends AbstractEntityMetadata
     override public function getDependants(propertyName:String):Array
     {
        if (model_internal::dataProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a data property of entity MemberFields");  
+            throw new Error(propertyName + " is not a data property of entity LoginFields");  
             
        return model_internal::dependentsOnMap[propertyName] as Array;  
     }
@@ -118,7 +111,7 @@ internal class _MemberFieldsEntityMetadata extends AbstractEntityMetadata
     override public function getCollectionBase(propertyName:String):String
     {
        if (model_internal::collectionProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a collection property of entity MemberFields");  
+            throw new Error(propertyName + " is not a collection property of entity LoginFields");  
             
        return model_internal::collectionBaseMap[propertyName];
     }                
@@ -132,7 +125,7 @@ internal class _MemberFieldsEntityMetadata extends AbstractEntityMetadata
      {
          if (model_internal::allProperties.indexOf(propertyName) == -1)
          {
-         	throw new Error(propertyName + " does not exist for entity MemberFields");
+         	throw new Error(propertyName + " does not exist for entity LoginFields");
          }     
            
          return model_internal::_instance[propertyName];
@@ -142,7 +135,7 @@ internal class _MemberFieldsEntityMetadata extends AbstractEntityMetadata
      {
          if (model_internal::dataProperties.indexOf(propertyName) == -1)
          {
-              throw new Error(propertyName + " is not a data property of entity MemberFields");
+              throw new Error(propertyName + " is not a data property of entity LoginFields");
          }  
                                                      
          model_internal::_instance[propertyName] = value;
@@ -174,7 +167,7 @@ internal class _MemberFieldsEntityMetadata extends AbstractEntityMetadata
      {         
          if (model_internal::allProperties.indexOf(propertyName) == -1)
          {
-         	throw new Error(propertyName + " does not exist for entity MemberFields");
+         	throw new Error(propertyName + " does not exist for entity LoginFields");
          }   
                 
          if (model_internal::allAlwaysAvailableProperties.indexOf(propertyName) != -1)
@@ -271,55 +264,13 @@ internal class _MemberFieldsEntityMetadata extends AbstractEntityMetadata
     }       
      
      [Bindable(event="propertyChange")] 
-     public function get isCompanyAvailable():Boolean
+     public function get isSessionIDAvailable():Boolean
      {
         return true;
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isContactNumberAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isPasswordAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isFirstNameAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isRowIDAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isStartDateAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isUserNameAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isDOBAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isLastNameAvailable():Boolean
+     public function get isMemberIDAvailable():Boolean
      {
         return true;
      }                       
@@ -335,55 +286,13 @@ internal class _MemberFieldsEntityMetadata extends AbstractEntityMetadata
      }
 
     [Bindable(event="propertyChange")]   
-    public function get CompanyStyle():Style
+    public function get SessionIDStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get ContactNumberStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get PasswordStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get FirstNameStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get RowIDStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get StartDateStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get UserNameStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get DOBStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get LastNameStyle():Style
+    public function get MemberIDStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      

@@ -3,44 +3,113 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/halo" 
 		 width="940" height="415" xmlns:events="flashx.textLayout.events.*" 
-		 currentState="login"
-		 xmlns:valueObjects="valueObjects.*" xmlns:crud="services.crud.*">
+		 xmlns:valueObjects="valueObjects.*" xmlns:crud="services.crud.*"
+		 initialize="currentState='login'"
+		 xmlns:utils="com.utils.*">
 
 	<s:states>
-		<s:State name="register" />
-		<s:State name="login" />
-		<s:State name="update" />
+		<s:State name="register"  enterState="register_enterState(event)"  />
+		<s:State name="login"  />
+		<s:State name="update" enterState="update_enterState(event)"/>
 	</s:states>
 	
 	<fx:Metadata>
 		/** display_show raised when the display should be rendered again */	
 		[Event(name="displayShow",type="flash.events.Event")]
+		
+		/** menu_show raised when the user has logged in */	
+		[Event(name="menuShow",type="flash.events.Event")]
+		
 	</fx:Metadata>
 	
 	<fx:Script>
 		<![CDATA[
-			import com.utils.DatabaseCRUD;
+			import com.events.CrudEvent;
 			
+			import flash.desktop.Clipboard;
+			import com.utils.*;
 			import mx.controls.Alert;
+			import mx.events.FlexEvent;
 			import mx.events.ValidationResultEvent;
 			import mx.validators.EmailValidator;
 
 			[bindable]
 			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
+
 			
 			private var pa_InvalidFields:Array = [];
-			
 			private const gcs_Display3D_Show:String = "displayShow";//event dispatcher
-			
-			protected function btnBack_Click(event:MouseEvent):void
-			{
-				dispatchEvent(new Event(gcs_Display3D_Show));
+			private const gcs_DisplayMenu_Show:String = "menuShow";//event dispatcher
+			/**
+			 * returned when database has checked for email address
+			 **/
+			protected function email_valid(event:CrudEvent):void
+			{				
+				if (event.errored)
+				{
+					Alert.show("Please contact an administrator.\n" + event.errorMsg);
+					var lo_clipboard:Clipboard = new Clipboard();
+					lo_clipboard.setData("string",event.errorMsg,true);
+					btnRegister.enabled = false;
+				}else{
+					//emailValidator
+					if (!event.valid)
+					{
+						//error email in use
+						pa_InvalidFields.push("Duplicated email");
+						btnRegister.enabled = false;
+						dupeValidator.duplicated = true;
+						dupeValidator.validate(userNameTextInput);
+					}else{
+						//email is not duplicated
+						RemoveField("Duplicated email");
+						dupeValidator.duplicated = false;
+						dupeValidator.validate(userNameTextInput);
+						if (pa_InvalidFields.length <= 0)
+							btnRegister.enabled = true;
+					}
+				}
+				Database.removeEventListener(CrudEvent.VALID_EMAIL,email_valid);
 			}
 			
-			
-			protected function cfnValid(e:ValidationResultEvent):void
+			/**
+			 * called when user finishes typing an item
+			 * if all items are clear then enabled register button
+			 * if item is email then check it's not duplicated
+			**/
+			protected function input_Valid(e:ValidationResultEvent):void
 			{
 				var p:String = "";
+				//trace(ps_OrigEmail, memberFields.UserName, currentState);
+				
+				//check email to be updated is not duplicated
+				if (e.target is EmailValidator && (ps_OrigEmail == memberFields.UserName) && currentState == "update")
+				{
+					
+					RemoveField(e.target.toString());
+					
+					for each (p in pa_InvalidFields)
+					{
+						if (p == e.target.toString())
+							return;
+					}
+					
+					if (pa_InvalidFields.length <= 0)
+						btnRegister.enabled = true;
+					return;//email is same
+				}
+				
+				if(e.target is EmailValidator && currentState != "login")
+				{
+					pa_InvalidFields.push("Duplicated email");
+					//check valid email
+					Database.addEventListener(CrudEvent.VALID_EMAIL,email_valid);
+					Database.CheckDuplicateEmail(null,userNameTextInput.text);
+					RemoveField(e.target.toString());
+					btnRegister.enabled = false;
+					return;
+				}
+
 				RemoveField(e.target.toString());
 				
 				for each (p in pa_InvalidFields)
@@ -50,15 +119,263 @@
 				}
 				
 				if (pa_InvalidFields.length <= 0)
+						btnRegister.enabled = true;
+			}
+			
+
+			/**
+			 * called when user has finished creating
+			 **/
+			protected function userCreated(event:CrudEvent):void
+			{
+				if (event.errored)
 				{
-					if (currentState == "login")
+					Alert.show("Please contact an administrator.\n" + event.errorMsg);
+					var lo_clipboard:Clipboard = new Clipboard();
+					lo_clipboard.setData("string",event.errorMsg,true);
+					btnRegister.enabled = false;
+				}else{
+					
+					if (event.memberId == 0)
 					{
-						btnRegister.enabled = true;
-					}else{
-						btnRegister.enabled = true;
+						this.form.enabled = true;
+						this.btnBack.enabled = true;
+						this.btnRegister.enabled = false;
+						this.form.alpha = 1;
+					}else{						
+						this.form.enabled = true;
+						this.btnBack.enabled = true;
+						this.btnRegister.enabled = true;
+						this.form.alpha = 1;
+						this.currentState = "login";
 					}
 					
 				}
+				
+				Database.removeEventListener(CrudEvent.USER_CREATED, userCreated);
+			}
+			
+			protected function Update_Click():void
+			{
+				
+				if (memberFields.FirstName.length < 3)
+				{
+					Alert.show("First name required.","Invalid Entry");
+					return;
+				}
+				if (memberFields.LastName.length < 3)
+				{
+					Alert.show("Last name required.","Invalid Entry");
+					return;
+				}
+				
+				
+				if (this.cmbDays.text == "Day:")
+				{
+					Alert.show("Date of birth required.","Invalid Entry");
+					return;
+				}
+				
+				if (this.cmbMonths.text == "Month:")
+				{
+					Alert.show("Date of birth required.","Invalid Entry");
+					return;
+				}
+				
+				if (this.cmbYears.text == "Year:")
+				{
+					Alert.show("Date of birth required.","Invalid Entry");
+					return;
+				}
+				
+				//get DOB
+				memberFields.DOB = this.cmbYears.text + "/" + this.cmbMonths.selectedIndex + "/" + this.cmbDays.selectedIndex;
+				if (memberFields.DOB.length < 8)
+				{
+					Alert.show("Date of birth required." + memberFields.DOB,"Invalid Entry");
+					return;
+				}
+				
+				if (memberFields.UserName.length < 1)
+				{
+					Alert.show("Email address required.","Invalid Entry");
+					return;
+				}
+				
+				//validate form
+				if (memberFields.Password != confirm_passwordTextInput.text)
+				{
+					Alert.show("Password does not match.","Invalid Entry");
+					return;
+				}
+				if (memberFields.Password.length < 3)
+				{
+					Alert.show("Password required.","Invalid Entry");
+					return;
+				}
+				
+				
+				//send data to database
+				this.form.enabled = false;
+				this.btnBack.enabled = false;
+				this.btnRegister.enabled = false;
+				this.form.alpha = 0.5;
+				
+				Database.addEventListener(CrudEvent.USER_UPDATED, userUpdated);
+				Database.UpdateUser(null,memberFields);
+			}
+			
+			protected function userUpdated(event:CrudEvent):void
+			{
+				if (event.errored)
+				{
+					Alert.show("Please contact an administrator.\n" + event.errorMsg);
+					var lo_clipboard:Clipboard = new Clipboard();
+					lo_clipboard.setData("string",event.errorMsg,true);
+					btnRegister.enabled = false;
+				}else{			
+						this.form.enabled = true;
+						this.btnBack.enabled = true;
+						this.btnRegister.enabled = true;
+						this.form.alpha = 1;
+						
+						//show updated name on home page
+						Database.GetMember(null,memberFields.RowID);
+	
+						dispatchEvent(new Event(gcs_DisplayMenu_Show));		
+						currentState='login';
+						//this.memberFields = null;
+				}
+				
+				Database.removeEventListener(CrudEvent.USER_UPDATED, userUpdated);
+			}
+			
+			protected function Register_Click():void
+			{
+
+				if (memberFields.FirstName.length < 3)
+				{
+					Alert.show("First name required.","Invalid Entry");
+					return;
+				}
+				if (memberFields.LastName.length < 3)
+				{
+					Alert.show("Last name required.","Invalid Entry");
+					return;
+				}
+				
+				
+				if (this.cmbDays.text == "Day:")
+				{
+					Alert.show("Date of birth required.","Invalid Entry");
+					return;
+				}
+				
+				if (this.cmbMonths.text == "Month:")
+				{
+					Alert.show("Date of birth required.","Invalid Entry");
+					return;
+				}
+				
+				if (this.cmbYears.text == "Year:")
+				{
+					Alert.show("Date of birth required.","Invalid Entry");
+					return;
+				}
+				
+				//get DOB
+				memberFields.DOB = this.cmbYears.text + "/" + this.cmbMonths.selectedIndex + "/" + this.cmbDays.selectedIndex;
+				if (memberFields.DOB.length < 8)
+				{
+					Alert.show("Date of birth required." + memberFields.DOB,"Invalid Entry");
+					return;
+				}
+				
+				if (memberFields.UserName.length < 1)
+				{
+					Alert.show("Email address required.","Invalid Entry");
+					return;
+				}
+				
+				//validate form
+				if (memberFields.Password != confirm_passwordTextInput.text)
+				{
+					Alert.show("Password does not match.","Invalid Entry");
+					return;
+				}
+				if (memberFields.Password.length < 3)
+				{
+					Alert.show("Password required.","Invalid Entry");
+					return;
+				}
+				
+				
+				//send data to database
+				this.form.enabled = false;
+				this.btnBack.enabled = false;
+				this.btnRegister.enabled = false;
+				this.form.alpha = 0.5;
+				
+				Database.addEventListener(CrudEvent.USER_CREATED, userCreated);
+				Database.RegisterUser(null,memberFields);
+
+			}
+			
+			protected function userlogin(event:CrudEvent):void
+			{
+				if (event.errored)
+				{
+					Alert.show("Please contact an administrator.\n" + event.errorMsg);
+					var lo_clipboard:Clipboard = new Clipboard();
+					lo_clipboard.setData("string",event.errorMsg,true);
+					btnRegister.enabled = false;
+				}else{
+					
+					if (event.sessionId == 0 || event.memberId == 0)
+					{
+						this.form.enabled = true;
+						this.btnBack.enabled = true;
+						this.btnRegister.enabled = false;
+						this.form.alpha = 1;
+						Alert.show("Invalid username or password.", "Error login");
+			
+					}else{					
+						this.form.enabled = true;
+						this.btnBack.enabled = true;
+						this.btnRegister.enabled = true;
+						this.form.alpha = 1;
+					
+						Database.GetMember(null,event.memberId);
+						
+						if (this.chkRememberMe.selected)
+							Database.StoreSessionID();
+						dispatchEvent(new Event(gcs_DisplayMenu_Show));		
+					}
+					
+				}
+				
+				Database.removeEventListener(CrudEvent.USER_LOGIN, userlogin);
+			}
+			
+			protected function Login_Click():void
+			{
+				//send data to database
+				this.form.enabled = false;
+				this.btnBack.enabled = false;
+				this.btnRegister.enabled = false;
+				this.form.alpha = 0.5;
+				
+
+				Database.addEventListener(CrudEvent.USER_LOGIN, userlogin);
+				Database.LoginUser(null,memberFields);
+				
+				
+			}
+			
+			protected function btnBack_Click(event:MouseEvent):void
+			{
+				//this.memberFields = null;
+				dispatchEvent(new Event(gcs_Display3D_Show));
 			}
 			
 			
@@ -78,59 +395,87 @@
 				}
 			}
 			
-			protected function cfnInvalid(e:ValidationResultEvent):void
+			protected function input_Invalid(e:ValidationResultEvent):void
 			{
 				pa_InvalidFields.push(e.target.toString());
 				btnRegister.enabled = false;
 			}
 
-			
-			protected function Register_Click():void
+
+			protected function register_enterState(event:FlexEvent):void
 			{
+				this.form.enabled = true;
+				this.btnBack.enabled = true;
+				this.btnRegister.enabled = false;
+				this.form.alpha = 1;
 				
-				if (memberFieds.FirstName.length < 3)
-				{
-					Alert.show("First name required.","Invalid Entry");
-					return;
-				}
-				if (memberFieds.LastName.length < 3)
-				{
-					Alert.show("Last name required.","Invalid Entry");
-					return;
-				}
-				if (memberFieds.DOB.length < 3)
-				{
-					Alert.show("Date of birth required.","Invalid Entry");
-					return;
-				}
-				
-				//validate form
-				if (memberFieds.Password != confirm_passwordTextInput.text)
-				{
-					Alert.show("Password does not match.","Invalid Entry");
-					return;
-				}
-				if (memberFieds.Password.length < 3)
-				{
-					Alert.show("Password required.","Invalid Entry");
-					return;
-				}
+				cmbDays.dataProvider = Database.ga_Days;
+				cmbMonths.dataProvider = Database.ga_Months;
+				cmbYears.dataProvider = Database.ga_Years;
 			}
-			
+
+			protected function btn_BacktoLogin(event:MouseEvent):void
+			{
+				dupeValidator.duplicated = false;
+				dupeValidator.validate(userNameTextInput);
+				pa_InvalidFields = [];
+				btnRegister.enabled = true;
+				currentState = 'login';
+			}
+
+			private var ps_OrigEmail:String;
+
+			protected function update_enterState(event:FlexEvent):void
+			{
+				ps_OrigEmail = Database.go_MemberFields.UserName;
+				
+				this.form.enabled = true;
+				this.btnBack.enabled = true;
+				this.btnRegister.enabled = false;
+				this.form.alpha = 1;
+				
+				cmbDays.dataProvider = Database.ga_Days;
+				cmbMonths.dataProvider = Database.ga_Months;
+				cmbYears.dataProvider = Database.ga_Years;
+				
+				this.memberFields = Database.go_MemberFields;
+
+				var lv_dob:Array =  this.memberFields.DOB.split("-");
+			    cmbYears.selectedIndex = 2011 - int(lv_dob[0]);
+				cmbMonths.selectedIndex = int(lv_dob[1]);
+				cmbDays.selectedIndex = int(lv_dob[2].toString().substr(0,2));
+
+			}
+
 		]]>
 	</fx:Script>
 	
 	
 	<fx:Declarations>
-		<valueObjects:MemberFields id="memberFieds" RowID="0"/>
+		<valueObjects:MemberFields id="memberFields" RowID="0"/>
 
+		
+		<utils:DupeEmailValidator
+			 id="dupeValidator"
+			 source="{userNameTextInput}" 
+			 property="text"
+			 duplicated="false"
+			/>
+			
 		<!-- Validate email -->
 		<mx:EmailValidator
 			id="emailValidator"
 			source="{userNameTextInput}" property="text"
-			valid="cfnValid(event);"
-			invalid="cfnInvalid(event);"
+			valid="input_Valid(event);"
+			invalid="input_Invalid(event);"
 			/>
+		<mx:PhoneNumberValidator
+			id="phoneValidator"
+			source="{ContactNumberTextInput}" property="text"
+			valid="input_Valid(event);"
+			invalid="input_Invalid(event);"
+			/>
+		
 		
 		<mx:StringValidator 
 			id="nameValidator"
@@ -138,8 +483,8 @@
 			property="text"
 			minLength="2"
 			maxLength="32"
-			valid="cfnValid(event);"
-			invalid="cfnInvalid(event);"
+			valid="input_Valid(event);"
+			invalid="input_Invalid(event);"
 			/>
 		
 		<mx:StringValidator 
@@ -148,27 +493,26 @@
 			property="text"
 			minLength="2"
 			maxLength="32"
-			valid="cfnValid(event);"
-			invalid="cfnInvalid(event);"
+			valid="input_Valid(event);"
+			invalid="input_Invalid(event);"
 			/>
-<!--		<mx:StringValidator 
+		<mx:StringValidator 
 			id="passValidator"
 			source="{passwordTextInput}" 
 			property="text"
 			minLength="2"
 			maxLength="32"
-			valid="cfnValid(event);"
-			invalid="cfnInvalid(event);"
+			valid="input_Valid(event);"
+			invalid="input_Invalid(event);"
 			/>
--->
 		<mx:StringValidator 
 			id="cpassValidator"
 			source="{confirm_passwordTextInput}" 
 			property="text"
 			minLength="2"
 			maxLength="32"
-			valid="cfnValid(event);"
-			invalid="cfnInvalid(event);"
+			valid="input_Valid(event);"
+			invalid="input_Invalid(event);"
 			/>
 		
 	</fx:Declarations>
@@ -179,71 +523,90 @@
 		<s:Transition toState="register">    
 			<s:Sequence>
 				<s:Fade alphaFrom="0.0" alphaTo="1.0" duration="1000" 
-						targets="{[itmCompany, itmlastName, itmfirstName, itmconfirm_password, itmdOB]}"/>                
+						targets="{[form]}"/>
 			</s:Sequence>
 		</s:Transition>    
 		
 		<s:Transition toState="signin">    
 			<s:Sequence>
 				<s:Fade alphaFrom="1.0" alphaTo="0.0" duration="500" 
-						targets="{[itmCompany, itmlastName, itmfirstName, itmconfirm_password, itmdOB]}"/>                
+						targets="{[form]}"/> 
 			</s:Sequence>
 		</s:Transition>   
+
+		
+		<s:Transition toState="login">    
+			<s:Sequence>
+				<s:Fade alphaFrom="0.0" alphaTo="1.0" duration="500" 
+						targets="{[form]}"/> 
+			</s:Sequence>
+		</s:Transition>   
+		
+		<s:Transition toState="update">    
+			<s:Sequence>
+				<s:Fade alphaFrom="0.0" alphaTo="1.0" duration="500" 
+						targets="{[form]}"/>                
+			</s:Sequence>
+		</s:Transition>  
 		
 	</s:transitions>
 	
 	
 	
-	<mx:Form id="form" defaultButton="{btnRegister}"  x="11" y="14" backgroundColor="#FFFFFF" width.register="368" x.login="324" y.login="134" x.register="296" y.register="54" x.update="330" y.update="134">
-		<mx:FormHeading label.register="Register at Wall Of" label.login="Sign in Wall Of" width="249"/>
+	<mx:Form id="form" alpha="0.6" defaultButton="{btnRegister}"  x="11" y="14" backgroundColor="#FFFFFF" width.register="368" x.login="323.5" y.login="134" x.register="286" y.register="47" x.update="286" y.update="47">
+		<mx:FormHeading  id="lblLabel" label.update="Update Member Details" label.register="Register at Wall Of" label.login="Sign in Wall Of" width="249"/>
 		
-		<mx:FormItem alpha="0.5" id="itmfirstName" label="FirstName" required="true" includeIn="register" >
-			<s:TextInput id="firstNameTextInput" text="@{memberFieds.FirstName}" width="210"/>
+		<mx:FormItem id="itmfirstName" label="FirstName" required="true" includeIn="register,update" >
+			<s:TextInput id="firstNameTextInput" text="@{memberFields.FirstName}" width="210"/>
 		</mx:FormItem>
-		<mx:FormItem alpha="0.5" id="itmlastName" label="LastName" required="true" includeIn="register" >
-			<s:TextInput id="lastNameTextInput"   text="@{memberFieds.LastName}" width="210"/>
+		<mx:FormItem id="itmlastName" label="LastName" required="true" includeIn="register,update" >
+			<s:TextInput id="lastNameTextInput"   text="@{memberFields.LastName}" width="210"/>
 		</mx:FormItem>		
-		<mx:FormItem alpha="0.5" id="itmCompany" label="Company" includeIn="register"  >
-			<s:TextInput id="companyTextInput" text="@{memberFieds.Company}" width="210"/>
+		<mx:FormItem id="itmContactNumber" label="Contact Number" includeIn="register,update"  >
+			<s:TextInput id="ContactNumberTextInput" text="@{memberFields.ContactNumber}" width="210"/>
 		</mx:FormItem>
 		
-		<mx:FormItem alpha="0.6" id="itmdOB" label="Birthday" required="true"  includeIn="register"   width="334">
-			<s:Group>
-				
+		<mx:FormItem  id="itmdOB" label="Birthday" required="true"  includeIn="register,update"   width="334">
+			<s:Group width="211">
+				<mx:ComboBox x="2" y="0" width="62"  id="cmbDays" />
+				<mx:ComboBox  x="67" y="0" width="70"  id="cmbMonths" />
+				<mx:ComboBox  x="140" y="0" width="72" id="cmbYears" />
 			</s:Group>
 		</mx:FormItem>
 
 		
-		<mx:FormItem label="Email Address" required="true">
-			<s:TextInput id="userNameTextInput"   text="@{memberFieds.UserName}" width.register="210"/>
+		<mx:FormItem  id="itmEmail" label="Email Address" required="true">
+			<s:TextInput id="userNameTextInput"   text="@{memberFields.UserName}" width.register="210" width.update="210"/>
 		</mx:FormItem>
 
-		<mx:FormItem label="Password"  required="true">
-			<s:TextInput displayAsPassword="true"   id="passwordTextInput" text="@{memberFieds.Password}"  width.register="210"/>
+		<mx:FormItem  id="itmPassword" label="Password"  required="true">
+			<s:TextInput displayAsPassword="true"   id="passwordTextInput" text="@{memberFields.Password}"  width.register="210" width.update="210"/>
 		</mx:FormItem>
 
-		<mx:FormItem alpha="0.0" id="itmconfirm_password" label="Confirm Password"   required="true" includeIn="register" >
+		<mx:FormItem  id="itmconfirm_password" label="Confirm Password"   required="true" includeIn="register,update" >
 			<s:TextInput displayAsPassword="true"  id="confirm_passwordTextInput" text=""  width="210"/>
 		</mx:FormItem>
 		
-		<s:Group  width.login="261" height.login="27" height.register="22" width.register="328">
+		<s:Group   id="grpBoxes"  width.login="261" height.login="27" height.register="22" width.register="333" width.update="331">
 			<!-- <s:Button label="Register" id="button" click="button_clickHandler(event)"/> -->
 			
-			<s:Button enabled="true" label="Sign in" label.register="Register" id="btnRegister" 
-					  click.login="trace('login')" click.register="Register_Click()" x.login="2" y.login="3" enabled.login="false"/>
+			<s:Button enabled="true" label.login="Sign in" label.register="Register" label.update="Update" id="btnRegister" 
+				      click.update="Update_Click()"  click.login="Login_Click()" click.register="Register_Click()" x.login="2" y.login="3" 
+					  enabled.update="false" enabled.login="false" enabled.register="false" />
 			
-			<mx:LinkButton label="Return to signin"
-						   click="currentState = 'login'" 
-						   includeIn="register" width="129" x="195" y="0"/>
+
+			<mx:LinkButton label.register="Return to signin" label.update="Return to menu"
+						   click.register="btn_BacktoLogin(event)" click.update="currentState='login'; dispatchEvent(new Event(gcs_DisplayMenu_Show));"
+						   includeIn="register,update" width="129" x="195" y="0" x.register="203" y.register="0" x.update="201" y.update="0"/>
 			
-			<s:Button includeIn="login" x="78" y="3" label="Cancel" click.register="btnBack_Click(event)" click.login="btnBack_Click(event)" />
+			<s:Button includeIn="login" x="78" y="3" label="Cancel" click="btnBack_Click(event)" />
 			
 			<mx:LinkButton label="Need to register?" 
 						   click="currentState = 'register'" 
 						   includeIn="login" width="115" x="151" y="3"/>
 		</s:Group>
 		
-		<mx:CheckBox id="rememberMe" includeIn="register" label="Remember me on this computer"  x="10" y="300" width.register="246" selected="false"/>
+		<mx:CheckBox   id="chkRememberMe" includeIn="login" label="Remember me on this computer"  x="10" y="300" width="246" selected="false" />
 		
 	</mx:Form>
 	

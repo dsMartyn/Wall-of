@@ -3,12 +3,12 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/halo" 
 		 width="940" height="415" xmlns:events="flashx.textLayout.events.*" 
-		 currentState="menu"
+		 currentState="userMenu"
 		 xmlns:local="*">
 	
 	<s:states>
 		<s:State name="menu" />
-		<s:State name="register"/>
+		<s:State name="userMenu" enterState="userMenu_enterstate(event)"/>
 	</s:states>
 	
 	
@@ -20,21 +20,56 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.utils.DatabaseCRUD;
+			
+			import mx.events.FlexEvent;
 			private const gcs_Display3D_Show:String = "displayShow";//event dispatcher
 			
+			[bindable]
+			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
+			
+			
+			protected function btnUserSettings_Click(event:MouseEvent):void
+			{
+				DisplayUserMenu.currentState = "update";
+				currentState = "userMenu";
+	
+			}
+			
+			protected function btnLogout_Click(event:MouseEvent):void
+			{
+				Database.Logout();
+				this.currentState = "userMenu";
+				dispatchEvent(new Event(gcs_Display3D_Show));
+				
+			}
 			protected function btnBack_Click(event:MouseEvent):void
 			{
 				dispatchEvent(new Event(gcs_Display3D_Show));
 			}
 			
-			protected function btnRegister_Click(event:MouseEvent):void
-			{
-				currentState = "register";
-			}
-
 			protected function Register_Hide(event:Event):void
 			{
-				currentState = "menu";
+				dispatchEvent(new Event(gcs_Display3D_Show));
+			}
+
+			protected function Menu_Show(event:Event):void
+			{
+				if (Database.go_LoginFields.MemberID == 0 || Database.go_LoginFields.MemberID == 0)
+					currentState = "userMenu"; //failed to login!
+				else
+					currentState = "menu";
+			}
+
+			protected function userMenu_enterstate(event:FlexEvent):void
+			{
+
+				if (Database.go_LoginFields.MemberID == 0 || Database.go_LoginFields.MemberID == 0)
+					currentState = "userMenu"; //failed to login!
+				else{
+					if (DisplayUserMenu.currentState != "update")
+						currentState = "menu";
+				}
 			}
 
 		]]>
@@ -48,11 +83,11 @@
 	</fx:Declarations>
 	
 	<s:Button  includeIn="menu" id="btnBack" x="10" y="384" label="Back"  click="btnBack_Click(event)"/>
-	<mx:LinkButton includeIn="menu" x="412.25" y="161.95" label="Login"/>
-	<mx:LinkButton includeIn="menu" x="163.45" y="162" label="Register" click="btnRegister_Click(event)" />
-	<mx:LinkButton includeIn="menu" x="657.75" y="162.45" label="Products"/>
-	<mx:LinkButton includeIn="menu" x="396.85" y="290.8" label="Email a friend"/>
+	<mx:LinkButton includeIn="menu" x="437.25" y="223.95" label="Logout" click="btnLogout_Click(event)" />
+	<mx:LinkButton includeIn="menu" x="430.75" y="172.45" label="Products"/>
+	<mx:LinkButton includeIn="menu" x="417.85" y="115.8" label="Email a friend"/>
+	<mx:LinkButton includeIn="menu" x="414.85" y="270.8" label="Account Settings" click="btnUserSettings_Click(event)"/>
 	
-	<local:DisplayMenuUser id="dispRegister"  includeIn="register"  displayShow="Register_Hide(event)" />
+	<local:DisplayMenuUser id="DisplayUserMenu"  includeIn="userMenu"  displayShow="Register_Hide(event)"  menuShow="Menu_Show(event)" />
 		
 </s:Group>

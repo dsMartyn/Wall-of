@@ -18,6 +18,7 @@
 	
 	<fx:Script>
 		<![CDATA[
+			import com.events.ToolBarEvent;
 			import com.google.maps.*;
 			import com.google.maps.controls.MapTypeControl;
 			import com.google.maps.controls.PositionControl;
@@ -149,7 +150,7 @@
 			}
 
 
-			protected function button_Click(event:CustomEvent):void
+			protected function button_Click(event:ToolBarEvent):void
 			{
 				
 				switch(event.buttonType)
@@ -215,14 +216,14 @@
 					toolBar.SetValue(po_YouTube.currentTime);
 			}
 
-			protected function toolBar_seekTo(event:CustomEvent):void
+			protected function toolBar_seekTo(event:ToolBarEvent):void
 			{
 				
 				if (po_YouTube)
 					po_YouTube.seekTo(event.numericVal/1000,true);
 			}
 
-			protected function toolBar_VolumeTo(event:CustomEvent):void
+			protected function toolBar_VolumeTo(event:ToolBarEvent):void
 			{
 				if (po_YouTube)
 					po_YouTube.volume = event.numericVal;

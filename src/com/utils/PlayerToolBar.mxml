@@ -10,22 +10,23 @@
 	
 	<fx:Metadata>
 		/** raise mouse click event only if mouse has clicked within region */	
-		[Event(name="buttonClick",type="com.utils.CustomEvent")]
+		[Event(name="buttonClick",type="com.events.ToolBarEvent")]
 		
 		/** raise mouse over event only if mouse has clicked within region */	
-		[Event(name="buttonOver",type="com.utils.CustomEvent")]
+		[Event(name="buttonOver",type="com.events.ToolBarEvent")]
 		
 		
 		/** raise seek to when nuget is moved */
-		[Event(name="seekTo",type="com.utils.CustomEvent")]
+		[Event(name="seekTo",type="com.events.ToolBarEvent")]
 		
 		/** raise volume to when volume is moved */
-		[Event(name="volumeTo",type="com.utils.CustomEvent")]
+		[Event(name="volumeTo",type="com.events.ToolBarEvent")]
 		
 	</fx:Metadata>
 	
 	<fx:Script>
 		<![CDATA[
+			import com.events.ToolBarEvent;
 			
 			//video tool bar stuff...
 			
@@ -35,14 +36,14 @@
 			private var pn_StartX:Number=0;
 			
 			
-			protected function button_Click(event:CustomEvent):void
+			protected function button_Click(event:ToolBarEvent):void
 			{
-				dispatchEvent(new CustomEvent(CustomEvent.BUTTON_CLICK, event.buttonType));
+				dispatchEvent(new ToolBarEvent(ToolBarEvent.BUTTON_CLICK, event.buttonType));
 			}
 			
-			protected function button_Over(event:CustomEvent):void
+			protected function button_Over(event:ToolBarEvent):void
 			{
-				dispatchEvent(new CustomEvent(CustomEvent.BUTTON_OVER, event.buttonType));
+				dispatchEvent(new ToolBarEvent(ToolBarEvent.BUTTON_OVER, event.buttonType));
 			}
 			
 			public function SetStartX(v:Number):void
@@ -140,7 +141,7 @@
 				trace(pn_StartX);
 				nuget.x = prgDone.x + ( (event.stageX - (pn_StartX + prgEmpty.x)) - (nuget.width / 2));
 
-				dispatchEvent(new CustomEvent(CustomEvent.SEEK_TO, null,  ( ((nuget.x-prgDone.x)+(nuget.width/2)) / prgEmpty.width) * pn_Max ) );
+				dispatchEvent(new ToolBarEvent(ToolBarEvent.SEEK_TO, null,  ( ((nuget.x-prgDone.x)+(nuget.width/2)) / prgEmpty.width) * pn_Max ) );
 				
 				trace ( convertMillisecondsToMMSS(  ( ((nuget.x-prgDone.x)+(nuget.width/2)) / prgEmpty.width) * pn_Max ) )  ;
 				pn_Down = false;
@@ -149,7 +150,7 @@
 			}
 			private var pn_IntervalID:Number;
 			
-			protected function Volume_Over(event:CustomEvent):void
+			protected function Volume_Over(event:ToolBarEvent):void
 			{
 				button_Over(event);
 				prgVolume.visible = true;
@@ -172,7 +173,7 @@
 
 			protected function prgVolume_change(event:Event):void
 			{
-				dispatchEvent(new CustomEvent(CustomEvent.VOLUME_TO, null, prgVolume.value));
+				dispatchEvent(new ToolBarEvent(ToolBarEvent.VOLUME_TO, null, prgVolume.value));
 			}
 
 		]]>
