@@ -8,6 +8,7 @@
 	
 	<s:states>
 		<s:State name="viewProducts" />
+		<s:State name="editProduct"  />
 	</s:states>
 	<fx:Metadata>
 		/** menu_show raised when the menu should be shown again */	
@@ -16,12 +17,23 @@
 	
 	<fx:Script>
 		<![CDATA[
-			import mx.collections.ArrayList;
-			import mx.events.ValidationResultEvent;
-			import com.utils.DatabaseCRUD;
+			import com.utils.*;
 			import spark.events.*;
 			private const gcs_DisplayMenu_Show:String = "menuShow";//event dispatcher
 			
+			private const pc_name:String = "Enter Company Name";
+			private const pc_street:String = "Enter Street Name";
+			private const pc_town:String = "Enter Town";
+			private const pc_county:String = "Enter Country";
+			private const pc_postcode:String = "Ener Post Code";
+			private const pc_email:String = "Enter Email address";
+			private const pc_tel:String = "Enter Number";
+			private const pc_mob:String = "Enter Mobile";
+			private const pc_fax:String = "Enter Fax";
+			private const pc_companyName:String = "Enter Company name";
+			private const pc_companyDesc:String = "Enter company Descrption\nYear it was established\nany offers.";
+				
+				
 			[bindable]
 			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
 			
@@ -30,16 +42,140 @@
 				dispatchEvent(new Event(gcs_DisplayMenu_Show));
 			}
 
+
+			protected function reset():void
+			{
+				txtAddressName.text = pc_name;
+				txtAddressStreet.text == pc_street;
+				txtAddressTown.text == pc_town;
+				txtAddressCounty.text = pc_county;
+				txtAddressPostCode.text = pc_postcode;
+				txtAddressEmail.text = pc_email;
+				txtAddressTel.text = pc_tel;
+				txtAddressMob.text = pc_mob;
+				txtAddressFax.text = pc_fax;
+				txtCompanyName.text = pc_companyName;
+				txtCompanyDesc.text = pc_companyDesc;
+			}
+			
+			protected function txt_focusIn(e:FocusEvent):void
+			{
+				
+				switch (e.currentTarget.id)
+				{
+					case 'txtAddressName':
+						if (e.currentTarget.text == pc_name)
+							e.currentTarget.text = '';
+						break;
+					case 'txtAddressStreet':
+						if (e.currentTarget.text == pc_street)
+							e.currentTarget.text = '';
+						break;
+					case 'txtAddressTown':
+						if (e.currentTarget.text == pc_town)
+							e.currentTarget.text = '';
+						break;
+					case 'txtAddressCounty':
+						if (e.currentTarget.text == pc_county)
+							e.currentTarget.text = '';
+						break;
+					case 'txtAddressPostCode':
+						if (e.currentTarget.text == pc_postcode)
+							e.currentTarget.text = '';
+						break;
+					case 'txtAddressEmail':						
+						if (e.currentTarget.text == pc_email)
+						e.currentTarget.text = '';
+						break;
+					case 'txtAddressTel':
+						if (e.currentTarget.text == pc_tel)
+							e.currentTarget.text = '';
+						break;
+					case 'txtAddressMob':
+						if (e.currentTarget.text == pc_mob)
+							e.currentTarget.text = '';
+						break;
+					case 'txtAddressFax':
+						if (e.currentTarget.text == pc_fax)
+							e.currentTarget.text = '';
+					break;
+					case 'txtCompanyName':
+						if (e.currentTarget.text == pc_companyName)
+							e.currentTarget.text = '';
+						break;
+					case 'txtCompanyDesc':
+						
+						if (e.currentTarget.text.toString().length == pc_companyDesc.toString().length)
+							e.currentTarget.text = '';
+						break;
+					
+				}
+			}
+
+			
+			
+			protected function focusOut(e:FocusEvent):void
+			{
+				trace('focus out ' + e.currentTarget.id);
+				
+				switch (e.currentTarget.id)
+				{
+					case 'txtAddressName':
+						trace(e.currentTarget.text);
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = pc_name;
+						break;
+					case 'txtAddressStreet':
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = pc_street;
+						break;
+					case 'txtAddressTown':
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = pc_town;
+						break;
+					case 'txtAddressCounty':
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = pc_county;
+						break;
+					case 'txtAddressPostCode':
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = pc_postcode;
+						break;
+					case 'txtAddressEmail':						
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = pc_email;
+						break;
+					case 'txtAddressTel':
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = pc_tel;
+						break;
+					case 'txtAddressMob':
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = pc_mob;
+						break;
+					case 'txtAddressFax':
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = pc_fax;
+						break;
+					case 'txtCompanyName':
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = pc_companyName;
+						break;
+					case 'txtCompanyDesc':
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = pc_companyDesc;
+						break;
+					
+				}
+			}
 		]]>
 	</fx:Script>
 	
-	
-	<fx:Declarations>
 
-	</fx:Declarations>
-	
-	
-
+	<s:Label x="410.8" y="23.4" text="Edit Products" fontSize="18" verticalAlign="middle" fontWeight="bold" includeIn="viewProducts" />
+	<s:Button includeIn="viewProducts" label="New Product"  id="btnNewProuct" x="655.65" y="345.3" />
+	<s:Button includeIn="viewProducts" x="753.75" y="345.3" id="btnDelete"  label="Delete"  />
+	<s:Button includeIn="viewProducts" x="116" y="346" label="Edit Product" id="btnEditProduct" click="currentState='editProduct'"/>
 	<mx:DataGrid includeIn="viewProducts" 
 				 id="dataGrid" 
 				 width="708"
@@ -50,11 +186,65 @@
 			<mx:DataGridColumn headerText="Clicks" dataField="Clicks"/>
 		</mx:columns>
 	</mx:DataGrid>
-	<s:Label x="410.8" y="23.4" text="View Products" fontSize="18" verticalAlign="middle" fontWeight="bold"/>
-	<s:Button includeIn="viewProducts" label="New Product"  id="btnNewProuct" x="655.65" y="345.3" />
-	<s:Button includeIn="viewProducts" x="753.75" y="345.3" id="btnDelete"  label="Delete"  />
+	<s:Button id="btnBack" x="10" y="384" label="Back"  click="btnBack_Click(event)" includeIn="viewProducts"/>
 	
-	<s:Button id="btnBack" x="10" y="384" label="Back"  click="btnBack_Click(event)"/>
-	<s:Button x="116" y="346" label="Edit Product" id="btnEditProduct"/>
+	
+	
+	<s:Border id="brdLogo" x="0" y="0" width="200" height="200" borderWeight="2"  includeIn="editProduct">
+		<mx:Label x="59" y="31" text="Upload Image"/>
+		<mx:Button x="65" y="65" label="Browse"/>
+		<mx:Label x="73" y="96" text="Size: 0kb"/>
+		<mx:Label x="63" y="118" text="Progress 0%"/>
+	
+	</s:Border>
+
+	
+	<s:Border id="brdDetails" width="432"  x="214" y="0" height="410" borderWeight="2"  includeIn="editProduct" >
+	
+		<mx:TextArea  id="txtCompanyName" text="{pc_companyName}"   focusIn="txt_focusIn(event)" condenseWhite="true" textAlign="center"  borderVisible="false"  fontAntiAliasType="advanced" fontSize="19"   fontWeight="bold"  color="#0036FF"  includeIn="editProduct"  x="3" y="1" height="30" width="422"/>
+		<mx:TextArea  id="txtCompanyDesc" text="{pc_companyDesc}"   focusIn="txt_focusIn(event)" borderVisible="false" includeIn="editProduct" top="33" left="0" right="4" bottom="37" condenseWhite="true"   fontAntiAliasType="advanced" />
+		
+		
+		<mx:Button x="278" y="379" label="Preview" id="btnPreview"/>
+		<s:Button label="Back"  click="currentState='viewProducts'" x="7" y="379"/>
+		<mx:Button x="352" y="379" label="Accept"/>
+	
+	</s:Border>
+	
+	<s:Border id="brdContactDetails" width="200"  x="0" y="210" height="200" borderWeight="2"  includeIn="editProduct">
+		
+		<mx:Text  text="Contact Details" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"  includeIn="editProduct" />
+
+		
+		<mx:TextInput id="txtAddressName" text="{pc_name}"  focusIn="txt_focusIn(event)"  x="20" y="26" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressStreet" text="{pc_street}"   focusIn="txt_focusIn(event)" x="20" y="44" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressTown" text="{pc_town}"  focusIn="txt_focusIn(event)" x="20" y="62" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressCounty" text="{pc_county}"   focusIn="txt_focusIn(event)" x="20" y="80" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressPostCode" text="{pc_postcode}"   focusIn="txt_focusIn(event)" x="20" y="98" borderVisible="false"  textAlign="center" />
+
+		<mx:TextInput id="txtAddressEmail" text="{pc_email}"   focusIn="txt_focusIn(event)" x="20" y="120" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressTel" text="{pc_tel}"  focusIn="txt_focusIn(event)" x="20" y="138" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressMob" text="{pc_mob}"  focusIn="txt_focusIn(event)"  x="20" y="156" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressFax" text="{pc_fax}"  focusIn="txt_focusIn(event)"  x="20" y="174" borderVisible="false"  textAlign="center" />
+
+	</s:Border>
+	
+	<s:Border id="brdMap" x="659" y="210" width="280" height="200" borderWeight="2"  includeIn="editProduct" >
+		<mx:TextInput id="txtMAPUrl" x="87" y="78" textAlign="center"  width="106"/>
+		<mx:Label x="51" y="55" text="Enter post code for Google Maps"/>
+
+	</s:Border>
+	
+	<s:Border id="brdVideoTemp" x="659" y="0" width="280" height="200" borderWeight="2"  includeIn="editProduct" >
+			</s:Border>
+	
+	<s:Border id="brdVideo" x="658" y="1" width="279" height="199" borderVisible="true"  includeIn="editProduct"  >	
+		<mx:TextArea id="txtVideoURL" x="70" y="82"  height="51"/>
+		<mx:Label x="79" y="57" text="Enter Youtube Video URL"/>
+
+	</s:Border>
+	
+	
+	
 	
 </s:Group>

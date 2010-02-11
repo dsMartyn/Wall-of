@@ -289,11 +289,10 @@
 	
 	
 	<s:Border id="brdLogo" x="0" y="0" width="200" height="200" borderWeight="2">
-		<mx:Image source="@Embed('assets/logo3.png')" maintainAspectRatio="true" top="0" left="0" right="0" bottom="0" smoothBitmapContent="true" />
+		<mx:Image source="@Embed('assets/embedded/logo3.png')" maintainAspectRatio="true" top="0" left="0" right="0" bottom="0" smoothBitmapContent="true" />
 	</s:Border>
 	
 
-	
 	<s:Border id="brdDetails" width="432"  x="214" y="0" height="410" borderWeight="2" >
 		<mx:Text  top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="19"   fontWeight="bold"  color="#0036FF">
 			<mx:htmlText>

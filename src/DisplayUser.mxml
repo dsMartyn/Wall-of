@@ -27,7 +27,8 @@
 			import com.events.CrudEvent;
 			import com.utils.*;
 			
-			import flash.desktop.Clipboard;			
+			import flash.desktop.Clipboard;
+			
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			import mx.events.ValidationResultEvent;
@@ -48,8 +49,6 @@
 				if (event.errored)
 				{
 					Alert.show("Please contact an administrator.\n" + event.errorMsg);
-					var lo_clipboard:Clipboard = new Clipboard();
-					lo_clipboard.setData("string",event.errorMsg,true);
 					btnRegister.enabled = false;
 				}else{
 					//emailValidator
@@ -131,8 +130,6 @@
 				if (event.errored)
 				{
 					Alert.show("Please contact an administrator.\n" + event.errorMsg);
-					var lo_clipboard:Clipboard = new Clipboard();
-					lo_clipboard.setData("string",event.errorMsg,true);
 					btnRegister.enabled = false;
 				}else{
 					
@@ -230,8 +227,6 @@
 				if (event.errored)
 				{
 					Alert.show("Please contact an administrator.\n" + event.errorMsg);
-					var lo_clipboard:Clipboard = new Clipboard();
-					lo_clipboard.setData("string",event.errorMsg,true);
 					btnRegister.enabled = false;
 				}else{			
 						this.form.enabled = true;
@@ -326,8 +321,6 @@
 				if (event.errored)
 				{
 					Alert.show("Please contact an administrator.\n" + event.errorMsg);
-					var lo_clipboard:Clipboard = new Clipboard();
-					lo_clipboard.setData("string",event.errorMsg,true);
 					btnRegister.enabled = false;
 				}else{
 					
