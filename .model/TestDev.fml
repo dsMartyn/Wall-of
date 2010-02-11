@@ -1,0 +1,352 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<model xmlns="http://ns.adobe.com/Fiber/1.0">
+  <annotation name="ActionScriptGeneration">
+    <item name="FullyQualifyReferences">true</item>
+  </annotation>
+  <service name="Crud">
+    <annotation name="ActionScriptGeneration">
+      <item name="Destination">Crud</item>
+      <item name="Endpoint">gateway.php</item>
+      <item name="ServiceType">RemoteObject</item>
+      <item name="Package">services.crud</item>
+      <item name="Source">Crud</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">services/crud/_Super_Crud.as~#~services/crud/Crud.as~#~</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">PHP</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="PHP_RELATIVE_LOCATION">TestDev-debug/services/Crud.php</item>
+      <item name="PHP_CLASS_NAME">Crud</item>
+      <item name="LINKED_FILE">Crud_Crud.php</item>
+      <item name="PHP_SERVER_ROOT">/Users/martyngilbertson/Sites/wall-of</item>
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="PHP_LOCATION">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/Crud.php</item>
+      <item name="PHP_SERVER_ROOT_URL">http:/localhost/~martyngilbertson/wall-of</item>
+      <item name="ABSOLUTE_ENDPOINT">http:/localhost/~martyngilbertson/wall-of/TestDev-debug/gateway.php</item>
+      <item name="PHP_SERVICES_FOLDER">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services</item>
+    </annotation>
+    <function name="php_mode" return-type="void">
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="getProducts" arguments="SessionID:integer" return-type="ProductFields[]">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">Panel2_Company_Description,Clicks,Panel2_CompanyName,Panel3_Extended_Description,Panel2_CompanyURL,Keywords,Friendly_Name,Panel4_Description,MemberID,Panel1_LogoPic,Panel2_Contact_Details,RowID,Panel4_Video_URL</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="getProduct" arguments="productID:integer" return-type="ProductFields">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">Panel2_Company_Description,Clicks,Panel2_CompanyName,Panel3_Extended_Description,Panel2_CompanyURL,Keywords,Friendly_Name,Panel4_Description,MemberID,Panel1_LogoPic,Panel2_Contact_Details,RowID,Panel4_Video_URL</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="getProducts_paged" arguments="startIndex:integer,numItems:integer" return-type="ProductFields[]">
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">Panel2_Company_Description,Clicks,Panel2_CompanyName,Panel3_Extended_Description,Panel2_CompanyURL,Keywords,Friendly_Name,Panel4_Description,MemberID,Panel1_LogoPic,Panel2_Contact_Details,RowID,Panel4_Video_URL</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="createProduct" arguments="item:ProductFields" return-type="integer">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="updateProduct" arguments="item:ProductFields" return-type="void">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="deleteProduct" arguments="itemID:integer" return-type="void">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="countProducts" return-type="integer">
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="getMembers" return-type="MemberFields[]">
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">ContactNumber,Password,FirstName,RowID,StartDate,UserName,DOB,LastName</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="getMember" arguments="memberID:integer" return-type="MemberFields">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">Company,ContactNumber,Password,FirstName,RowID,StartDate,UserName,DOB,LastName</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="getMembers_paged" arguments="startIndex:integer,numItems:integer" return-type="MemberFields[]">
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">Password,FirstName,RowID,StartDate,Company,UserName,DOB,LastName</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="createMember" arguments="item:MemberFields" return-type="integer">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="email_friend" arguments="to:string,name:string,comment:string" return-type="void">
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="updateMember" arguments="item:MemberFields" return-type="void">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="deleteMember" arguments="itemID:integer" return-type="void">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="countMembers" return-type="integer">
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="GetMemberID" arguments="SessionID:integer" return-type="integer">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="logout" arguments="SessionID:integer" return-type="void">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="login" arguments="user:string,pass:string" return-type="LoginFields">
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">SessionID,MemberID</item>
+      </annotation>
+    </function>
+    <function name="CheckSession" arguments="SessionID:double" return-type="integer">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="ParseEmbedded" arguments="html:string" return-type="string">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="getIPAddress" return-type="string">
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="FindEmail" arguments="Email:string" return-type="boolean">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+  </service>
+  <entity name="ProductFields">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">ProductFields</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Crud</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getProduct">
+      <item name="propertySpecifier">Panel2_Company_Description,Clicks,Panel2_CompanyName,Panel3_Extended_Description,Panel2_CompanyURL,Keywords,Friendly_Name,Panel4_Description,MemberID,Panel1_LogoPic,Panel2_Contact_Details,RowID,Panel4_Video_URL</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">valueObjects/_ProductFieldsEntityMetadata.as~#~valueObjects/_Super_ProductFields.as~#~valueObjects/ProductFields.as~#~</item>
+    </annotation>
+    <annotation name="getProducts_paged">
+      <item name="propertySpecifier">Panel2_Company_Description,Clicks,Panel2_CompanyName,Panel3_Extended_Description,Panel2_CompanyURL,Keywords,Friendly_Name,Panel4_Description,MemberID,Panel1_LogoPic,Panel2_Contact_Details,RowID,Panel4_Video_URL</item>
+    </annotation>
+    <annotation name="getProducts">
+      <item name="propertySpecifier">Panel2_Company_Description,Clicks,Panel2_CompanyName,Panel3_Extended_Description,Panel2_CompanyURL,Keywords,Friendly_Name,Panel4_Description,MemberID,Panel1_LogoPic,Panel2_Contact_Details,RowID,Panel4_Video_URL</item>
+    </annotation>
+    <property name="Panel2_Company_Description" type="string" required="true"/>
+    <property name="Clicks" type="integer" required="true"/>
+    <property name="Panel2_CompanyName" type="string" required="true"/>
+    <property name="Panel3_Extended_Description" type="string" required="true"/>
+    <property name="Panel2_CompanyURL" type="string" required="true"/>
+    <property name="Keywords" type="string" required="true"/>
+    <property name="Friendly_Name" type="string" required="true"/>
+    <property name="Panel4_Description" type="string" required="true"/>
+    <property name="MemberID" type="integer" required="true"/>
+    <property name="Panel1_LogoPic" type="string" required="true"/>
+    <property name="Panel2_Contact_Details" type="string" required="true"/>
+    <property name="RowID" type="integer" required="true"/>
+    <property name="Panel4_Video_URL" type="string" required="true"/>
+  </entity>
+  <entity name="MemberFields">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">MemberFields</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Crud</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getMember">
+      <item name="propertySpecifier">Company,ContactNumber,Password,FirstName,RowID,StartDate,UserName,DOB,LastName</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">valueObjects/_MemberFieldsEntityMetadata.as~#~valueObjects/_Super_MemberFields.as~#~valueObjects/MemberFields.as~#~</item>
+    </annotation>
+    <annotation name="getMembers">
+      <item name="propertySpecifier">ContactNumber,Password,FirstName,RowID,StartDate,UserName,DOB,LastName</item>
+    </annotation>
+    <annotation name="getMembers_paged">
+      <item name="propertySpecifier">Password,FirstName,RowID,StartDate,Company,UserName,DOB,LastName</item>
+    </annotation>
+    <property name="Company" type="string" required="true"/>
+    <property name="ContactNumber" type="string" required="true"/>
+    <property name="Password" type="string" required="true"/>
+    <property name="FirstName" type="string" required="true"/>
+    <property name="RowID" type="integer" required="true"/>
+    <property name="StartDate" type="string" required="true"/>
+    <property name="UserName" type="string" required="true"/>
+    <property name="DOB" type="string" required="true"/>
+    <property name="LastName" type="string" required="true"/>
+  </entity>
+  <entity name="LoginFields">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">LoginFields</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">Crud</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="login">
+      <item name="propertySpecifier">SessionID,MemberID</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">valueObjects/_LoginFieldsEntityMetadata.as~#~valueObjects/_Super_LoginFields.as~#~valueObjects/LoginFields.as~#~</item>
+    </annotation>
+    <property name="SessionID" type="integer" required="true"/>
+    <property name="MemberID" type="integer" required="true"/>
+  </entity>
+</model>

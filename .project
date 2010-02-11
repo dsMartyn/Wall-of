@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>Wall-of</name>
+	<comment></comment>
+	<projects>
+	</projects>
+	<buildSpec>
+		<buildCommand>
+			<name>com.adobe.flexbuilder.project.flexbuilder</name>
+			<arguments>
+			</arguments>
+		</buildCommand>
+	</buildSpec>
+	<natures>
+		<nature>com.adobe.flexbuilder.project.flexnature</nature>
+		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
+	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] ActionScript</name>
+			<type>2</type>
+			<location>/Users/martyngilbertson/Developer/Flex/ActionScript</location>
+		</link>
+		<link>
+			<name>bin-debug</name>
+			<type>2</type>
+			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug</location>
+		</link>
+		<link>
+			<name>bin-release</name>
+			<type>2</type>
+			<location>/Users/martyngilbertson/Sites/wall-of/release</location>
+		</link>
+	</linkedResources>
+</projectDescription>
