@@ -552,146 +552,6 @@
     <property name="ContactNumber" type="string" required="true"/>
     <property name="StartDate" type="string" required="true"/>
   </entity>
-  <service name="TblEmailLogService">
-    <annotation name="ActionScriptGeneration">
-      <item name="Destination">TblEmailLogService</item>
-      <item name="Endpoint">gateway.php</item>
-      <item name="ServiceType">RemoteObject</item>
-      <item name="Package">services.tblemaillogservice</item>
-      <item name="Source">TblEmailLogService</item>
-    </annotation>
-    <annotation name="ASFilesGenerated">
-      <item name="ASFilesGenerated">services/tblemaillogservice/_Super_TblEmailLogService.as~#~services/tblemaillogservice/TblEmailLogService.as~#~</item>
-    </annotation>
-    <annotation name="ServiceTypeGroup">
-      <item name="ServiceBackendType">PHP</item>
-    </annotation>
-    <annotation name="ServiceConfig">
-      <item name="PHP_RELATIVE_LOCATION">TestDev-debug/services/TblEmailLogService.php</item>
-      <item name="PHP_CLASS_NAME">TblEmailLogService</item>
-      <item name="LINKED_FILE">TblEmailLogService.php</item>
-      <item name="PHP_SERVER_ROOT">/Users/martyngilbertson/Sites/wall-of</item>
-      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
-      <item name="PHP_LOCATION">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblEmailLogService.php</item>
-      <item name="PHP_SERVER_ROOT_URL">http://localhost/~martyngilbertson/wall-of/</item>
-      <item name="ABSOLUTE_ENDPOINT">http://localhost/~martyngilbertson/wall-of/TestDev-debug/gateway.php</item>
-      <item name="PHP_SERVICES_FOLDER">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services</item>
-    </annotation>
-    <function name="getAllTblEmailLog" return-type="TblEmailLog[]">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="getTblEmailLogByID" arguments="itemID:integer" return-type="TblEmailLog[]">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="createTblEmailLog" arguments="item:TblEmailLog" return-type="integer">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="updateTblEmailLog" arguments="item:TblEmailLog" return-type="void">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="deleteTblEmailLog" arguments="itemID:integer" return-type="void">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="count" return-type="integer">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="getTblEmailLog_paged" arguments="startIndex:integer,numItems:integer" return-type="TblEmailLog[]">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="email_friend" arguments="to:string,name:string,comment:string,memberID:integer" return-type="void">
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque,opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-    </function>
-  </service>
-  <entity name="TblEmailLog" persistent="true">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">TblEmailLog</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">TblEmailLogService</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="DataManagement">
-      <item name="create">createTblEmailLog</item>
-      <item name="update">updateTblEmailLog</item>
-      <item name="get">getTblEmailLogByID</item>
-      <item name="delete">deleteTblEmailLog</item>
-      <item name="fillFunc">getAllTblEmailLog,getTblEmailLog_paged</item>
-      <item name="managingService">TblEmailLogService</item>
-    </annotation>
-    <annotation name="getTblEmailLogByID">
-      <item name="propertySpecifier">RowID,To,From,Subject,Body,Headers,MemberID</item>
-    </annotation>
-    <annotation name="getAllTblEmailLog">
-      <item name="propertySpecifier">RowID,To,From,Subject,Body,Headers,MemberID</item>
-    </annotation>
-    <annotation name="getTblEmailLog_paged">
-      <item name="propertySpecifier">RowID,To,From,Subject,Body,Headers,MemberID</item>
-      <item name="pagingEnabled">true</item>
-      <item name="positionalPagingParameters">true</item>
-      <item name="countOperation">count</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <annotation name="ASFilesGenerated">
-      <item name="ASFilesGenerated">valueObjects/_Super_TblEmailLog.as~#~valueObjects/_TblEmailLogEntityMetadata.as~#~valueObjects/TblEmailLog.as~#~</item>
-    </annotation>
-    <id name="RowID" type="integer"/>
-    <property name="To" type="string" required="true"/>
-    <property name="From" type="string" required="true"/>
-    <property name="Subject" type="string" required="true"/>
-    <property name="Body" type="string" required="true"/>
-    <property name="Headers" type="string" required="true"/>
-    <property name="MemberID" type="integer" required="true"/>
-  </entity>
   <service name="TblLoginService">
     <annotation name="ActionScriptGeneration">
       <item name="Destination">TblLoginService</item>
@@ -882,6 +742,146 @@
       <item name="ASFilesGenerated">valueObjects/_LoginFieldsEntityMetadata.as~#~valueObjects/_Super_LoginFields.as~#~valueObjects/LoginFields.as~#~</item>
     </annotation>
     <property name="SessionID" type="integer" required="true"/>
+    <property name="MemberID" type="integer" required="true"/>
+  </entity>
+  <service name="TblEmailLogService">
+    <annotation name="ActionScriptGeneration">
+      <item name="Destination">TblEmailLogService</item>
+      <item name="Endpoint">gateway.php</item>
+      <item name="ServiceType">RemoteObject</item>
+      <item name="Package">services.tblemaillogservice</item>
+      <item name="Source">TblEmailLogService</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">services/tblemaillogservice/_Super_TblEmailLogService.as~#~services/tblemaillogservice/TblEmailLogService.as~#~</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">PHP</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="PHP_RELATIVE_LOCATION">TestDev-debug/services/TblEmailLogService.php</item>
+      <item name="PHP_CLASS_NAME">TblEmailLogService</item>
+      <item name="LINKED_FILE">TblEmailLogService.php</item>
+      <item name="PHP_SERVER_ROOT">/Users/martyngilbertson/Sites/wall-of</item>
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="PHP_LOCATION">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblEmailLogService.php</item>
+      <item name="PHP_SERVER_ROOT_URL">http://localhost/~martyngilbertson/wall-of/</item>
+      <item name="ABSOLUTE_ENDPOINT">http://localhost/~martyngilbertson/wall-of/TestDev-debug/gateway.php</item>
+      <item name="PHP_SERVICES_FOLDER">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services</item>
+    </annotation>
+    <function name="getAllTblEmailLog" return-type="TblEmailLog[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getTblEmailLogByID" arguments="itemID:integer" return-type="TblEmailLog[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="createTblEmailLog" arguments="item:TblEmailLog" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="updateTblEmailLog" arguments="item:TblEmailLog" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="deleteTblEmailLog" arguments="itemID:integer" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="count" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getTblEmailLog_paged" arguments="startIndex:integer,numItems:integer" return-type="TblEmailLog[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="email_friend" arguments="to:string,name:string,comment:string,memberID:integer" return-type="void">
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque,opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+  </service>
+  <entity name="TblEmailLog" persistent="true">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">TblEmailLog</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">TblEmailLogService</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="DataManagement">
+      <item name="create">createTblEmailLog</item>
+      <item name="update">updateTblEmailLog</item>
+      <item name="get">getTblEmailLogByID</item>
+      <item name="delete">deleteTblEmailLog</item>
+      <item name="fillFunc">getAllTblEmailLog,getTblEmailLog_paged</item>
+      <item name="managingService">TblEmailLogService</item>
+    </annotation>
+    <annotation name="getTblEmailLogByID">
+      <item name="propertySpecifier">RowID,To,From,Subject,Body,Headers,MemberID</item>
+    </annotation>
+    <annotation name="getAllTblEmailLog">
+      <item name="propertySpecifier">RowID,To,From,Subject,Body,Headers,MemberID</item>
+    </annotation>
+    <annotation name="getTblEmailLog_paged">
+      <item name="propertySpecifier">RowID,To,From,Subject,Body,Headers,MemberID</item>
+      <item name="pagingEnabled">true</item>
+      <item name="positionalPagingParameters">true</item>
+      <item name="countOperation">count</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">valueObjects/_Super_TblEmailLog.as~#~valueObjects/_TblEmailLogEntityMetadata.as~#~valueObjects/TblEmailLog.as~#~</item>
+    </annotation>
+    <id name="RowID" type="integer"/>
+    <property name="To" type="string" required="true"/>
+    <property name="From" type="string" required="true"/>
+    <property name="Subject" type="string" required="true"/>
+    <property name="Body" type="string" required="true"/>
+    <property name="Headers" type="string" required="true"/>
     <property name="MemberID" type="integer" required="true"/>
   </entity>
 </model>
