@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<flexProperties enableServiceManager="false" flexServerFeatures="0" flexServerType="16" serverContextRoot="" serverRoot="/Users/martyngilbertson/Sites/wall-of" serverRootURL="http:/localhost/~martyngilbertson/wall-of" toolCompile="true" useServerFlexSDK="false" version="2"/>
+<flexProperties enableServiceManager="false" flexServerFeatures="0" flexServerType="16" serverContextRoot="" serverRoot="/Users/martyngilbertson/Sites/wall-of" serverRootURL="http://localhost/~martyngilbertson/wall-of/" toolCompile="true" useServerFlexSDK="false" version="2"/>

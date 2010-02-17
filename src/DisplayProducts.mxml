@@ -18,13 +18,17 @@
 	<fx:Script>
 		<![CDATA[
 			import com.utils.*;
+			
+			import mx.controls.Alert;
+			import mx.rpc.xml.SimpleXMLDecoder;
+			
 			import spark.events.*;
 			private const gcs_DisplayMenu_Show:String = "menuShow";//event dispatcher
 			
 			private const pc_name:String = "Enter Company Name";
 			private const pc_street:String = "Enter Street Name";
 			private const pc_town:String = "Enter Town";
-			private const pc_county:String = "Enter Country";
+			private const pc_county:String = "Enter County";
 			private const pc_postcode:String = "Ener Post Code";
 			private const pc_email:String = "Enter Email address";
 			private const pc_tel:String = "Enter Number";
@@ -32,8 +36,12 @@
 			private const pc_fax:String = "Enter Fax";
 			private const pc_companyName:String = "Enter Company name";
 			private const pc_companyDesc:String = "Enter company Descrption\nYear it was established\nany offers.";
+			private const pc_mapsPostCode:String = "LS12 1QB";
+			private const pc_youTubeURL:String = "http://www.youtube.com/watch?v=Va8Sh4Agr58";
 				
-				
+			private var po_fileRef:FileReference = new FileReference();
+			private var urlUpload:URLRequest;
+			
 			[bindable]
 			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
 			
@@ -42,7 +50,106 @@
 				dispatchEvent(new Event(gcs_DisplayMenu_Show));
 			}
 
+			
+			private function cfnComplete(e:Event):void
+			{
+				//lblProgress.text = "Uploading Picture... 100%!";
+				//trace('complete');
+			}
+			
+			private function cfnError(e:IOErrorEvent):void
+			{
+				lblProgress.text = "Error uploading picture!";
+				//trace('io error');	
+			}
+			
+			
+			private function cfnProgress(e:ProgressEvent):void
+			{
+				var numPerc:Number = Math.round((Number(e.bytesLoaded) / Number(e.bytesTotal)) * 100);
+				//progressBar1.setProgress(numPerc, 100);
+				lblProgress.text = "Uploading Picture..." + numPerc + "%";
+				//progressBar1.validateNow();
+				
+				//trace(e.bytesLoaded + ' ' + e.bytesTotal);
+			}
+			
+			protected function cfnFileSelect(e:Event):void
+			{
+				lblSize.text =  formatFileSize(po_fileRef.size);
+				if ((po_fileRef.size / 1000) > 1000)
+				{
+					Alert.show("Picture size is too big! size must be less than 1MB...","Invalid file size");
+					return;
+				}
+				
+				
+				//	trace('uploading picture');
+				var uVars:URLVariables = new URLVariables();
+				uVars.action = 'upload';
+				uVars.filename = Database.go_LoginFields.MemberID.toString() + '_' + po_fileRef.name;
+				
+				urlUpload = new URLRequest("services/upload.php");
+				urlUpload.data = uVars;
+				urlUpload.method = URLRequestMethod.POST;
+				
+				// = new URLRequest("services/upload.php");
+				po_fileRef.addEventListener(ProgressEvent.PROGRESS,cfnProgress);
+				po_fileRef.addEventListener(Event.COMPLETE,cfnComplete);
+				po_fileRef.addEventListener(IOErrorEvent.IO_ERROR,cfnError);
+				po_fileRef.addEventListener(SecurityErrorEvent.SECURITY_ERROR,cfnError); 
+				
+				po_fileRef.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA, cfnCompleteData);
+				
+			 	lblProgress.text = "Uploading Picture... 0%";
+				po_fileRef.upload(urlUpload,'file');
+			}
+			
+			private function cfnCompleteData(e:DataEvent):void
+			{
+				/* Convert XMLNode to XMLDocument. */
+				var xmlDoc:XMLDocument = new XMLDocument(e.data);
+				var decoder:SimpleXMLDecoder = new SimpleXMLDecoder(true);
+				var resultObj:Object = decoder.decodeXML(xmlDoc);
 
+		
+				if ('Message' == resultObj.variables.variable[0].name)
+				{
+					lblProgress.text = 'Error uploading file already exists.';
+					//trace('test');
+				}else if('Result' == resultObj.variables.variable[0].name)
+				{
+					lblProgress.text = "Uploading Picture... 100%!";
+					//panel1_LogoPicTextInput.text =  resultObj.variables['variable'][0].value;
+				}
+				
+			}
+			
+			private function formatFileSize(numSize:Number):String {
+				var strReturn:String;
+				numSize = Number(numSize / 1000);
+				strReturn = String(numSize.toFixed(1) + " KB");
+				if (numSize > 1000) {
+					numSize = numSize / 1000;
+					strReturn = String(numSize.toFixed(1) + " MB");
+					if (numSize > 1000) {
+						numSize = numSize / 1000;
+						strReturn = String(numSize.toFixed(1) + " GB");
+					}
+				}                
+				return "Size: " + strReturn;
+			}
+			
+			protected function LocateFile():void
+			{
+				var ffImages:FileFilter = new FileFilter("Images", "*.jpg;*.gif;*.png");
+				//var ffAll:FileFilter = new FileFilter("All files", "*.*");
+				//var f:FileReferenceList = new FileReferenceList();
+				po_fileRef.browse([ffImages]);
+				po_fileRef.addEventListener(Event.SELECT, cfnFileSelect);
+			}
+			
+			
 			protected function reset():void
 			{
 				txtAddressName.text = pc_name;
@@ -63,6 +170,14 @@
 				
 				switch (e.currentTarget.id)
 				{
+					case 'txtMAPPostCode':
+						if (e.currentTarget.text == pc_mapsPostCode)
+							e.currentTarget.text = '';
+						break;
+					case 'txtVideoURL':
+						if (e.currentTarget.text == pc_youTubeURL)
+							e.currentTarget.text = '';
+						break;
 					case 'txtAddressName':
 						if (e.currentTarget.text == pc_name)
 							e.currentTarget.text = '';
@@ -116,12 +231,18 @@
 			
 			protected function focusOut(e:FocusEvent):void
 			{
-				trace('focus out ' + e.currentTarget.id);
-				
+	
 				switch (e.currentTarget.id)
 				{
+					case 'txtMAPPostCode':
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = pc_mapsPostCode;
+						break;
+					case 'txtVideoURL':
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = pc_youTubeURL;
+						break;
 					case 'txtAddressName':
-						trace(e.currentTarget.text);
 						if (e.currentTarget.text == '')
 							e.currentTarget.text = pc_name;
 						break;
@@ -191,23 +312,26 @@
 	
 	
 	<s:Border id="brdLogo" x="0" y="0" width="200" height="200" borderWeight="2"  includeIn="editProduct">
-		<mx:Label x="59" y="31" text="Upload Image"/>
-		<mx:Button x="65" y="65" label="Browse"/>
-		<mx:Label x="73" y="96" text="Size: 0kb"/>
-		<mx:Label x="63" y="118" text="Progress 0%"/>
+		<mx:Label x="10" y="38" text="Upload Image" width="180" textAlign="center" />
+		<mx:Button id="btnBrowse" x="65" y="70" label="Browse" click="LocateFile();" />
+		<mx:Label id="lblSize" x="10" y="106" text="Size: 0kb" width="180"  textAlign="center"/>
+		<mx:Label id="lblProgress" x="10" y="134"  text="Progress 0%" width="180" textAlign="center" height="22"/>
+		<mx:Text  text="Upload Picture" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"/>
 	
 	</s:Border>
 
 	
 	<s:Border id="brdDetails" width="432"  x="214" y="0" height="410" borderWeight="2"  includeIn="editProduct" >
 	
-		<mx:TextArea  id="txtCompanyName" text="{pc_companyName}"   focusIn="txt_focusIn(event)" condenseWhite="true" textAlign="center"  borderVisible="false"  fontAntiAliasType="advanced" fontSize="19"   fontWeight="bold"  color="#0036FF"  includeIn="editProduct"  x="3" y="1" height="30" width="422"/>
-		<mx:TextArea  id="txtCompanyDesc" text="{pc_companyDesc}"   focusIn="txt_focusIn(event)" borderVisible="false" includeIn="editProduct" top="33" left="0" right="4" bottom="37" condenseWhite="true"   fontAntiAliasType="advanced" />
+		<mx:TextArea  id="txtCompanyName" text="{pc_companyName}" focusOut="focusOut(event)"   focusIn="txt_focusIn(event)" condenseWhite="true" textAlign="center"  borderVisible="false"  fontAntiAliasType="advanced" fontSize="19"   fontWeight="bold"  color="#0036FF"  includeIn="editProduct"  x="3" y="1" height="30" width="422"/>
+		<mx:TextArea  id="txtCompanyDesc" text="{pc_companyDesc}" focusOut="focusOut(event)"  focusIn="txt_focusIn(event)" borderVisible="false" includeIn="editProduct" top="33" left="0" right="0" bottom="38" condenseWhite="true"   fontAntiAliasType="advanced" />
 		
 		
 		<mx:Button x="278" y="379" label="Preview" id="btnPreview"/>
 		<s:Button label="Back"  click="currentState='viewProducts'" x="7" y="379"/>
 		<mx:Button x="352" y="379" label="Accept"/>
+		<s:Button x="84" y="379" label="Keywords"  />
+		<s:Label x="163" y="384" text="0 Keywords"/>
 	
 	</s:Border>
 	
@@ -216,31 +340,32 @@
 		<mx:Text  text="Contact Details" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"  includeIn="editProduct" />
 
 		
-		<mx:TextInput id="txtAddressName" text="{pc_name}"  focusIn="txt_focusIn(event)"  x="20" y="26" borderVisible="false"  textAlign="center" />
-		<mx:TextInput id="txtAddressStreet" text="{pc_street}"   focusIn="txt_focusIn(event)" x="20" y="44" borderVisible="false"  textAlign="center" />
-		<mx:TextInput id="txtAddressTown" text="{pc_town}"  focusIn="txt_focusIn(event)" x="20" y="62" borderVisible="false"  textAlign="center" />
-		<mx:TextInput id="txtAddressCounty" text="{pc_county}"   focusIn="txt_focusIn(event)" x="20" y="80" borderVisible="false"  textAlign="center" />
-		<mx:TextInput id="txtAddressPostCode" text="{pc_postcode}"   focusIn="txt_focusIn(event)" x="20" y="98" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressName" text="{pc_name}" focusOut="focusOut(event)" focusIn="txt_focusIn(event)"  x="20" y="26" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressStreet" text="{pc_street}" focusOut="focusOut(event)"  focusIn="txt_focusIn(event)" x="20" y="44" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressTown" text="{pc_town}" focusOut="focusOut(event)"  focusIn="txt_focusIn(event)" x="20" y="62" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressCounty" text="{pc_county}"  focusOut="focusOut(event)" focusIn="txt_focusIn(event)" x="20" y="80" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressPostCode" text="{pc_postcode}" focusOut="focusOut(event)"  focusIn="txt_focusIn(event)" x="20" y="98" borderVisible="false"  textAlign="center" />
 
-		<mx:TextInput id="txtAddressEmail" text="{pc_email}"   focusIn="txt_focusIn(event)" x="20" y="120" borderVisible="false"  textAlign="center" />
-		<mx:TextInput id="txtAddressTel" text="{pc_tel}"  focusIn="txt_focusIn(event)" x="20" y="138" borderVisible="false"  textAlign="center" />
-		<mx:TextInput id="txtAddressMob" text="{pc_mob}"  focusIn="txt_focusIn(event)"  x="20" y="156" borderVisible="false"  textAlign="center" />
-		<mx:TextInput id="txtAddressFax" text="{pc_fax}"  focusIn="txt_focusIn(event)"  x="20" y="174" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressEmail" text="{pc_email}" focusOut="focusOut(event)"  focusIn="txt_focusIn(event)" x="20" y="120" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressTel" text="{pc_tel}" focusOut="focusOut(event)" focusIn="txt_focusIn(event)" x="20" y="138" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressMob" text="{pc_mob}" focusOut="focusOut(event)"  focusIn="txt_focusIn(event)"  x="20" y="156" borderVisible="false"  textAlign="center" />
+		<mx:TextInput id="txtAddressFax" text="{pc_fax}" focusOut="focusOut(event)" focusIn="txt_focusIn(event)"  x="20" y="174" borderVisible="false"  textAlign="center" />
 
 	</s:Border>
 	
 	<s:Border id="brdMap" x="659" y="210" width="280" height="200" borderWeight="2"  includeIn="editProduct" >
-		<mx:TextInput id="txtMAPUrl" x="87" y="78" textAlign="center"  width="106"/>
+		<mx:TextInput id="txtMAPPostCode" x="87" y="79" textAlign="center"  width="106" text="{pc_mapsPostCode}" focusOut="focusOut(event)" focusIn="txt_focusIn(event)"  />
 		<mx:Label x="51" y="55" text="Enter post code for Google Maps"/>
+		<mx:Text  text="Google Maps" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"/>
 
 	</s:Border>
 	
-	<s:Border id="brdVideoTemp" x="659" y="0" width="280" height="200" borderWeight="2"  includeIn="editProduct" >
-			</s:Border>
+
 	
-	<s:Border id="brdVideo" x="658" y="1" width="279" height="199" borderVisible="true"  includeIn="editProduct"  >	
-		<mx:TextArea id="txtVideoURL" x="70" y="82"  height="51"/>
+	<s:Border id="brdVideo" x="659" y="0" width="280" height="199" borderVisible="true"  borderWeight="2" includeIn="editProduct"  >	
+		<mx:TextArea id="txtVideoURL" x="60" y="94"  height="51" focusOut="focusOut(event)" focusIn="txt_focusIn(event)" text="{pc_youTubeURL}"/>
 		<mx:Label x="79" y="57" text="Enter Youtube Video URL"/>
+		<mx:Text  text="YouTube Video" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"/>
 
 	</s:Border>
 	

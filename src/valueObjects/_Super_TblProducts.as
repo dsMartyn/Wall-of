@@ -1,6 +1,6 @@
 /**
  * This is a generated class and is not intended for modfication.  To customize behavior
- * of this value object you may modify the generated sub-class of this class - ProductFields.as.
+ * of this value object you may modify the generated sub-class of this class - TblProducts.as.
  */
 
 package valueObjects
@@ -24,8 +24,9 @@ import mx.events.PropertyChangeEvent;
 
 use namespace model_internal;
 
+[Managed]
 [ExcludeClass]
-public class _Super_ProductFields extends EventDispatcher implements IValueObject
+public class _Super_TblProducts extends EventDispatcher implements IValueObject
 {
     model_internal static function initRemoteClassAliasSingle(cz:Class) : void 
     {
@@ -35,24 +36,27 @@ public class _Super_ProductFields extends EventDispatcher implements IValueObjec
     {     
     }
 
-	model_internal var _dminternal_model : _ProductFieldsEntityMetadata;
+	model_internal var _dminternal_model : _TblProductsEntityMetadata;
 
 	/**
 	 * properties
 	 */
-	private var _internal_Panel2_Company_Description : String;
-	private var _internal_Clicks : int;
-	private var _internal_Panel2_CompanyName : String;
-	private var _internal_Panel3_Extended_Description : String;
-	private var _internal_Panel2_CompanyURL : String;
-	private var _internal_Keywords : String;
-	private var _internal_Friendly_Name : String;
-	private var _internal_Panel4_Description : String;
-	private var _internal_MemberID : int;
-	private var _internal_Panel1_LogoPic : String;
-	private var _internal_Panel2_Contact_Details : String;
 	private var _internal_RowID : int;
-	private var _internal_Panel4_Video_URL : String;
+	private var _internal_MemberID : int;
+	private var _internal_CompanyName : String;
+	private var _internal_CompanyDesc : String;
+	private var _internal_YoutubeVideoUrl : String;
+	private var _internal_GooglePostCode : String;
+	private var _internal_AddressName : String;
+	private var _internal_AddressStreet : String;
+	private var _internal_AddressTown : String;
+	private var _internal_AddressCounty : String;
+	private var _internal_AddressPostCode : String;
+	private var _internal_AddressEmail : String;
+	private var _internal_AddressTel : String;
+	private var _internal_AddressMob : String;
+	private var _internal_AddressFax : String;
+	private var _internal_status : int;
 
     private static var emptyArray:Array = new Array();
 
@@ -63,9 +67,9 @@ public class _Super_ProductFields extends EventDispatcher implements IValueObjec
     
 	model_internal var _changeWatcherArray:Array = new Array();   
 
-	public function _Super_ProductFields() 
+	public function _Super_TblProducts() 
 	{	
-		_model = new _ProductFieldsEntityMetadata(this);
+		_model = new _TblProductsEntityMetadata(this);
 	
 		// Bind to own data properties for cache invalidation triggering  
        
@@ -75,44 +79,9 @@ public class _Super_ProductFields extends EventDispatcher implements IValueObjec
      * data property getters
      */
 	[Bindable(event="propertyChange")] 
-    public function get Panel2_Company_Description() : String    
+    public function get RowID() : int    
     {
-            return _internal_Panel2_Company_Description;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get Clicks() : int    
-    {
-            return _internal_Clicks;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get Panel2_CompanyName() : String    
-    {
-            return _internal_Panel2_CompanyName;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get Panel3_Extended_Description() : String    
-    {
-            return _internal_Panel3_Extended_Description;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get Panel2_CompanyURL() : String    
-    {
-            return _internal_Panel2_CompanyURL;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get Keywords() : String    
-    {
-            return _internal_Keywords;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get Friendly_Name() : String    
-    {
-            return _internal_Friendly_Name;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get Panel4_Description() : String    
-    {
-            return _internal_Panel4_Description;
+            return _internal_RowID;
     }    
 	[Bindable(event="propertyChange")] 
     public function get MemberID() : int    
@@ -120,186 +89,88 @@ public class _Super_ProductFields extends EventDispatcher implements IValueObjec
             return _internal_MemberID;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get Panel1_LogoPic() : String    
+    public function get CompanyName() : String    
     {
-            return _internal_Panel1_LogoPic;
+            return _internal_CompanyName;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get Panel2_Contact_Details() : String    
+    public function get CompanyDesc() : String    
     {
-            return _internal_Panel2_Contact_Details;
+            return _internal_CompanyDesc;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get RowID() : int    
+    public function get YoutubeVideoUrl() : String    
     {
-            return _internal_RowID;
+            return _internal_YoutubeVideoUrl;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get Panel4_Video_URL() : String    
+    public function get GooglePostCode() : String    
     {
-            return _internal_Panel4_Video_URL;
+            return _internal_GooglePostCode;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get AddressName() : String    
+    {
+            return _internal_AddressName;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get AddressStreet() : String    
+    {
+            return _internal_AddressStreet;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get AddressTown() : String    
+    {
+            return _internal_AddressTown;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get AddressCounty() : String    
+    {
+            return _internal_AddressCounty;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get AddressPostCode() : String    
+    {
+            return _internal_AddressPostCode;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get AddressEmail() : String    
+    {
+            return _internal_AddressEmail;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get AddressTel() : String    
+    {
+            return _internal_AddressTel;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get AddressMob() : String    
+    {
+            return _internal_AddressMob;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get AddressFax() : String    
+    {
+            return _internal_AddressFax;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get status() : int    
+    {
+            return _internal_status;
     }    
 
     /**
      * data property setters
      */      
-    public function set Panel2_Company_Description(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_Panel2_Company_Description == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_Panel2_Company_Description;               
-        if (oldValue !== value)
-        {
-        	_internal_Panel2_Company_Description = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Panel2_Company_Description", oldValue, _internal_Panel2_Company_Description));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set Clicks(value:int) : void 
+    public function set RowID(value:int) : void 
     {    	
         var recalcValid:Boolean = false;
     	
     	
-    	var oldValue:int = _internal_Clicks;               
+    	var oldValue:int = _internal_RowID;               
         if (oldValue !== value)
         {
-        	_internal_Clicks = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Clicks", oldValue, _internal_Clicks));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set Panel2_CompanyName(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_Panel2_CompanyName == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_Panel2_CompanyName;               
-        if (oldValue !== value)
-        {
-        	_internal_Panel2_CompanyName = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Panel2_CompanyName", oldValue, _internal_Panel2_CompanyName));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set Panel3_Extended_Description(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_Panel3_Extended_Description == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_Panel3_Extended_Description;               
-        if (oldValue !== value)
-        {
-        	_internal_Panel3_Extended_Description = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Panel3_Extended_Description", oldValue, _internal_Panel3_Extended_Description));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set Panel2_CompanyURL(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_Panel2_CompanyURL == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_Panel2_CompanyURL;               
-        if (oldValue !== value)
-        {
-        	_internal_Panel2_CompanyURL = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Panel2_CompanyURL", oldValue, _internal_Panel2_CompanyURL));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set Keywords(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_Keywords == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_Keywords;               
-        if (oldValue !== value)
-        {
-        	_internal_Keywords = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Keywords", oldValue, _internal_Keywords));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set Friendly_Name(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_Friendly_Name == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_Friendly_Name;               
-        if (oldValue !== value)
-        {
-        	_internal_Friendly_Name = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Friendly_Name", oldValue, _internal_Friendly_Name));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set Panel4_Description(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_Panel4_Description == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_Panel4_Description;               
-        if (oldValue !== value)
-        {
-        	_internal_Panel4_Description = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Panel4_Description", oldValue, _internal_Panel4_Description));
+        	_internal_RowID = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -316,7 +187,6 @@ public class _Super_ProductFields extends EventDispatcher implements IValueObjec
         if (oldValue !== value)
         {
         	_internal_MemberID = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "MemberID", oldValue, _internal_MemberID));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -324,20 +194,19 @@ public class _Super_ProductFields extends EventDispatcher implements IValueObjec
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set Panel1_LogoPic(value:String) : void 
+    public function set CompanyName(value:String) : void 
     {    	
         var recalcValid:Boolean = false;
-    	if (value == null || _internal_Panel1_LogoPic == null)
+    	if (value == null || _internal_CompanyName == null)
     	{
     		recalcValid = true;
     	}	
     	
     	
-    	var oldValue:String = _internal_Panel1_LogoPic;               
+    	var oldValue:String = _internal_CompanyName;               
         if (oldValue !== value)
         {
-        	_internal_Panel1_LogoPic = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Panel1_LogoPic", oldValue, _internal_Panel1_LogoPic));
+        	_internal_CompanyName = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -345,20 +214,19 @@ public class _Super_ProductFields extends EventDispatcher implements IValueObjec
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set Panel2_Contact_Details(value:String) : void 
+    public function set CompanyDesc(value:String) : void 
     {    	
         var recalcValid:Boolean = false;
-    	if (value == null || _internal_Panel2_Contact_Details == null)
+    	if (value == null || _internal_CompanyDesc == null)
     	{
     		recalcValid = true;
     	}	
     	
     	
-    	var oldValue:String = _internal_Panel2_Contact_Details;               
+    	var oldValue:String = _internal_CompanyDesc;               
         if (oldValue !== value)
         {
-        	_internal_Panel2_Contact_Details = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Panel2_Contact_Details", oldValue, _internal_Panel2_Contact_Details));
+        	_internal_CompanyDesc = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -366,37 +234,235 @@ public class _Super_ProductFields extends EventDispatcher implements IValueObjec
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set RowID(value:int) : void 
+    public function set YoutubeVideoUrl(value:String) : void 
     {    	
         var recalcValid:Boolean = false;
-    	
-    	
-    	var oldValue:int = _internal_RowID;               
-        if (oldValue !== value)
-        {
-        	_internal_RowID = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "RowID", oldValue, _internal_RowID));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set Panel4_Video_URL(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_Panel4_Video_URL == null)
+    	if (value == null || _internal_YoutubeVideoUrl == null)
     	{
     		recalcValid = true;
     	}	
     	
     	
-    	var oldValue:String = _internal_Panel4_Video_URL;               
+    	var oldValue:String = _internal_YoutubeVideoUrl;               
         if (oldValue !== value)
         {
-        	_internal_Panel4_Video_URL = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Panel4_Video_URL", oldValue, _internal_Panel4_Video_URL));
+        	_internal_YoutubeVideoUrl = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set GooglePostCode(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_GooglePostCode == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_GooglePostCode;               
+        if (oldValue !== value)
+        {
+        	_internal_GooglePostCode = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set AddressName(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_AddressName == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_AddressName;               
+        if (oldValue !== value)
+        {
+        	_internal_AddressName = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set AddressStreet(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_AddressStreet == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_AddressStreet;               
+        if (oldValue !== value)
+        {
+        	_internal_AddressStreet = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set AddressTown(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_AddressTown == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_AddressTown;               
+        if (oldValue !== value)
+        {
+        	_internal_AddressTown = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set AddressCounty(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_AddressCounty == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_AddressCounty;               
+        if (oldValue !== value)
+        {
+        	_internal_AddressCounty = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set AddressPostCode(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_AddressPostCode == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_AddressPostCode;               
+        if (oldValue !== value)
+        {
+        	_internal_AddressPostCode = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set AddressEmail(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_AddressEmail == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_AddressEmail;               
+        if (oldValue !== value)
+        {
+        	_internal_AddressEmail = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set AddressTel(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_AddressTel == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_AddressTel;               
+        if (oldValue !== value)
+        {
+        	_internal_AddressTel = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set AddressMob(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_AddressMob == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_AddressMob;               
+        if (oldValue !== value)
+        {
+        	_internal_AddressMob = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set AddressFax(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_AddressFax == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_AddressFax;               
+        if (oldValue !== value)
+        {
+        	_internal_AddressFax = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set status(value:int) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	
+    	
+    	var oldValue:int = _internal_status;               
+        if (oldValue !== value)
+        {
+        	_internal_status = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -436,58 +502,76 @@ public class _Super_ProductFields extends EventDispatcher implements IValueObjec
         var violatedConsts:Array = new Array();    
         var validationFailureMessages:Array = new Array();    
 
-		if (_model.isPanel2_Company_DescriptionAvailable && _internal_Panel2_Company_Description == null)
+		if (_model.isCompanyNameAvailable && _internal_CompanyName == null)
 		{
-			violatedConsts.push("Panel2_Company_DescriptionIsRequired");
-			validationFailureMessages.push("Panel2_Company_Description is required");
+			violatedConsts.push("CompanyNameIsRequired");
+			validationFailureMessages.push("CompanyName is required");
 		}
-		if (_model.isPanel2_CompanyNameAvailable && _internal_Panel2_CompanyName == null)
+		if (_model.isCompanyDescAvailable && _internal_CompanyDesc == null)
 		{
-			violatedConsts.push("Panel2_CompanyNameIsRequired");
-			validationFailureMessages.push("Panel2_CompanyName is required");
+			violatedConsts.push("CompanyDescIsRequired");
+			validationFailureMessages.push("CompanyDesc is required");
 		}
-		if (_model.isPanel3_Extended_DescriptionAvailable && _internal_Panel3_Extended_Description == null)
+		if (_model.isYoutubeVideoUrlAvailable && _internal_YoutubeVideoUrl == null)
 		{
-			violatedConsts.push("Panel3_Extended_DescriptionIsRequired");
-			validationFailureMessages.push("Panel3_Extended_Description is required");
+			violatedConsts.push("YoutubeVideoUrlIsRequired");
+			validationFailureMessages.push("YoutubeVideoUrl is required");
 		}
-		if (_model.isPanel2_CompanyURLAvailable && _internal_Panel2_CompanyURL == null)
+		if (_model.isGooglePostCodeAvailable && _internal_GooglePostCode == null)
 		{
-			violatedConsts.push("Panel2_CompanyURLIsRequired");
-			validationFailureMessages.push("Panel2_CompanyURL is required");
+			violatedConsts.push("GooglePostCodeIsRequired");
+			validationFailureMessages.push("GooglePostCode is required");
 		}
-		if (_model.isKeywordsAvailable && _internal_Keywords == null)
+		if (_model.isAddressNameAvailable && _internal_AddressName == null)
 		{
-			violatedConsts.push("KeywordsIsRequired");
-			validationFailureMessages.push("Keywords is required");
+			violatedConsts.push("AddressNameIsRequired");
+			validationFailureMessages.push("AddressName is required");
 		}
-		if (_model.isFriendly_NameAvailable && _internal_Friendly_Name == null)
+		if (_model.isAddressStreetAvailable && _internal_AddressStreet == null)
 		{
-			violatedConsts.push("Friendly_NameIsRequired");
-			validationFailureMessages.push("Friendly_Name is required");
+			violatedConsts.push("AddressStreetIsRequired");
+			validationFailureMessages.push("AddressStreet is required");
 		}
-		if (_model.isPanel4_DescriptionAvailable && _internal_Panel4_Description == null)
+		if (_model.isAddressTownAvailable && _internal_AddressTown == null)
 		{
-			violatedConsts.push("Panel4_DescriptionIsRequired");
-			validationFailureMessages.push("Panel4_Description is required");
+			violatedConsts.push("AddressTownIsRequired");
+			validationFailureMessages.push("AddressTown is required");
 		}
-		if (_model.isPanel1_LogoPicAvailable && _internal_Panel1_LogoPic == null)
+		if (_model.isAddressCountyAvailable && _internal_AddressCounty == null)
 		{
-			violatedConsts.push("Panel1_LogoPicIsRequired");
-			validationFailureMessages.push("Panel1_LogoPic is required");
+			violatedConsts.push("AddressCountyIsRequired");
+			validationFailureMessages.push("AddressCounty is required");
 		}
-		if (_model.isPanel2_Contact_DetailsAvailable && _internal_Panel2_Contact_Details == null)
+		if (_model.isAddressPostCodeAvailable && _internal_AddressPostCode == null)
 		{
-			violatedConsts.push("Panel2_Contact_DetailsIsRequired");
-			validationFailureMessages.push("Panel2_Contact_Details is required");
+			violatedConsts.push("AddressPostCodeIsRequired");
+			validationFailureMessages.push("AddressPostCode is required");
 		}
-		if (_model.isPanel4_Video_URLAvailable && _internal_Panel4_Video_URL == null)
+		if (_model.isAddressEmailAvailable && _internal_AddressEmail == null)
 		{
-			violatedConsts.push("Panel4_Video_URLIsRequired");
-			validationFailureMessages.push("Panel4_Video_URL is required");
+			violatedConsts.push("AddressEmailIsRequired");
+			validationFailureMessages.push("AddressEmail is required");
+		}
+		if (_model.isAddressTelAvailable && _internal_AddressTel == null)
+		{
+			violatedConsts.push("AddressTelIsRequired");
+			validationFailureMessages.push("AddressTel is required");
+		}
+		if (_model.isAddressMobAvailable && _internal_AddressMob == null)
+		{
+			violatedConsts.push("AddressMobIsRequired");
+			validationFailureMessages.push("AddressMob is required");
+		}
+		if (_model.isAddressFaxAvailable && _internal_AddressFax == null)
+		{
+			violatedConsts.push("AddressFaxIsRequired");
+			validationFailureMessages.push("AddressFax is required");
 		}
 
 		var styleValidity:Boolean = true;
+	
+	
+	
 	
 	
 	
@@ -528,14 +612,14 @@ public class _Super_ProductFields extends EventDispatcher implements IValueObjec
 
     [Transient] 
 	[Bindable(event="propertyChange")] 
-    public function get _model() : _ProductFieldsEntityMetadata
+    public function get _model() : _TblProductsEntityMetadata
     {
 		return model_internal::_dminternal_model;              
     }	
     
-    public function set _model(value : _ProductFieldsEntityMetadata) : void       
+    public function set _model(value : _TblProductsEntityMetadata) : void       
     {
-    	var oldValue : _ProductFieldsEntityMetadata = model_internal::_dminternal_model;               
+    	var oldValue : _TblProductsEntityMetadata = model_internal::_dminternal_model;               
         if (oldValue !== value)
         {
         	model_internal::_dminternal_model = value;

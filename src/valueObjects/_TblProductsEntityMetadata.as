@@ -17,53 +17,56 @@ import mx.events.PropertyChangeEvent;
 use namespace model_internal;
 
 [ExcludeClass]
-internal class _ProductFieldsEntityMetadata extends AbstractEntityMetadata
+internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
 {
 	private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("Panel2_Company_Description", "Clicks", "Panel2_CompanyName", "Panel3_Extended_Description", "Panel2_CompanyURL", "Keywords", "Friendly_Name", "Panel4_Description", "MemberID", "Panel1_LogoPic", "Panel2_Contact_Details", "RowID", "Panel4_Video_URL");
+    model_internal static var allProperties:Array = new Array("RowID", "MemberID", "CompanyName", "CompanyDesc", "YoutubeVideoUrl", "GooglePostCode", "AddressName", "AddressStreet", "AddressTown", "AddressCounty", "AddressPostCode", "AddressEmail", "AddressTel", "AddressMob", "AddressFax", "status");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("Panel2_Company_Description", "Clicks", "Panel2_CompanyName", "Panel3_Extended_Description", "Panel2_CompanyURL", "Keywords", "Friendly_Name", "Panel4_Description", "MemberID", "Panel1_LogoPic", "Panel2_Contact_Details", "RowID", "Panel4_Video_URL");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("Panel2_Company_Description", "Clicks", "Panel2_CompanyName", "Panel3_Extended_Description", "Panel2_CompanyURL", "Keywords", "Friendly_Name", "Panel4_Description", "MemberID", "Panel1_LogoPic", "Panel2_Contact_Details", "RowID", "Panel4_Video_URL");
+    model_internal static var allRequiredProperties:Array = new Array("RowID", "MemberID", "CompanyName", "CompanyDesc", "YoutubeVideoUrl", "GooglePostCode", "AddressName", "AddressStreet", "AddressTown", "AddressCounty", "AddressPostCode", "AddressEmail", "AddressTel", "AddressMob", "AddressFax", "status");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("RowID", "MemberID", "CompanyName", "CompanyDesc", "YoutubeVideoUrl", "GooglePostCode", "AddressName", "AddressStreet", "AddressTown", "AddressCounty", "AddressPostCode", "AddressEmail", "AddressTel", "AddressMob", "AddressFax", "status");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("Panel2_Company_Description", "Clicks", "Panel2_CompanyName", "Panel3_Extended_Description", "Panel2_CompanyURL", "Keywords", "Friendly_Name", "Panel4_Description", "MemberID", "Panel1_LogoPic", "Panel2_Contact_Details", "RowID", "Panel4_Video_URL");
+    model_internal static var dataProperties:Array = new Array("RowID", "MemberID", "CompanyName", "CompanyDesc", "YoutubeVideoUrl", "GooglePostCode", "AddressName", "AddressStreet", "AddressTown", "AddressCounty", "AddressPostCode", "AddressEmail", "AddressTel", "AddressMob", "AddressFax", "status");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;    
-    model_internal static var entityName:String = "ProductFields";
+    model_internal static var entityName:String = "TblProducts";
     model_internal static var dependentsOnMap:Object;    
     model_internal static var dependedOnServices:Array =  new Array();
     
     
-    model_internal var _instance:_Super_ProductFields;
+    model_internal var _instance:_Super_TblProducts;
     model_internal static var _nullStyle:Style = new Style();
     
-    public function _ProductFieldsEntityMetadata(productFields : _Super_ProductFields)
+    public function _TblProductsEntityMetadata(tblProducts : _Super_TblProducts)
     {
         // initialize property maps
         if (model_internal::dependentsOnMap == null)
         {
             // depenents map
             model_internal::dependentsOnMap = new Object();
-            model_internal::dependentsOnMap["Panel2_Company_Description"] = new Array();
-            model_internal::dependentsOnMap["Clicks"] = new Array();
-            model_internal::dependentsOnMap["Panel2_CompanyName"] = new Array();
-            model_internal::dependentsOnMap["Panel3_Extended_Description"] = new Array();
-            model_internal::dependentsOnMap["Panel2_CompanyURL"] = new Array();
-            model_internal::dependentsOnMap["Keywords"] = new Array();
-            model_internal::dependentsOnMap["Friendly_Name"] = new Array();
-            model_internal::dependentsOnMap["Panel4_Description"] = new Array();
-            model_internal::dependentsOnMap["MemberID"] = new Array();
-            model_internal::dependentsOnMap["Panel1_LogoPic"] = new Array();
-            model_internal::dependentsOnMap["Panel2_Contact_Details"] = new Array();
             model_internal::dependentsOnMap["RowID"] = new Array();
-            model_internal::dependentsOnMap["Panel4_Video_URL"] = new Array();
+            model_internal::dependentsOnMap["MemberID"] = new Array();
+            model_internal::dependentsOnMap["CompanyName"] = new Array();
+            model_internal::dependentsOnMap["CompanyDesc"] = new Array();
+            model_internal::dependentsOnMap["YoutubeVideoUrl"] = new Array();
+            model_internal::dependentsOnMap["GooglePostCode"] = new Array();
+            model_internal::dependentsOnMap["AddressName"] = new Array();
+            model_internal::dependentsOnMap["AddressStreet"] = new Array();
+            model_internal::dependentsOnMap["AddressTown"] = new Array();
+            model_internal::dependentsOnMap["AddressCounty"] = new Array();
+            model_internal::dependentsOnMap["AddressPostCode"] = new Array();
+            model_internal::dependentsOnMap["AddressEmail"] = new Array();
+            model_internal::dependentsOnMap["AddressTel"] = new Array();
+            model_internal::dependentsOnMap["AddressMob"] = new Array();
+            model_internal::dependentsOnMap["AddressFax"] = new Array();
+            model_internal::dependentsOnMap["status"] = new Array();
                         
             // collection base map
             model_internal::collectionBaseMap = new Object()
         }                        
         
-        model_internal::_instance = productFields;     
+        model_internal::_instance = tblProducts;     
     }
     
     override public function getEntityName():String
@@ -104,7 +107,7 @@ internal class _ProductFieldsEntityMetadata extends AbstractEntityMetadata
     override public function getDependants(propertyName:String):Array
     {
        if (model_internal::dataProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a data property of entity ProductFields");  
+            throw new Error(propertyName + " is not a data property of entity TblProducts");  
             
        return model_internal::dependentsOnMap[propertyName] as Array;  
     }
@@ -122,7 +125,7 @@ internal class _ProductFieldsEntityMetadata extends AbstractEntityMetadata
     override public function getCollectionBase(propertyName:String):String
     {
        if (model_internal::collectionProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a collection property of entity ProductFields");  
+            throw new Error(propertyName + " is not a collection property of entity TblProducts");  
             
        return model_internal::collectionBaseMap[propertyName];
     }                
@@ -136,7 +139,7 @@ internal class _ProductFieldsEntityMetadata extends AbstractEntityMetadata
      {
          if (model_internal::allProperties.indexOf(propertyName) == -1)
          {
-         	throw new Error(propertyName + " does not exist for entity ProductFields");
+         	throw new Error(propertyName + " does not exist for entity TblProducts");
          }     
            
          return model_internal::_instance[propertyName];
@@ -146,7 +149,7 @@ internal class _ProductFieldsEntityMetadata extends AbstractEntityMetadata
      {
          if (model_internal::dataProperties.indexOf(propertyName) == -1)
          {
-              throw new Error(propertyName + " is not a data property of entity ProductFields");
+              throw new Error(propertyName + " is not a data property of entity TblProducts");
          }  
                                                      
          model_internal::_instance[propertyName] = value;
@@ -178,7 +181,7 @@ internal class _ProductFieldsEntityMetadata extends AbstractEntityMetadata
      {         
          if (model_internal::allProperties.indexOf(propertyName) == -1)
          {
-         	throw new Error(propertyName + " does not exist for entity ProductFields");
+         	throw new Error(propertyName + " does not exist for entity TblProducts");
          }   
                 
          if (model_internal::allAlwaysAvailableProperties.indexOf(propertyName) != -1)
@@ -198,6 +201,7 @@ internal class _ProductFieldsEntityMetadata extends AbstractEntityMetadata
      override public function getIdentityMap():Object
      {
          var returnMap:Object = new Object();
+         returnMap["RowID"] = model_internal::_instance.RowID;
        
          return returnMap;
      }       
@@ -275,49 +279,7 @@ internal class _ProductFieldsEntityMetadata extends AbstractEntityMetadata
     }       
      
      [Bindable(event="propertyChange")] 
-     public function get isPanel2_Company_DescriptionAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isClicksAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isPanel2_CompanyNameAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isPanel3_Extended_DescriptionAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isPanel2_CompanyURLAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isKeywordsAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isFriendly_NameAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isPanel4_DescriptionAvailable():Boolean
+     public function get isRowIDAvailable():Boolean
      {
         return true;
      }                       
@@ -329,25 +291,85 @@ internal class _ProductFieldsEntityMetadata extends AbstractEntityMetadata
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isPanel1_LogoPicAvailable():Boolean
+     public function get isCompanyNameAvailable():Boolean
      {
         return true;
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isPanel2_Contact_DetailsAvailable():Boolean
+     public function get isCompanyDescAvailable():Boolean
      {
         return true;
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isRowIDAvailable():Boolean
+     public function get isYoutubeVideoUrlAvailable():Boolean
      {
         return true;
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isPanel4_Video_URLAvailable():Boolean
+     public function get isGooglePostCodeAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
+     public function get isAddressNameAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
+     public function get isAddressStreetAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
+     public function get isAddressTownAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
+     public function get isAddressCountyAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
+     public function get isAddressPostCodeAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
+     public function get isAddressEmailAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
+     public function get isAddressTelAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
+     public function get isAddressMobAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
+     public function get isAddressFaxAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
+     public function get isStatusAvailable():Boolean
      {
         return true;
      }                       
@@ -363,49 +385,7 @@ internal class _ProductFieldsEntityMetadata extends AbstractEntityMetadata
      }
 
     [Bindable(event="propertyChange")]   
-    public function get Panel2_Company_DescriptionStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get ClicksStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get Panel2_CompanyNameStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get Panel3_Extended_DescriptionStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get Panel2_CompanyURLStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get KeywordsStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get Friendly_NameStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get Panel4_DescriptionStyle():Style
+    public function get RowIDStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      
@@ -417,25 +397,85 @@ internal class _ProductFieldsEntityMetadata extends AbstractEntityMetadata
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get Panel1_LogoPicStyle():Style
+    public function get CompanyNameStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get Panel2_Contact_DetailsStyle():Style
+    public function get CompanyDescStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get RowIDStyle():Style
+    public function get YoutubeVideoUrlStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get Panel4_Video_URLStyle():Style
+    public function get GooglePostCodeStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get AddressNameStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get AddressStreetStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get AddressTownStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get AddressCountyStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get AddressPostCodeStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get AddressEmailStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get AddressTelStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get AddressMobStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get AddressFaxStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get statusStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      

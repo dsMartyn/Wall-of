@@ -1,8 +1,7 @@
 package com.events
 {
 	import flash.events.Event;
-	
-	import valueObjects.MemberFields;
+	import valueObjects.TblMembers;
 	
 	public class CrudEvent extends Event
 	{
@@ -41,7 +40,7 @@ package com.events
 		/**
 		 * returns member fields 
 		 * */
-		public var memberFields:MemberFields;
+		public var memberFields:TblMembers;
 		
 		
 		public function CrudEvent(type:String)

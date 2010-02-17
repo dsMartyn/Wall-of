@@ -31,5 +31,35 @@
 			<type>2</type>
 			<location>/Users/martyngilbertson/Sites/wall-of/release</location>
 		</link>
+		<link>
+			<name>services/TblEmailLogService.php</name>
+			<type>1</type>
+			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblEmailLogService.php</location>
+		</link>
+		<link>
+			<name>services/TblHistoryService.php</name>
+			<type>1</type>
+			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblHistoryService.php</location>
+		</link>
+		<link>
+			<name>services/TblKeywordsService.php</name>
+			<type>1</type>
+			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblKeywordsService.php</location>
+		</link>
+		<link>
+			<name>services/TblLoginService.php</name>
+			<type>1</type>
+			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblLoginService.php</location>
+		</link>
+		<link>
+			<name>services/TblMembersService.php</name>
+			<type>1</type>
+			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblMembersService.php</location>
+		</link>
+		<link>
+			<name>services/TblProductsService.php</name>
+			<type>1</type>
+			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblProductsService.php</location>
+		</link>
 	</linkedResources>
 </projectDescription>

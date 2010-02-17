@@ -3,9 +3,8 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/halo" 
 		 width="940" height="415" xmlns:events="flashx.textLayout.events.*" 
-		 xmlns:valueObjects="valueObjects.*" xmlns:crud="services.crud.*"
 		 initialize="currentState='login'"
-		 xmlns:utils="com.utils.*">
+		 xmlns:utils="com.utils.*" xmlns:valueObjects="valueObjects.*">
 
 	<s:states>
 		<s:State name="register"  enterState="register_enterState(event)"  />
@@ -135,11 +134,13 @@
 					
 					if (event.memberId == 0)
 					{
+						trace('Error - memberId is 0');
 						this.form.enabled = true;
 						this.btnBack.enabled = true;
 						this.btnRegister.enabled = false;
 						this.form.alpha = 1;
-					}else{						
+					}else{				
+						trace('user created');
 						this.form.enabled = true;
 						this.btnBack.enabled = true;
 						this.btnRegister.enabled = true;
@@ -218,8 +219,11 @@
 				this.btnRegister.enabled = false;
 				this.form.alpha = 0.5;
 				
+				trace('update user');
 				Database.addEventListener(CrudEvent.USER_UPDATED, userUpdated);
 				Database.UpdateUser(null,memberFields);
+				
+				
 			}
 			
 			protected function userUpdated(event:CrudEvent):void
@@ -455,8 +459,7 @@
 	
 	
 	<fx:Declarations>
-		<valueObjects:MemberFields id="memberFields" RowID="0"/>
-
+		<valueObjects:TblMembers id="memberFields" RowID="0"/>
 		
 		<utils:DupeEmailValidator
 			 id="dupeValidator"

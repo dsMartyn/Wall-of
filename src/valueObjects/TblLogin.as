@@ -1,5 +1,5 @@
 /**
- * This is a generated sub-class of _ProductFields.as and is intended for behavior
+ * This is a generated sub-class of _TblLogin.as and is intended for behavior
  * customization.  This class is only generated when there is no file already present
  * at its target location.  Thus custom behavior that you add here will survive regeneration
  * of the super-class. 
@@ -15,7 +15,7 @@ package valueObjects
 
 import com.adobe.fiber.core.model_internal;
 
-public class ProductFields extends _Super_ProductFields
+public class TblLogin extends _Super_TblLogin
 {
     /** 
      * DO NOT MODIFY THIS STATIC INITIALIZER - IT IS NECESSARY
@@ -30,17 +30,17 @@ public class ProductFields extends _Super_ProductFields
      */     
      public static function _initRemoteClassAlias() : void
      {
-         _Super_ProductFields.model_internal::initRemoteClassAliasSingle(valueObjects.ProductFields);
-         _Super_ProductFields.model_internal::initRemoteClassAliasAllRelated();
+         _Super_TblLogin.model_internal::initRemoteClassAliasSingle(valueObjects.TblLogin);
+         _Super_TblLogin.model_internal::initRemoteClassAliasAllRelated();
      }
      
      model_internal static function initRemoteClassAliasSingleChild() : void 
      {
-         _Super_ProductFields.model_internal::initRemoteClassAliasSingle(valueObjects.ProductFields);
+         _Super_TblLogin.model_internal::initRemoteClassAliasSingle(valueObjects.TblLogin);
      }
     
      {
-         _Super_ProductFields.model_internal::initRemoteClassAliasSingle(valueObjects.ProductFields);
+         _Super_TblLogin.model_internal::initRemoteClassAliasSingle(valueObjects.TblLogin);
      }
     /** 
      * END OF DO NOT MODIFY SECTION

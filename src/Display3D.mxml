@@ -40,6 +40,7 @@
 			import org.papervision3d.events.InteractiveScene3DEvent;
 			import org.papervision3d.materials.BitmapFileMaterial;
 			import org.papervision3d.materials.BitmapMaterial;
+			import org.papervision3d.materials.utils.PrecisionMode;
 			import org.papervision3d.objects.DisplayObject3D;
 			import org.papervision3d.objects.primitives.Plane;
 			
@@ -277,7 +278,7 @@
 				//test load some images
 				var lb_ctr:Number = 0;
 				for (;lb_ctr<54;lb_ctr++)
-					po_Images.AddImage("assets/logo" + lb_ctr.toString() + ".png");
+					po_Images.AddImage("assets/uploaded/logo" + lb_ctr.toString() + ".png");
 
 			}
 			
@@ -430,7 +431,10 @@
 				var lp_Bitmap:BitmapMaterial = new BitmapMaterial( new BitmapData(pci_TileWidth,pci_TileHeight,false) );
 				if (!lp_Bitmap)//make sure bitmap was created (out of memory?)
 					return null; 
-				
+
+				lp_Bitmap.precise = true;
+				lp_Bitmap.pixelPrecision = 255;
+				lp_Bitmap.precisionMode = PrecisionMode.STABLE;
 				lp_Bitmap.smooth = true;
 				lp_Bitmap.interactive = true;
 				lp_Bitmap.oneSide = !pcb_DoubleSided;
@@ -441,7 +445,7 @@
 				if (!lp_border)//make sure border image was received
 					return null;
 				
-				lp_border.smooth = true;
+
 				
 				var mtrx:Matrix = new Matrix();
 				var mtrx1:Matrix = new Matrix();

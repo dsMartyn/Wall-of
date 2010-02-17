@@ -107,7 +107,7 @@
 	<s:Button id="btnSearch" x="623" y="551" label="Search"/>
 	<mx:HRule width="950" strokeColor="#000000" shadowColor="#2F2F2F" x="38" y="540"/>
 	<mx:LinkButton  click="btnMenu_Click(event)"  label="Menu" id="btnMenu"  fontAntiAliasType="advanced" color="#0631D1" fontSize="18" width="76" x="919.95" y="48" enabled="false"/>
-	<s:Label  x="694" y="33" text="Not logged in." color="#C10000" width="291" textAlign="right" id="lblLoggedIn"/>
+	<s:Label  x="694" y="33" text="Not logged in." color="#C10000" width="291" textAlign="right" id="lblLoggedIn" x.Display3D="698" y.Display3D="33"/>
 
 	<!--
 	<s:HSlider x="457" y="11"  id="sldZoomer" maximum="15" minimum="5" change="c_Display3D.Zoom(sldZoomer.value)" />
@@ -185,6 +185,9 @@
 				{
 					currentState = ps_CurrentState;
 					cmpDisplayPlane.DisplayPlane_Stop();
+				}else if (currentState == "MenuPlane"){
+					currentState = "Display3D";
+					cmpDisplay3D.Display3D_Show(null);
 				}
 			}
 			

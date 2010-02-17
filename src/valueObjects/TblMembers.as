@@ -1,5 +1,5 @@
 /**
- * This is a generated sub-class of _MemberFields.as and is intended for behavior
+ * This is a generated sub-class of _TblMembers.as and is intended for behavior
  * customization.  This class is only generated when there is no file already present
  * at its target location.  Thus custom behavior that you add here will survive regeneration
  * of the super-class. 
@@ -15,7 +15,7 @@ package valueObjects
 
 import com.adobe.fiber.core.model_internal;
 
-public class MemberFields extends _Super_MemberFields
+public class TblMembers extends _Super_TblMembers
 {
     /** 
      * DO NOT MODIFY THIS STATIC INITIALIZER - IT IS NECESSARY
@@ -30,17 +30,17 @@ public class MemberFields extends _Super_MemberFields
      */     
      public static function _initRemoteClassAlias() : void
      {
-         _Super_MemberFields.model_internal::initRemoteClassAliasSingle(valueObjects.MemberFields);
-         _Super_MemberFields.model_internal::initRemoteClassAliasAllRelated();
+         _Super_TblMembers.model_internal::initRemoteClassAliasSingle(valueObjects.TblMembers);
+         _Super_TblMembers.model_internal::initRemoteClassAliasAllRelated();
      }
      
      model_internal static function initRemoteClassAliasSingleChild() : void 
      {
-         _Super_MemberFields.model_internal::initRemoteClassAliasSingle(valueObjects.MemberFields);
+         _Super_TblMembers.model_internal::initRemoteClassAliasSingle(valueObjects.TblMembers);
      }
     
      {
-         _Super_MemberFields.model_internal::initRemoteClassAliasSingle(valueObjects.MemberFields);
+         _Super_TblMembers.model_internal::initRemoteClassAliasSingle(valueObjects.TblMembers);
      }
     /** 
      * END OF DO NOT MODIFY SECTION

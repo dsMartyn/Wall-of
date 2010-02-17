@@ -1,6 +1,6 @@
 /**
  * This is a generated class and is not intended for modfication.  To customize behavior
- * of this value object you may modify the generated sub-class of this class - MemberFields.as.
+ * of this value object you may modify the generated sub-class of this class - TblEmailLog.as.
  */
 
 package valueObjects
@@ -24,8 +24,9 @@ import mx.events.PropertyChangeEvent;
 
 use namespace model_internal;
 
+[Managed]
 [ExcludeClass]
-public class _Super_MemberFields extends EventDispatcher implements IValueObject
+public class _Super_TblEmailLog extends EventDispatcher implements IValueObject
 {
     model_internal static function initRemoteClassAliasSingle(cz:Class) : void 
     {
@@ -35,20 +36,18 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
     {     
     }
 
-	model_internal var _dminternal_model : _MemberFieldsEntityMetadata;
+	model_internal var _dminternal_model : _TblEmailLogEntityMetadata;
 
 	/**
 	 * properties
 	 */
-	private var _internal_Company : String;
-	private var _internal_ContactNumber : String;
-	private var _internal_Password : String;
-	private var _internal_FirstName : String;
 	private var _internal_RowID : int;
-	private var _internal_StartDate : String;
-	private var _internal_UserName : String;
-	private var _internal_DOB : String;
-	private var _internal_LastName : String;
+	private var _internal_To : String;
+	private var _internal_From : String;
+	private var _internal_Subject : String;
+	private var _internal_Body : String;
+	private var _internal_Headers : String;
+	private var _internal_MemberID : int;
 
     private static var emptyArray:Array = new Array();
 
@@ -59,9 +58,9 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
     
 	model_internal var _changeWatcherArray:Array = new Array();   
 
-	public function _Super_MemberFields() 
+	public function _Super_TblEmailLog() 
 	{	
-		_model = new _MemberFieldsEntityMetadata(this);
+		_model = new _TblEmailLogEntityMetadata(this);
 	
 		// Bind to own data properties for cache invalidation triggering  
        
@@ -71,138 +70,44 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
      * data property getters
      */
 	[Bindable(event="propertyChange")] 
-    public function get Company() : String    
-    {
-            return _internal_Company;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get ContactNumber() : String    
-    {
-            return _internal_ContactNumber;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get Password() : String    
-    {
-            return _internal_Password;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get FirstName() : String    
-    {
-            return _internal_FirstName;
-    }    
-	[Bindable(event="propertyChange")] 
     public function get RowID() : int    
     {
             return _internal_RowID;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get StartDate() : String    
+    public function get To() : String    
     {
-            return _internal_StartDate;
+            return _internal_To;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get UserName() : String    
+    public function get From() : String    
     {
-            return _internal_UserName;
+            return _internal_From;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get DOB() : String    
+    public function get Subject() : String    
     {
-            return _internal_DOB;
+            return _internal_Subject;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get LastName() : String    
+    public function get Body() : String    
     {
-            return _internal_LastName;
+            return _internal_Body;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get Headers() : String    
+    {
+            return _internal_Headers;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get MemberID() : int    
+    {
+            return _internal_MemberID;
     }    
 
     /**
      * data property setters
      */      
-    public function set Company(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_Company == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_Company;               
-        if (oldValue !== value)
-        {
-        	_internal_Company = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Company", oldValue, _internal_Company));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set ContactNumber(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_ContactNumber == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_ContactNumber;               
-        if (oldValue !== value)
-        {
-        	_internal_ContactNumber = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ContactNumber", oldValue, _internal_ContactNumber));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set Password(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_Password == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_Password;               
-        if (oldValue !== value)
-        {
-        	_internal_Password = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Password", oldValue, _internal_Password));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set FirstName(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_FirstName == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_FirstName;               
-        if (oldValue !== value)
-        {
-        	_internal_FirstName = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "FirstName", oldValue, _internal_FirstName));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
     public function set RowID(value:int) : void 
     {    	
         var recalcValid:Boolean = false;
@@ -212,7 +117,6 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_RowID = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "RowID", oldValue, _internal_RowID));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -220,20 +124,19 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set StartDate(value:String) : void 
+    public function set To(value:String) : void 
     {    	
         var recalcValid:Boolean = false;
-    	if (value == null || _internal_StartDate == null)
+    	if (value == null || _internal_To == null)
     	{
     		recalcValid = true;
     	}	
     	
     	
-    	var oldValue:String = _internal_StartDate;               
+    	var oldValue:String = _internal_To;               
         if (oldValue !== value)
         {
-        	_internal_StartDate = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "StartDate", oldValue, _internal_StartDate));
+        	_internal_To = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -241,20 +144,19 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set UserName(value:String) : void 
+    public function set From(value:String) : void 
     {    	
         var recalcValid:Boolean = false;
-    	if (value == null || _internal_UserName == null)
+    	if (value == null || _internal_From == null)
     	{
     		recalcValid = true;
     	}	
     	
     	
-    	var oldValue:String = _internal_UserName;               
+    	var oldValue:String = _internal_From;               
         if (oldValue !== value)
         {
-        	_internal_UserName = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "UserName", oldValue, _internal_UserName));
+        	_internal_From = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -262,20 +164,19 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set DOB(value:String) : void 
+    public function set Subject(value:String) : void 
     {    	
         var recalcValid:Boolean = false;
-    	if (value == null || _internal_DOB == null)
+    	if (value == null || _internal_Subject == null)
     	{
     		recalcValid = true;
     	}	
     	
     	
-    	var oldValue:String = _internal_DOB;               
+    	var oldValue:String = _internal_Subject;               
         if (oldValue !== value)
         {
-        	_internal_DOB = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "DOB", oldValue, _internal_DOB));
+        	_internal_Subject = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -283,20 +184,55 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set LastName(value:String) : void 
+    public function set Body(value:String) : void 
     {    	
         var recalcValid:Boolean = false;
-    	if (value == null || _internal_LastName == null)
+    	if (value == null || _internal_Body == null)
     	{
     		recalcValid = true;
     	}	
     	
     	
-    	var oldValue:String = _internal_LastName;               
+    	var oldValue:String = _internal_Body;               
         if (oldValue !== value)
         {
-        	_internal_LastName = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "LastName", oldValue, _internal_LastName));
+        	_internal_Body = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set Headers(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_Headers == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_Headers;               
+        if (oldValue !== value)
+        {
+        	_internal_Headers = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set MemberID(value:int) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	
+    	
+    	var oldValue:int = _internal_MemberID;               
+        if (oldValue !== value)
+        {
+        	_internal_MemberID = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -336,50 +272,33 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
         var violatedConsts:Array = new Array();    
         var validationFailureMessages:Array = new Array();    
 
-		if (_model.isCompanyAvailable && _internal_Company == null)
+		if (_model.isToAvailable && _internal_To == null)
 		{
-			violatedConsts.push("CompanyIsRequired");
-			validationFailureMessages.push("Company is required");
+			violatedConsts.push("ToIsRequired");
+			validationFailureMessages.push("To is required");
 		}
-		if (_model.isContactNumberAvailable && _internal_ContactNumber == null)
+		if (_model.isFromAvailable && _internal_From == null)
 		{
-			violatedConsts.push("ContactNumberIsRequired");
-			validationFailureMessages.push("ContactNumber is required");
+			violatedConsts.push("FromIsRequired");
+			validationFailureMessages.push("From is required");
 		}
-		if (_model.isPasswordAvailable && _internal_Password == null)
+		if (_model.isSubjectAvailable && _internal_Subject == null)
 		{
-			violatedConsts.push("PasswordIsRequired");
-			validationFailureMessages.push("Password is required");
+			violatedConsts.push("SubjectIsRequired");
+			validationFailureMessages.push("Subject is required");
 		}
-		if (_model.isFirstNameAvailable && _internal_FirstName == null)
+		if (_model.isBodyAvailable && _internal_Body == null)
 		{
-			violatedConsts.push("FirstNameIsRequired");
-			validationFailureMessages.push("FirstName is required");
+			violatedConsts.push("BodyIsRequired");
+			validationFailureMessages.push("Body is required");
 		}
-		if (_model.isStartDateAvailable && _internal_StartDate == null)
+		if (_model.isHeadersAvailable && _internal_Headers == null)
 		{
-			violatedConsts.push("StartDateIsRequired");
-			validationFailureMessages.push("StartDate is required");
-		}
-		if (_model.isUserNameAvailable && _internal_UserName == null)
-		{
-			violatedConsts.push("UserNameIsRequired");
-			validationFailureMessages.push("UserName is required");
-		}
-		if (_model.isDOBAvailable && _internal_DOB == null)
-		{
-			violatedConsts.push("DOBIsRequired");
-			validationFailureMessages.push("DOB is required");
-		}
-		if (_model.isLastNameAvailable && _internal_LastName == null)
-		{
-			violatedConsts.push("LastNameIsRequired");
-			validationFailureMessages.push("LastName is required");
+			violatedConsts.push("HeadersIsRequired");
+			validationFailureMessages.push("Headers is required");
 		}
 
 		var styleValidity:Boolean = true;
-	
-	
 	
 	
 	
@@ -414,14 +333,14 @@ public class _Super_MemberFields extends EventDispatcher implements IValueObject
 
     [Transient] 
 	[Bindable(event="propertyChange")] 
-    public function get _model() : _MemberFieldsEntityMetadata
+    public function get _model() : _TblEmailLogEntityMetadata
     {
 		return model_internal::_dminternal_model;              
     }	
     
-    public function set _model(value : _MemberFieldsEntityMetadata) : void       
+    public function set _model(value : _TblEmailLogEntityMetadata) : void       
     {
-    	var oldValue : _MemberFieldsEntityMetadata = model_internal::_dminternal_model;               
+    	var oldValue : _TblEmailLogEntityMetadata = model_internal::_dminternal_model;               
         if (oldValue !== value)
         {
         	model_internal::_dminternal_model = value;
