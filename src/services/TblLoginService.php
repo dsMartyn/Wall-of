@@ -247,6 +247,10 @@ class TblLoginService {
 	//login should only be called if there is no valid session
 	public function login($user, $pass)
 	{
+		$ret = new StdClass();
+		$ret->MemberID = 0;
+		$ret->SessionID = 0;
+		
 		$MemberID = 0;
 		//get memberID if username and password matches
 		$stmt = mysqli_prepare($this->mysql->connection, "SELECT RowID FROM tblMembers where UserName=? AND Password=?");
@@ -268,7 +272,7 @@ class TblLoginService {
 		if (!$MemberID)
 		{
 			$this->mysql->_mysqli_close();
-			return null;
+			return $ret;
 		}
 		
 		//logout previous sessions for this user
@@ -281,7 +285,8 @@ class TblLoginService {
 		$stmt = mysqli_prepare($this->mysql->connection, "INSERT INTO $this->tablename (MemberID, LoginTime, IPAddress) VALUES (?, Now(), ?)");		
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'ss', $MemberID, $this->getIPAddress());		
+		$ip =$this->getIPAddress();
+		mysqli_bind_param($stmt, 'is', $MemberID, $ip);		
 		$this->throwExceptionOnError();
 
 		mysqli_stmt_execute($stmt);		

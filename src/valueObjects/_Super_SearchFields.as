@@ -1,6 +1,6 @@
 /**
  * This is a generated class and is not intended for modfication.  To customize behavior
- * of this value object you may modify the generated sub-class of this class - TblProducts.as.
+ * of this value object you may modify the generated sub-class of this class - SearchFields.as.
  */
 
 package valueObjects
@@ -24,9 +24,8 @@ import mx.events.PropertyChangeEvent;
 
 use namespace model_internal;
 
-[Managed]
 [ExcludeClass]
-public class _Super_TblProducts extends EventDispatcher implements IValueObject
+public class _Super_SearchFields extends EventDispatcher implements IValueObject
 {
     model_internal static function initRemoteClassAliasSingle(cz:Class) : void 
     {
@@ -36,14 +35,11 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     {     
     }
 
-	model_internal var _dminternal_model : _TblProductsEntityMetadata;
+	model_internal var _dminternal_model : _SearchFieldsEntityMetadata;
 
 	/**
 	 * properties
 	 */
-	private var _internal_picUrl : Object;
-	private var _internal_CompanyDesc : String;
-	private var _internal_CompanyName : Object;
 	private var _internal_AddressTown : String;
 	private var _internal_Image : String;
 	private var _internal_AddressEmail : String;
@@ -57,8 +53,10 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
 	private var _internal_AddressName : String;
 	private var _internal_MemberID : int;
 	private var _internal_RowID : int;
+	private var _internal_Category : Object;
 	private var _internal_ImageID : int;
 	private var _internal_AddressStreet : String;
+	private var _internal_count : int;
 	private var _internal_ItemDesc : String;
 	private var _internal_GooglePostCode : String;
 	private var _internal_AddressPostCode : String;
@@ -72,9 +70,9 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     
 	model_internal var _changeWatcherArray:Array = new Array();   
 
-	public function _Super_TblProducts() 
+	public function _Super_SearchFields() 
 	{	
-		_model = new _TblProductsEntityMetadata(this);
+		_model = new _SearchFieldsEntityMetadata(this);
 	
 		// Bind to own data properties for cache invalidation triggering  
        
@@ -83,21 +81,6 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     /**
      * data property getters
      */
-	[Bindable(event="propertyChange")] 
-    public function get picUrl() : Object    
-    {
-            return _internal_picUrl;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get CompanyDesc() : String    
-    {
-            return _internal_CompanyDesc;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get CompanyName() : Object    
-    {
-            return _internal_CompanyName;
-    }    
 	[Bindable(event="propertyChange")] 
     public function get AddressTown() : String    
     {
@@ -164,6 +147,11 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
             return _internal_RowID;
     }    
 	[Bindable(event="propertyChange")] 
+    public function get Category() : Object    
+    {
+            return _internal_Category;
+    }    
+	[Bindable(event="propertyChange")] 
     public function get ImageID() : int    
     {
             return _internal_ImageID;
@@ -172,6 +160,11 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     public function get AddressStreet() : String    
     {
             return _internal_AddressStreet;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get count() : int    
+    {
+            return _internal_count;
     }    
 	[Bindable(event="propertyChange")] 
     public function get ItemDesc() : String    
@@ -192,66 +185,6 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     /**
      * data property setters
      */      
-    public function set picUrl(value:Object) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_picUrl == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:Object = _internal_picUrl;               
-        if (oldValue !== value)
-        {
-        	_internal_picUrl = value;
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set CompanyDesc(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_CompanyDesc == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_CompanyDesc;               
-        if (oldValue !== value)
-        {
-        	_internal_CompanyDesc = value;
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set CompanyName(value:Object) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_CompanyName == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:Object = _internal_CompanyName;               
-        if (oldValue !== value)
-        {
-        	_internal_CompanyName = value;
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
     public function set AddressTown(value:String) : void 
     {    	
         var recalcValid:Boolean = false;
@@ -265,6 +198,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_AddressTown = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressTown", oldValue, _internal_AddressTown));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -285,6 +219,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_Image = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Image", oldValue, _internal_Image));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -305,6 +240,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_AddressEmail = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressEmail", oldValue, _internal_AddressEmail));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -321,6 +257,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_status = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "status", oldValue, _internal_status));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -341,6 +278,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_AddressFax = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressFax", oldValue, _internal_AddressFax));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -361,6 +299,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_AddressMob = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressMob", oldValue, _internal_AddressMob));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -381,6 +320,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_AddressTel = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressTel", oldValue, _internal_AddressTel));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -401,6 +341,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_YoutubeVideoUrl = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "YoutubeVideoUrl", oldValue, _internal_YoutubeVideoUrl));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -421,6 +362,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_AddressCounty = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressCounty", oldValue, _internal_AddressCounty));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -441,6 +383,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_ItemName = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ItemName", oldValue, _internal_ItemName));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -461,6 +404,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_AddressName = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressName", oldValue, _internal_AddressName));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -477,6 +421,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_MemberID = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "MemberID", oldValue, _internal_MemberID));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -493,6 +438,28 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_RowID = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "RowID", oldValue, _internal_RowID));
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set Category(value:Object) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_Category == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:Object = _internal_Category;               
+        if (oldValue !== value)
+        {
+        	_internal_Category = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Category", oldValue, _internal_Category));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -509,6 +476,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_ImageID = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ImageID", oldValue, _internal_ImageID));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -529,6 +497,24 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_AddressStreet = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressStreet", oldValue, _internal_AddressStreet));
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set count(value:int) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	
+    	
+    	var oldValue:int = _internal_count;               
+        if (oldValue !== value)
+        {
+        	_internal_count = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "count", oldValue, _internal_count));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -549,6 +535,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_ItemDesc = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ItemDesc", oldValue, _internal_ItemDesc));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -569,6 +556,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_GooglePostCode = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "GooglePostCode", oldValue, _internal_GooglePostCode));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -589,6 +577,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_AddressPostCode = value;
+        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressPostCode", oldValue, _internal_AddressPostCode));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -628,21 +617,6 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         var violatedConsts:Array = new Array();    
         var validationFailureMessages:Array = new Array();    
 
-		if (_model.isPicUrlAvailable && _internal_picUrl == null)
-		{
-			violatedConsts.push("picUrlIsRequired");
-			validationFailureMessages.push("picUrl is required");
-		}
-		if (_model.isCompanyDescAvailable && _internal_CompanyDesc == null)
-		{
-			violatedConsts.push("CompanyDescIsRequired");
-			validationFailureMessages.push("CompanyDesc is required");
-		}
-		if (_model.isCompanyNameAvailable && _internal_CompanyName == null)
-		{
-			violatedConsts.push("CompanyNameIsRequired");
-			validationFailureMessages.push("CompanyName is required");
-		}
 		if (_model.isAddressTownAvailable && _internal_AddressTown == null)
 		{
 			violatedConsts.push("AddressTownIsRequired");
@@ -693,6 +667,11 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
 			violatedConsts.push("AddressNameIsRequired");
 			validationFailureMessages.push("AddressName is required");
 		}
+		if (_model.isCategoryAvailable && _internal_Category == null)
+		{
+			violatedConsts.push("CategoryIsRequired");
+			validationFailureMessages.push("Category is required");
+		}
 		if (_model.isAddressStreetAvailable && _internal_AddressStreet == null)
 		{
 			violatedConsts.push("AddressStreetIsRequired");
@@ -715,7 +694,6 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
 		}
 
 		var styleValidity:Boolean = true;
-	
 	
 	
 	
@@ -763,14 +741,14 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
 
     [Transient] 
 	[Bindable(event="propertyChange")] 
-    public function get _model() : _TblProductsEntityMetadata
+    public function get _model() : _SearchFieldsEntityMetadata
     {
 		return model_internal::_dminternal_model;              
     }	
     
-    public function set _model(value : _TblProductsEntityMetadata) : void       
+    public function set _model(value : _SearchFieldsEntityMetadata) : void       
     {
-    	var oldValue : _TblProductsEntityMetadata = model_internal::_dminternal_model;               
+    	var oldValue : _SearchFieldsEntityMetadata = model_internal::_dminternal_model;               
         if (oldValue !== value)
         {
         	model_internal::_dminternal_model = value;

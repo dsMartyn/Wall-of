@@ -47,6 +47,11 @@
 			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblKeywordsService.php</location>
 		</link>
 		<link>
+			<name>services/TblLnkKeywordProductsService.php</name>
+			<type>1</type>
+			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblLnkKeywordProductsService.php</location>
+		</link>
+		<link>
 			<name>services/TblLoginService.php</name>
 			<type>1</type>
 			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblLoginService.php</location>

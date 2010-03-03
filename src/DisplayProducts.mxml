@@ -3,7 +3,7 @@
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
 		 xmlns:mx="library://ns.adobe.com/flex/halo" 
 		 width="940" height="415" xmlns:events="flashx.textLayout.events.*" 
-		 xmlns:local="*" xmlns:utils="com.utils.*" >
+		 xmlns:local="*" xmlns:utils="com.utils.*" xmlns:valueObjects="valueObjects.*">
 	
 	
 	<s:states>
@@ -15,11 +15,25 @@
 		[Event(name="menuShow",type="flash.events.Event")]
 	</fx:Metadata>
 	
+	
+	<fx:Declarations>
+		<!-- 
+		 Status 1 = Current
+		 Status 2 = Preview
+		 Status 3 = Payment Waiting
+		 Status 4 = Deleted for non-payment
+		 Status 5 = Deleted 
+		-->
+		<valueObjects:TblProducts id="productFields" RowID="0"/>
+	</fx:Declarations>
+	
 	<fx:Script>
 		<![CDATA[
+			import com.events.CrudEvent;
 			import com.utils.*;
 			
 			import mx.controls.Alert;
+			import mx.events.CloseEvent;
 			import mx.rpc.xml.SimpleXMLDecoder;
 			
 			import spark.events.*;
@@ -38,7 +52,7 @@
 			private const pc_companyDesc:String = "Enter company Descrption\nYear it was established\nany offers.";
 			private const pc_mapsPostCode:String = "LS12 1QB";
 			private const pc_youTubeURL:String = "http://www.youtube.com/watch?v=Va8Sh4Agr58";
-				
+			
 			private var po_fileRef:FileReference = new FileReference();
 			private var urlUpload:URLRequest;
 			
@@ -50,21 +64,93 @@
 				dispatchEvent(new Event(gcs_DisplayMenu_Show));
 			}
 
-			
-			private function cfnComplete(e:Event):void
+			private function AssignFields():void
 			{
-				//lblProgress.text = "Uploading Picture... 100%!";
-				//trace('complete');
+				productFields.MemberID = Database.go_LoginFields.MemberID;
+				
+				productFields.AddressCounty = this.txtAddressCounty.text;
+				productFields.AddressEmail = this.txtAddressEmail.text;
+				productFields.AddressFax = this.txtAddressFax.text;
+				productFields.AddressMob = this.txtAddressMob.text;
+				productFields.AddressName = this.txtAddressName.text;
+				productFields.AddressPostCode = this.txtAddressPostCode.text;
+				productFields.AddressStreet = this.txtAddressStreet.text;
+				productFields.AddressTel = this.txtAddressTel.text;
+				productFields.AddressTown = this.txtAddressTown.text;
+				
+				productFields.CompanyDesc = this.txtCompanyDesc.text;
+				productFields.CompanyName = this.txtCompanyName.text;
+				productFields.picUrl = this.txtPicUrl.text;
+				productFields.GooglePostCode = this.txtMAPPostCode.text;
+				productFields.YoutubeVideoUrl = this.txtVideoURL.text;
 			}
 			
-			private function cfnError(e:IOErrorEvent):void
+			
+			protected function btnPreview_Click(event:MouseEvent):void
+			{
+				productFields.status = 2; //preview
+				AssignFields();
+
+				Modify_Product();
+			}
+			
+			protected function btnAccept_Click(event:MouseEvent):void
+			{
+				productFields.status = 1; //create
+				AssignFields();
+				
+				Modify_Product();
+			}
+			
+			protected function btnCancel(event:MouseEvent):void
+			{
+				var lo_Alert:Alert = new Alert();
+				lo_Alert = Alert.show("Are you sure?","Going back will discard all changes!", Alert.YES | Alert.NO);
+				lo_Alert.addEventListener(CloseEvent.CLOSE, Alert_Closed);
+			}
+			
+			protected function Alert_Closed(event:CloseEvent):void
+			{
+				if (event.detail==Alert.YES) {
+					trace('go away');
+					currentState='viewProducts';
+				}
+			}
+			
+			
+			private function Modify_Product():void
+			{
+				trace('update user');
+				Database.addEventListener(CrudEvent.PRODUCT_CREATED, Product_Changed);
+				Database.addEventListener(CrudEvent.PRODUCT_UPDATED, Product_Changed);
+				
+				if (productFields.RowID == 0)
+					Database.CreateProduct(null, productFields);
+				else
+					Database.UpdateProduct(null, productFields);
+					
+			}
+			protected function Product_Changed(event:CrudEvent):void
+			{
+				if (event.errored)
+					Alert.show("Error updating product - " + event.errorMsg, "Error maybe duplicate company name");
+				
+				Database.removeEventListener(CrudEvent.PRODUCT_CREATED, Product_Changed);
+				Database.removeEventListener(CrudEvent.PRODUCT_UPDATED, Product_Changed);
+				trace('create product');
+			}
+			
+	
+			
+			
+			private function Upload_Error(e:IOErrorEvent):void
 			{
 				lblProgress.text = "Error uploading picture!";
 				//trace('io error');	
 			}
 			
 			
-			private function cfnProgress(e:ProgressEvent):void
+			private function Upload_Progress(e:ProgressEvent):void
 			{
 				var numPerc:Number = Math.round((Number(e.bytesLoaded) / Number(e.bytesTotal)) * 100);
 				//progressBar1.setProgress(numPerc, 100);
@@ -74,7 +160,7 @@
 				//trace(e.bytesLoaded + ' ' + e.bytesTotal);
 			}
 			
-			protected function cfnFileSelect(e:Event):void
+			protected function Upload_FileSelect(e:Event):void
 			{
 				lblSize.text =  formatFileSize(po_fileRef.size);
 				if ((po_fileRef.size / 1000) > 1000)
@@ -94,25 +180,24 @@
 				urlUpload.method = URLRequestMethod.POST;
 				
 				// = new URLRequest("services/upload.php");
-				po_fileRef.addEventListener(ProgressEvent.PROGRESS,cfnProgress);
-				po_fileRef.addEventListener(Event.COMPLETE,cfnComplete);
-				po_fileRef.addEventListener(IOErrorEvent.IO_ERROR,cfnError);
-				po_fileRef.addEventListener(SecurityErrorEvent.SECURITY_ERROR,cfnError); 
-				
-				po_fileRef.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA, cfnCompleteData);
+				po_fileRef.addEventListener(ProgressEvent.PROGRESS,Upload_Progress);
+				po_fileRef.addEventListener(IOErrorEvent.IO_ERROR,Upload_Error);
+				po_fileRef.addEventListener(SecurityErrorEvent.SECURITY_ERROR,Upload_Error); 
+				po_fileRef.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA, Upload_CompleteData);
 				
 			 	lblProgress.text = "Uploading Picture... 0%";
 				po_fileRef.upload(urlUpload,'file');
 			}
 			
-			private function cfnCompleteData(e:DataEvent):void
+			private function Upload_CompleteData(e:DataEvent):void
 			{
 				/* Convert XMLNode to XMLDocument. */
 				var xmlDoc:XMLDocument = new XMLDocument(e.data);
 				var decoder:SimpleXMLDecoder = new SimpleXMLDecoder(true);
 				var resultObj:Object = decoder.decodeXML(xmlDoc);
 
-		
+				this.txtPicUrl.text =  po_fileRef.name;
+			
 				if ('Message' == resultObj.variables.variable[0].name)
 				{
 					lblProgress.text = 'Error uploading file already exists.';
@@ -146,7 +231,7 @@
 				//var ffAll:FileFilter = new FileFilter("All files", "*.*");
 				//var f:FileReferenceList = new FileReferenceList();
 				po_fileRef.browse([ffImages]);
-				po_fileRef.addEventListener(Event.SELECT, cfnFileSelect);
+				po_fileRef.addEventListener(Event.SELECT, Upload_FileSelect);
 			}
 			
 			
@@ -289,6 +374,9 @@
 					
 				}
 			}
+
+
+
 		]]>
 	</fx:Script>
 	
@@ -317,6 +405,7 @@
 		<mx:Label id="lblSize" x="10" y="106" text="Size: 0kb" width="180"  textAlign="center"/>
 		<mx:Label id="lblProgress" x="10" y="134"  text="Progress 0%" width="180" textAlign="center" height="22"/>
 		<mx:Text  text="Upload Picture" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"/>
+		<mx:TextInput id="txtPicUrl" x="20" y="168" visible="false"/>
 	
 	</s:Border>
 
@@ -327,9 +416,9 @@
 		<mx:TextArea  id="txtCompanyDesc" text="{pc_companyDesc}" focusOut="focusOut(event)"  focusIn="txt_focusIn(event)" borderVisible="false" includeIn="editProduct" top="33" left="0" right="0" bottom="38" condenseWhite="true"   fontAntiAliasType="advanced" />
 		
 		
-		<mx:Button x="278" y="379" label="Preview" id="btnPreview"/>
-		<s:Button label="Back"  click="currentState='viewProducts'" x="7" y="379"/>
-		<mx:Button x="352" y="379" label="Accept"/>
+		<mx:Button x="278" y="379" label="Preview" id="btnPreview" click="btnPreview_Click(event)"/>
+		<s:Button label="Cancel"   x="7" y="379" click="btnCancel(event);" />
+		<mx:Button click="btnAccept_Click(event)" x="352" y="379" label="Accept" />
 		<s:Button x="84" y="379" label="Keywords"  />
 		<s:Label x="163" y="384" text="0 Keywords"/>
 	
@@ -357,16 +446,13 @@
 		<mx:TextInput id="txtMAPPostCode" x="87" y="79" textAlign="center"  width="106" text="{pc_mapsPostCode}" focusOut="focusOut(event)" focusIn="txt_focusIn(event)"  />
 		<mx:Label x="51" y="55" text="Enter post code for Google Maps"/>
 		<mx:Text  text="Google Maps" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"/>
-
 	</s:Border>
 	
-
 	
 	<s:Border id="brdVideo" x="659" y="0" width="280" height="199" borderVisible="true"  borderWeight="2" includeIn="editProduct"  >	
 		<mx:TextArea id="txtVideoURL" x="60" y="94"  height="51" focusOut="focusOut(event)" focusIn="txt_focusIn(event)" text="{pc_youTubeURL}"/>
 		<mx:Label x="79" y="57" text="Enter Youtube Video URL"/>
 		<mx:Text  text="YouTube Video" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"/>
-
 	</s:Border>
 	
 	

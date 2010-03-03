@@ -8,7 +8,7 @@
 
 	<s:states>
 		<s:State name="register"  enterState="register_enterState(event)"  />
-		<s:State name="login"  />
+		<s:State name="login"  enterState="state1_enterStateHandler(event)" />
 		<s:State name="update" enterState="update_enterState(event)"/>
 	</s:states>
 	
@@ -238,9 +238,10 @@
 						this.btnRegister.enabled = true;
 						this.form.alpha = 1;
 						
+						trace('getting updated member fields');
 						//show updated name on home page
-						Database.GetMember(null,memberFields.RowID);
-	
+						//Database.GetMember(null,memberFields.RowID);
+						//Database.GetMember(null, -2);//some reason the raise event errros on this -2 fix
 						dispatchEvent(new Event(gcs_DisplayMenu_Show));		
 						currentState='login';
 						//this.memberFields = null;
@@ -324,7 +325,7 @@
 			{
 				if (event.errored)
 				{
-					Alert.show("Please contact an administrator.\n" + event.errorMsg);
+					Alert.show("User Login Error please contact an administrator.\n" + event.errorMsg);
 					btnRegister.enabled = false;
 				}else{
 					
@@ -452,6 +453,13 @@
 				cmbMonths.selectedIndex = int(lv_dob[1]);
 				cmbDays.selectedIndex = int(lv_dob[2].toString().substr(0,2));
 
+			}
+
+
+			protected function state1_enterStateHandler(event:FlexEvent):void
+			{
+				btnRegister.enabled = true;
+				// TODO Auto-generated method stub
 			}
 
 		]]>

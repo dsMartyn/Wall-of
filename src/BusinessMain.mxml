@@ -12,7 +12,7 @@
 			   frameRate="60"  xmlns:utils="com.utils.*">
 	<s:states>
 		<s:State name="Display3D"/>
-		<s:State name="DisplayPlane" enterState="cmpDisplayPlane.InitVideo();"/>
+		<s:State name="DisplayPlane" enterState="state1_enterStateHandler(event)" />
 		<s:State name="MenuPlane"/>
 	</s:states>
 	
@@ -34,17 +34,13 @@
 				<s:Fade alphaFrom="0.0" alphaTo="1.0" duration="1000" 
 						targets="{[cmpDisplayPlane]}"/>
 			</s:Sequence>
-		</s:Transition>  
-		
-
-		
+		</s:Transition>
 	</s:transitions>
 	
 	<mx:HRule width="950" strokeColor="#000000" shadowColor="#2F2F2F" x="38" y="74"/>
 	<mx:Image id="logo_header" width="210" height="90"  source="@Embed('assets/embedded/gui/logoheader.png')"  x="33" y="1"/>
 	<s:Label  text="Business" color="#ABABAB" width="143" textAlign="right" x="37" y="77" />
 	<mx:Label text="35fps" id="lblFps" color="#ABABAB" fontSize="10" x="2" y="2" />
-	
 	
 	<mx:MenuBar id="myMenuBar" labelField="@label" 
 				width="598"
@@ -55,7 +51,7 @@
 				 color.Display3D="#FFFFFF"
 				 visible="false"
 				 >
-
+		
 		<fx:XMLList >
 			<menuitem label="Home"/>
 			<menuitem label="About"/>
@@ -67,7 +63,6 @@
 			<menuitem label="Advertise"/>
 			<menuitem label="Login"/>
 		</fx:XMLList>
-		
 	</mx:MenuBar>
 	
 	<s:Border  id="brdDisplay" backgroundColor="0xFFFFFF" height="437" width="964"  x="32" y="92" cornerRadius="10" />
@@ -77,7 +72,6 @@
 	<ns1:DisplayPlane id="cmpDisplayPlane" displayShow="cmpDisplay3D.Display3D_Show(event)" includeIn="DisplayPlane"  x="42" y="103"  width="945" height="415"/>
 
 	
-
 	<s:DropDownList width="99"
 					id="ddlSort"
 					prompt="Order By" 
@@ -94,7 +88,9 @@
 			   width="28" 
 			   x="870.85" y="551"/>
 	
-	<s:DropDownList width="62" x="898.35" y="551">
+	 
+	<s:DropDownList id="cmbPages" width="62" x="898.35" y="551"  >
+		<s:ArrayCollection id="cmbPagesArray" />
 	</s:DropDownList>
 	
 	
@@ -103,11 +99,13 @@
 			   width="28" 
 			   x="958.7" y="551"/>
 	
-	<mx:TextInput height="20" width="288" x="334" y="552"/>
-	<s:Button id="btnSearch" x="623" y="551" label="Search"/>
+	<mx:TextInput id="txtSearch" height="20" width="288" x="334" y="552"/>
+	<s:Button id="btnSearch" x="623" y="551" label="Search" click="search_Click(event)" />
 	<mx:HRule width="950" strokeColor="#000000" shadowColor="#2F2F2F" x="38" y="540"/>
 	<mx:LinkButton  click="btnMenu_Click(event)"  label="Menu" id="btnMenu"  fontAntiAliasType="advanced" color="#0631D1" fontSize="18" width="76" x="919.95" y="48" enabled="false"/>
 	<s:Label  x="694" y="33" text="Not logged in." color="#C10000" width="291" textAlign="right" id="lblLoggedIn" x.Display3D="698" y.Display3D="33"/>
+	<s:Label includeIn="Display3D" x="853" y="579" text="Showing page 0 of 0" color="#2407FF" id="lblResults" verticalAlign="top" width="150" textAlign="center" fontWeight="bold"/>
+	<s:Label includeIn="Display3D" x="334" y="579" text="Search returned 0 results in 0.00 Seconds" width="359" textAlign="center" color="#2407FF" fontWeight="bold" id="lblSearchRes"/>
 
 	<!--
 	<s:HSlider x="457" y="11"  id="sldZoomer" maximum="15" minimum="5" change="c_Display3D.Zoom(sldZoomer.value)" />
@@ -130,15 +128,27 @@
 	<fx:Script>
 		<![CDATA[
 			import com.events.CrudEvent;
-			import com.utils.DatabaseCRUD;
+			import com.utils.*;
 			
 			import flash.filters.*;
+			
+			import mx.controls.Alert;
+			import mx.events.FlexEvent;
+			
+			import valueObjects.SearchFields;
 			
 			private var ps_CurrentState:String = "";
 			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
 			
+			[bindable]
+			private var pa_PageCount:Array = [];
+			private var pn_CurrentPage:Number = 0;
+			private var ps_PreviousSearch:String = "";
+			
+			
 			protected function Display3D_Init(event:Event):void
 			{
+				
 				//setup display border effects
 				var myBevel:BevelFilter = new BevelFilter(3.0,45,0x000000,1.0,0,1.0,10,4.0,1,1,BitmapFilterType.FULL);
 				var myGlow:GlowFilter = new GlowFilter(0xFFFFFF,0.1,6.0,6.0,2,1,false,false);
@@ -155,14 +165,19 @@
 				Database.CheckLoggedIn();
 			}
 			
-			protected function GotMemberInfo(event:CrudEvent):void
+			public function GotMemberInfo(event:CrudEvent):void
 			{
+				if (event.errored)
+					trace(event.errorMsg);
+				
 				btnMenu.enabled = true;
 				
 				if (event.memberFields)
 					this.lblLoggedIn.text = "Welcome "  + event.memberFields.FirstName + ' ' + event.memberFields.LastName + ".";
 				else
-					this.lblLoggedIn.text = "Not logged in."
+					this.lblLoggedIn.text = "Not logged in.";
+				
+				Database.removeEventListener(CrudEvent.GET_MEMBERINFO, GotMemberInfo);
 			}
 				
 			
@@ -179,13 +194,15 @@
 			{
 				ps_CurrentState = "MenuPlane";
 				
+				
 				if (currentState == "Display3D")
 					cmpDisplay3D.Display3D_Hide();
 				else if(currentState == "DisplayPlane")
 				{
-					currentState = ps_CurrentState;
 					cmpDisplayPlane.DisplayPlane_Stop();
-				}else if (currentState == "MenuPlane"){
+					currentState = ps_CurrentState;
+				}else if (currentState == "MenuPlane")
+				{
 					currentState = "Display3D";
 					cmpDisplay3D.Display3D_Show(null);
 				}
@@ -202,7 +219,138 @@
 			}
 
 
+			protected function state1_enterStateHandler(event:FlexEvent):void
+			{
+				cmpDisplayPlane.InitVideo();
+			}
+			
+			
+			protected function loadBitmapProgressHandler(event:Event):void
+			{
+				trace("progress");
+			}
+			
+			protected function loadBitmapCompleteHandler(event:Event):void
+			{
+				var obj:LoaderInfo = event.target as LoaderInfo;
+				if(obj.loader)
+				{
+					var idx:Number = this.cmpDisplay3D.AddImage(int(obj.loader.name), Database.go_ProductFields.length, obj.loader.content);
+					if (idx >= Database.go_ProductFields.length)
+					{
+						var li_CurrentTime:int =  getTimer();
+						this.lblSearchRes.text = lblSearchRes.text + " rendered " + ((li_CurrentTime - pi_Time)/1000).toString().substr(0,4) + " Seconds"	
+					}
+						
+				}
+			}
+			
+			protected function loadBitmapErrorHandler(event:Event):void
+			{
+				trace("Error");	
+			}
+			
+			private function ProcessProduct(product:SearchFields, idx:Number, length:Number):void
+			{
+				
+				var b:Base64 = new Base64();
+				var loader:Loader = new Loader();
+				
+				loader.loadBytes(b.decode(product.Image));
+				loader.name = (idx).toString();
+			//	loader.contentLoaderInfo.addEventListener( ProgressEvent.PROGRESS, loadBitmapProgressHandler );
+				loader.contentLoaderInfo.addEventListener( Event.COMPLETE, loadBitmapCompleteHandler );
+				//loader.contentLoaderInfo.addEventListener( IOErrorEvent.IO_ERROR, loadBitmapErrorHandler );
+	
+			//	this.cmpDisplay3D.AddImage(idx+1, length, loader.content);
+			}
+			
+			private var pi_Time:int;
+			
+			protected function GotSearch(event:CrudEvent):void
+			{
+				
+				
+				if (event.valid == false || !Database.go_ProductFields)
+				{
+					trace("error getting search fields");
+					Alert.show("Error getting search results", event.errorMsg);
+					return;
+				}
+				
+				//var li_CurrentTime:int =  getTimer();
+				var ctr:Number = 0 ;
+				var i:Number=0;
 
+				if (Database.go_ProductFields.length>0)
+				{
+					var pf:SearchFields = Database.go_ProductFields[i];
+					ctr = pf.count;
+				}
+				var li_CurrentTime:int =  getTimer();
+				this.lblSearchRes.text = "Search returned " + ctr.toString() + " results in "  + ((li_CurrentTime - pi_Time)/1000).toString().substr(0,4) 
+				pi_Time = getTimer();
+
+				
+				for (i=0;i<Database.go_ProductFields.length;i++)
+				{
+					pf = Database.go_ProductFields[i];
+					ctr = pf.count;
+					ProcessProduct(pf, i, Database.go_ProductFields.length);
+				}
+	
+				var iCtr:Number = ctr / Database.MAX_RESULTS_PAGE;
+				
+				
+				for (i=1; i < (iCtr+1); i++)
+				{
+					pa_PageCount.push(i.toString() );
+				}
+				this.cmbPagesArray.source = pa_PageCount;
+				
+				if (pn_CurrentPage == -1)
+					pn_CurrentPage = 0;
+				cmbPages.selectedIndex = pn_CurrentPage;
+					
+				btnBack.enabled = true;
+				btnForward.enabled = true;
+					
+				if (pn_CurrentPage == 0)
+					btnBack.enabled = false;
+	
+				if (pn_CurrentPage >= i-2)
+					btnForward.enabled = false;
+				
+				lblResults.text = "Showing page " + (pn_CurrentPage+1).toString() + " of " + (i-1).toString();
+				
+			}
+
+			
+
+			
+			protected function search_Click(event:MouseEvent):void
+			{
+				
+				pi_Time = getTimer();
+				
+				pa_PageCount = [];
+				this.cmpDisplay3D.ClearUp();
+				Database.addEventListener(CrudEvent.SEARCH, GotSearch);
+				var search:String = txtSearch.text;
+				if (search == "")
+					search = "null"
+						
+				//check new search
+				if (ps_PreviousSearch != search)
+					cmbPages.selectedIndex = 0;
+				
+				pn_CurrentPage = cmbPages.selectedIndex;
+				if (pn_CurrentPage == -1)
+					pn_CurrentPage = 0;
+				
+				Database.Search(null,search, pn_CurrentPage );
+				ps_PreviousSearch = search;
+			}
 
 		]]>
 	</fx:Script>

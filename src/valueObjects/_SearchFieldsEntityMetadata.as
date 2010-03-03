@@ -17,37 +17,34 @@ import mx.events.PropertyChangeEvent;
 use namespace model_internal;
 
 [ExcludeClass]
-internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
+internal class _SearchFieldsEntityMetadata extends AbstractEntityMetadata
 {
 	private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "AddressTown", "Image", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
+    model_internal static var allProperties:Array = new Array("AddressTown", "Image", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "Category", "ImageID", "AddressStreet", "count", "ItemDesc", "GooglePostCode", "AddressPostCode");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "AddressTown", "Image", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "AddressTown", "Image", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
+    model_internal static var allRequiredProperties:Array = new Array("AddressTown", "Image", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "Category", "ImageID", "AddressStreet", "count", "ItemDesc", "GooglePostCode", "AddressPostCode");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("AddressTown", "Image", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "Category", "ImageID", "AddressStreet", "count", "ItemDesc", "GooglePostCode", "AddressPostCode");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "AddressTown", "Image", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
+    model_internal static var dataProperties:Array = new Array("AddressTown", "Image", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "Category", "ImageID", "AddressStreet", "count", "ItemDesc", "GooglePostCode", "AddressPostCode");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;    
-    model_internal static var entityName:String = "TblProducts";
+    model_internal static var entityName:String = "SearchFields";
     model_internal static var dependentsOnMap:Object;    
     model_internal static var dependedOnServices:Array =  new Array();
     
     
-    model_internal var _instance:_Super_TblProducts;
+    model_internal var _instance:_Super_SearchFields;
     model_internal static var _nullStyle:Style = new Style();
     
-    public function _TblProductsEntityMetadata(tblProducts : _Super_TblProducts)
+    public function _SearchFieldsEntityMetadata(searchFields : _Super_SearchFields)
     {
         // initialize property maps
         if (model_internal::dependentsOnMap == null)
         {
             // depenents map
             model_internal::dependentsOnMap = new Object();
-            model_internal::dependentsOnMap["picUrl"] = new Array();
-            model_internal::dependentsOnMap["CompanyDesc"] = new Array();
-            model_internal::dependentsOnMap["CompanyName"] = new Array();
             model_internal::dependentsOnMap["AddressTown"] = new Array();
             model_internal::dependentsOnMap["Image"] = new Array();
             model_internal::dependentsOnMap["AddressEmail"] = new Array();
@@ -61,8 +58,10 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
             model_internal::dependentsOnMap["AddressName"] = new Array();
             model_internal::dependentsOnMap["MemberID"] = new Array();
             model_internal::dependentsOnMap["RowID"] = new Array();
+            model_internal::dependentsOnMap["Category"] = new Array();
             model_internal::dependentsOnMap["ImageID"] = new Array();
             model_internal::dependentsOnMap["AddressStreet"] = new Array();
+            model_internal::dependentsOnMap["count"] = new Array();
             model_internal::dependentsOnMap["ItemDesc"] = new Array();
             model_internal::dependentsOnMap["GooglePostCode"] = new Array();
             model_internal::dependentsOnMap["AddressPostCode"] = new Array();
@@ -71,7 +70,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
             model_internal::collectionBaseMap = new Object()
         }                        
         
-        model_internal::_instance = tblProducts;     
+        model_internal::_instance = searchFields;     
     }
     
     override public function getEntityName():String
@@ -112,7 +111,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
     override public function getDependants(propertyName:String):Array
     {
        if (model_internal::dataProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a data property of entity TblProducts");  
+            throw new Error(propertyName + " is not a data property of entity SearchFields");  
             
        return model_internal::dependentsOnMap[propertyName] as Array;  
     }
@@ -130,7 +129,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
     override public function getCollectionBase(propertyName:String):String
     {
        if (model_internal::collectionProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a collection property of entity TblProducts");  
+            throw new Error(propertyName + " is not a collection property of entity SearchFields");  
             
        return model_internal::collectionBaseMap[propertyName];
     }                
@@ -144,7 +143,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      {
          if (model_internal::allProperties.indexOf(propertyName) == -1)
          {
-         	throw new Error(propertyName + " does not exist for entity TblProducts");
+         	throw new Error(propertyName + " does not exist for entity SearchFields");
          }     
            
          return model_internal::_instance[propertyName];
@@ -154,7 +153,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      {
          if (model_internal::dataProperties.indexOf(propertyName) == -1)
          {
-              throw new Error(propertyName + " is not a data property of entity TblProducts");
+              throw new Error(propertyName + " is not a data property of entity SearchFields");
          }  
                                                      
          model_internal::_instance[propertyName] = value;
@@ -186,7 +185,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      {         
          if (model_internal::allProperties.indexOf(propertyName) == -1)
          {
-         	throw new Error(propertyName + " does not exist for entity TblProducts");
+         	throw new Error(propertyName + " does not exist for entity SearchFields");
          }   
                 
          if (model_internal::allAlwaysAvailableProperties.indexOf(propertyName) != -1)
@@ -206,7 +205,6 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      override public function getIdentityMap():Object
      {
          var returnMap:Object = new Object();
-         returnMap["RowID"] = model_internal::_instance.RowID;
        
          return returnMap;
      }       
@@ -283,24 +281,6 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
         }
     }       
      
-     [Bindable(event="propertyChange")] 
-     public function get isPicUrlAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isCompanyDescAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isCompanyNameAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
      [Bindable(event="propertyChange")] 
      public function get isAddressTownAvailable():Boolean
      {
@@ -380,6 +360,12 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      }                       
                   
      [Bindable(event="propertyChange")] 
+     public function get isCategoryAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
      public function get isImageIDAvailable():Boolean
      {
         return true;
@@ -387,6 +373,12 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
                   
      [Bindable(event="propertyChange")] 
      public function get isAddressStreetAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
+     public function get isCountAvailable():Boolean
      {
         return true;
      }                       
@@ -419,24 +411,6 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, propertyName, oldValue, newValue));
      }
 
-    [Bindable(event="propertyChange")]   
-    public function get picUrlStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get CompanyDescStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get CompanyNameStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
     [Bindable(event="propertyChange")]   
     public function get AddressTownStyle():Style
     {
@@ -516,6 +490,12 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
     }      
     
     [Bindable(event="propertyChange")]   
+    public function get CategoryStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
     public function get ImageIDStyle():Style
     {
 		return model_internal::_nullStyle;		
@@ -523,6 +503,12 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
     
     [Bindable(event="propertyChange")]   
     public function get AddressStreetStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get countStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      

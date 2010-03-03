@@ -1,11 +1,12 @@
 <?php
 
-include("DatabaseConnector.php");
 
-class TblMembersService {
+require_once("DatabaseConnector.php");
 
-	var $tablename = "tblMembers";
+class TblLnkKeywordProductsService {
 
+
+	var $tablename = "tblLnkKeywordProducts";
 	/*
 	 mysql class contains all variables and conncetion method
 	*/
@@ -22,7 +23,7 @@ class TblMembersService {
 	 *
 	 * @return array
 	 */
-	public function getAllTblMembers() {
+	public function getAllTblLnkKeywordProducts() {
 
 		$stmt = mysqli_prepare($this->mysql->connection, "SELECT * FROM $this->tablename");		
 		$this->throwExceptionOnError();
@@ -32,12 +33,12 @@ class TblMembersService {
 		
 		$rows = array();
 		
-		mysqli_stmt_bind_result($stmt, $row->RowID, $row->UserName, $row->Password, $row->FirstName, $row->LastName, $row->DOB, $row->ContactNumber, $row->StartDate);
+		mysqli_stmt_bind_result($stmt, $row->RowID, $row->KeywordID, $row->ProductID);
 		
 	    while (mysqli_stmt_fetch($stmt)) {
 	      $rows[] = $row;
 	      $row = new stdClass();
-	      mysqli_stmt_bind_result($stmt, $row->RowID, $row->UserName, $row->Password, $row->FirstName, $row->LastName, $row->DOB, $row->ContactNumber, $row->StartDate);
+	      mysqli_stmt_bind_result($stmt, $row->RowID, $row->KeywordID, $row->ProductID);
 	    }
 		
 		mysqli_stmt_free_result($stmt);
@@ -54,18 +55,18 @@ class TblMembersService {
 	 * 
 	 * @return stdClass
 	 */
-	public function getTblMembersByID($itemID) {
+	public function getTblLnkKeywordProductsByID($keywordId, $productId) {
 		
-		$stmt = mysqli_prepare($this->mysql->connection, "SELECT * FROM $this->tablename where RowID=?");
+		$stmt = mysqli_prepare($this->mysql->connection, "SELECT * FROM $this->tablename where ProductID=? AND KeywordID=?");
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'i', $itemID);		
+		mysqli_bind_param($stmt, 'ii', $productId, $keywordId);		
 		$this->throwExceptionOnError();
 		
 		mysqli_stmt_execute($stmt);
 		$this->throwExceptionOnError();
 		
-		mysqli_stmt_bind_result($stmt, $row->RowID, $row->UserName, $row->Password, $row->FirstName, $row->LastName, $row->DOB, $row->ContactNumber, $row->StartDate);
+		mysqli_stmt_bind_result($stmt, $row->RowID, $row->KeywordID, $row->ProductID);
 		
 		if(mysqli_stmt_fetch($stmt)) {
 			return $row;
@@ -73,6 +74,8 @@ class TblMembersService {
 			return null;
 		}
 	}
+	
+	
 
 	/**
 	 * Returns the item corresponding to the value specified for the primary key.
@@ -82,12 +85,12 @@ class TblMembersService {
 	 * 
 	 * @return stdClass
 	 */
-	public function createTblMembers($item) {
-		$autoid = 0;
-		$stmt = mysqli_prepare($this->mysql->connection, "INSERT INTO $this->tablename (RowID, UserName, Password, FirstName, LastName, DOB, ContactNumber, StartDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");		
+	public function createTblLnkKeywordProducts($item) {
+	
+		$stmt = mysqli_prepare($this->mysql->connection, "INSERT INTO $this->tablename (RowID, KeywordID, ProductID) VALUES (?, ?, ?)");		
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'isssssss', $item->RowID, $item->UserName, $item->Password, $item->FirstName, $item->LastName, $item->DOB, $item->ContactNumber, $item->StartDate);		
+		mysqli_bind_param($stmt, 'iii', $item->RowID, $item->KeywordID, $item->ProductID);		
 		$this->throwExceptionOnError();
 
 		mysqli_stmt_execute($stmt);		
@@ -109,12 +112,12 @@ class TblMembersService {
 	 * @param stdClass $item
 	 * @return void
 	 */
-	public function updateTblMembers($item) {
+	public function updateTblLnkKeywordProducts($item) {
 	
-		$stmt = mysqli_prepare($this->mysql->connection, "UPDATE $this->tablename SET RowID=?, UserName=?, Password=?, FirstName=?, LastName=?, DOB=?, ContactNumber=?, StartDate=?	WHERE RowID=?");		
+		$stmt = mysqli_prepare($this->mysql->connection, "UPDATE $this->tablename SET RowID=?, KeywordID=?, ProductID=?	WHERE RowID=?");		
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'isssssssi', $item->RowID, $item->UserName, $item->Password, $item->FirstName, $item->LastName, $item->DOB, $item->ContactNumber, $item->StartDate, $item->RowID);		
+		mysqli_bind_param($stmt, 'iiii', $item->RowID, $item->KeywordID, $item->ProductID, $item->RowID);		
 		$this->throwExceptionOnError();
 
 		mysqli_stmt_execute($stmt);		
@@ -122,8 +125,6 @@ class TblMembersService {
 		
 		mysqli_stmt_free_result($stmt);		
 		$this->mysql->_mysqli_close();
-		
-		return  $item->RowID;
 	}
 
 	/**
@@ -135,9 +136,9 @@ class TblMembersService {
 	 * 
 	 * @return void
 	 */
-	public function deleteTblMembers($itemID) {
+	public function deleteTblProduct($productID) {
 				
-		$stmt = mysqli_prepare($this->mysql->connection, "DELETE FROM $this->tablename WHERE RowID = ?");
+		$stmt = mysqli_prepare($this->mysql->connection, "DELETE FROM $this->tablename WHERE ProductID = ?");
 		$this->throwExceptionOnError();
 		
 		mysqli_bind_param($stmt, 'i', $itemID);
@@ -147,6 +148,21 @@ class TblMembersService {
 		mysqli_stmt_free_result($stmt);		
 		$this->mysql->_mysqli_close();
 	}
+
+
+	public function deleteTblKeyword($keywordID) {
+				
+		$stmt = mysqli_prepare($this->mysql->connection, "DELETE FROM $this->tablename WHERE KeywordID = ?");
+		$this->throwExceptionOnError();
+		
+		mysqli_bind_param($stmt, 'i', $itemID);
+		mysqli_stmt_execute($stmt);
+		$this->throwExceptionOnError();
+		
+		mysqli_stmt_free_result($stmt);		
+		$this->mysql->_mysqli_close();
+	}
+
 
 
 	/**
@@ -186,7 +202,7 @@ class TblMembersService {
 	 * 
 	 * @return array
 	 */
-	public function getTblMembers_paged($startIndex, $numItems) {
+	public function getTblLnkKeywordProducts_paged($startIndex, $numItems) {
 		
 		$stmt = mysqli_prepare($this->mysql->connection, "SELECT * FROM $this->tablename LIMIT ?, ?");
 		$this->throwExceptionOnError();
@@ -197,12 +213,12 @@ class TblMembersService {
 		
 		$rows = array();
 		
-		mysqli_stmt_bind_result($stmt, $row->RowID, $row->UserName, $row->Password, $row->FirstName, $row->LastName, $row->DOB, $row->ContactNumber, $row->StartDate);
+		mysqli_stmt_bind_result($stmt, $row->RowID, $row->KeywordID, $row->ProductID);
 		
 	    while (mysqli_stmt_fetch($stmt)) {
 	      $rows[] = $row;
 	      $row = new stdClass();
-	      mysqli_stmt_bind_result($stmt, $row->RowID, $row->UserName, $row->Password, $row->FirstName, $row->LastName, $row->DOB, $row->ContactNumber, $row->StartDate);
+	      mysqli_stmt_bind_result($stmt, $row->RowID, $row->KeywordID, $row->ProductID);
 	    }
 		
 		mysqli_stmt_free_result($stmt);		
@@ -211,6 +227,40 @@ class TblMembersService {
 		return $rows;
 	}
 	
+	
+
+	/**
+	 * Returns list of products that are linked to the keywords
+	 * 
+	 * @return stdClass
+	  SELECT * FROM TblLnkKeywordProducts WHERE KeywordID IN (213582, 579004, 213583, 96711)
+	  SELECT RowID FROM tblKeywords WHERE CRC1 IN (115314769853, 113275458213, 113188262816, 113219423308, 0)
+	 */
+	public function getTblLnkKeywordProductsList($searchStr) {
+		
+ 		$query =  "select * from $this->tablename WHERE KeywordID IN ($searchStr)";
+		$stmt = mysqli_prepare($this->mysql->connection, $query);	
+		
+		$this->throwExceptionOnError();
+		
+		mysqli_stmt_execute($stmt);
+		$this->throwExceptionOnError();
+		
+
+		$rows = array();
+		mysqli_stmt_bind_result($stmt,  $row->RowID,$row->KeywordID,$row->ProductID);
+		
+	    while (mysqli_stmt_fetch($stmt)) {
+	      $rows[] = $row;
+	      $row = new stdClass();
+	   	  mysqli_stmt_bind_result($stmt,  $row->RowID,$row->KeywordID,$row->ProductID);
+	   	 }
+		
+		mysqli_stmt_free_result($stmt);
+	    $this->mysql->_mysqli_close();
+	
+	    return $rows;
+	}
 	
 	/**
 	 * Utitity function to throw an exception if an error occurs 
@@ -225,39 +275,6 @@ class TblMembersService {
 			throw new Exception('MySQL Error - '. $msg);
 		}		
 	}
-	
-	
-
-	/****** FindEmail($Email - Email address) *******\
-		Returns true if email found
-		--    
-	\***********************************************************************/
-	public function FindEmail($Email)
-	{
-		$ret=0;
-		$stmt = mysqli_prepare($this->mysql->connection, "SELECT RowID FROM $this->tablename where UserName=?");
-		$this->throwExceptionOnError();
-
-		mysqli_bind_param($stmt, 's', $Email);		
-		$this->throwExceptionOnError();
-		
-		mysqli_stmt_execute($stmt);
-		$this->throwExceptionOnError();
-		
-		mysqli_stmt_bind_result($stmt, $row->RowID);
-		
-		if(mysqli_stmt_fetch($stmt)) 
-			$ret = ($row->RowID != 0);
-
-		mysqli_stmt_free_result($stmt);	
-		$this->mysql->_mysqli_close();
-		
-		return $ret;
-	}
-
-
-
-	
 }
 
 ?>

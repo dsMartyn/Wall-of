@@ -7,7 +7,7 @@
 		 width="940" height="415" xmlns:ns1="*"
 		 initialize="DisplayPlane_Init(event)"
 		  
-		 >
+		 xmlns:valueObjects="valueObjects.*">
 
 	<fx:Metadata>
 		/** display_show raised when the display should be rendered again */	
@@ -15,6 +15,9 @@
 		
 	</fx:Metadata>
 	
+	<fx:Declarations>
+		<valueObjects:TblProducts id="productFields" RowID="0"/>
+	</fx:Declarations>
 	
 	<fx:Script>
 		<![CDATA[
@@ -67,7 +70,6 @@
 
 			protected function DisplayPlane_Init(event:FlexEvent):void
 			{
-				
 			//	InitVideo();//if video is enabled
 			}
 
@@ -79,8 +81,7 @@
 			 * */
 			public function InitVideo():void
 			{
-
-				trace('init');
+				//productFields
 				//check if this plane has youtube!
 				if (!po_YouTube)
 				{

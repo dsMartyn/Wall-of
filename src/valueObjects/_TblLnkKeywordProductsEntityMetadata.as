@@ -17,44 +17,43 @@ import mx.events.PropertyChangeEvent;
 use namespace model_internal;
 
 [ExcludeClass]
-internal class _TblKeywordsEntityMetadata extends AbstractEntityMetadata
+internal class _TblLnkKeywordProductsEntityMetadata extends AbstractEntityMetadata
 {
 	private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("CRC2", "Keyword", "CRC1", "RowID");
+    model_internal static var allProperties:Array = new Array("ProductID", "KeywordID", "RowID");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("CRC2", "Keyword", "CRC1", "RowID");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("CRC2", "Keyword", "CRC1", "RowID");
+    model_internal static var allRequiredProperties:Array = new Array("ProductID", "KeywordID", "RowID");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("ProductID", "KeywordID", "RowID");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("CRC2", "Keyword", "CRC1", "RowID");
+    model_internal static var dataProperties:Array = new Array("ProductID", "KeywordID", "RowID");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;    
-    model_internal static var entityName:String = "TblKeywords";
+    model_internal static var entityName:String = "TblLnkKeywordProducts";
     model_internal static var dependentsOnMap:Object;    
     model_internal static var dependedOnServices:Array =  new Array();
     
     
-    model_internal var _instance:_Super_TblKeywords;
+    model_internal var _instance:_Super_TblLnkKeywordProducts;
     model_internal static var _nullStyle:Style = new Style();
     
-    public function _TblKeywordsEntityMetadata(tblKeywords : _Super_TblKeywords)
+    public function _TblLnkKeywordProductsEntityMetadata(tblLnkKeywordProducts : _Super_TblLnkKeywordProducts)
     {
         // initialize property maps
         if (model_internal::dependentsOnMap == null)
         {
             // depenents map
             model_internal::dependentsOnMap = new Object();
-            model_internal::dependentsOnMap["CRC2"] = new Array();
-            model_internal::dependentsOnMap["Keyword"] = new Array();
-            model_internal::dependentsOnMap["CRC1"] = new Array();
+            model_internal::dependentsOnMap["ProductID"] = new Array();
+            model_internal::dependentsOnMap["KeywordID"] = new Array();
             model_internal::dependentsOnMap["RowID"] = new Array();
                         
             // collection base map
             model_internal::collectionBaseMap = new Object()
         }                        
         
-        model_internal::_instance = tblKeywords;     
+        model_internal::_instance = tblLnkKeywordProducts;     
     }
     
     override public function getEntityName():String
@@ -95,7 +94,7 @@ internal class _TblKeywordsEntityMetadata extends AbstractEntityMetadata
     override public function getDependants(propertyName:String):Array
     {
        if (model_internal::dataProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a data property of entity TblKeywords");  
+            throw new Error(propertyName + " is not a data property of entity TblLnkKeywordProducts");  
             
        return model_internal::dependentsOnMap[propertyName] as Array;  
     }
@@ -113,7 +112,7 @@ internal class _TblKeywordsEntityMetadata extends AbstractEntityMetadata
     override public function getCollectionBase(propertyName:String):String
     {
        if (model_internal::collectionProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a collection property of entity TblKeywords");  
+            throw new Error(propertyName + " is not a collection property of entity TblLnkKeywordProducts");  
             
        return model_internal::collectionBaseMap[propertyName];
     }                
@@ -127,7 +126,7 @@ internal class _TblKeywordsEntityMetadata extends AbstractEntityMetadata
      {
          if (model_internal::allProperties.indexOf(propertyName) == -1)
          {
-         	throw new Error(propertyName + " does not exist for entity TblKeywords");
+         	throw new Error(propertyName + " does not exist for entity TblLnkKeywordProducts");
          }     
            
          return model_internal::_instance[propertyName];
@@ -137,7 +136,7 @@ internal class _TblKeywordsEntityMetadata extends AbstractEntityMetadata
      {
          if (model_internal::dataProperties.indexOf(propertyName) == -1)
          {
-              throw new Error(propertyName + " is not a data property of entity TblKeywords");
+              throw new Error(propertyName + " is not a data property of entity TblLnkKeywordProducts");
          }  
                                                      
          model_internal::_instance[propertyName] = value;
@@ -169,7 +168,7 @@ internal class _TblKeywordsEntityMetadata extends AbstractEntityMetadata
      {         
          if (model_internal::allProperties.indexOf(propertyName) == -1)
          {
-         	throw new Error(propertyName + " does not exist for entity TblKeywords");
+         	throw new Error(propertyName + " does not exist for entity TblLnkKeywordProducts");
          }   
                 
          if (model_internal::allAlwaysAvailableProperties.indexOf(propertyName) != -1)
@@ -189,6 +188,7 @@ internal class _TblKeywordsEntityMetadata extends AbstractEntityMetadata
      override public function getIdentityMap():Object
      {
          var returnMap:Object = new Object();
+         returnMap["RowID"] = model_internal::_instance.RowID;
        
          return returnMap;
      }       
@@ -266,19 +266,13 @@ internal class _TblKeywordsEntityMetadata extends AbstractEntityMetadata
     }       
      
      [Bindable(event="propertyChange")] 
-     public function get isCRC2Available():Boolean
+     public function get isProductIDAvailable():Boolean
      {
         return true;
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isKeywordAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isCRC1Available():Boolean
+     public function get isKeywordIDAvailable():Boolean
      {
         return true;
      }                       
@@ -300,19 +294,13 @@ internal class _TblKeywordsEntityMetadata extends AbstractEntityMetadata
      }
 
     [Bindable(event="propertyChange")]   
-    public function get CRC2Style():Style
+    public function get ProductIDStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get KeywordStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get CRC1Style():Style
+    public function get KeywordIDStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      

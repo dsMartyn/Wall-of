@@ -1,6 +1,6 @@
 <?php
 
-include("DatabaseConnector.php");
+require_once("DatabaseConnector.php");
 
 class TblProductsService {
 
@@ -14,46 +14,9 @@ class TblProductsService {
 	public function __construct() {
 		$this->mysql = new MySqlConnector();
 	}
-	
-	/**
-	 * Returns all the rows from the table.
-	 *
-	 * Add authroization or any logical checks for secure access to your data 
-	 *
-	 * @return array
-	 */
-	public function getAllTblProducts() {
 
-		$stmt = mysqli_prepare($this->mysql->connection, "SELECT * FROM $this->tablename");		
-		$this->throwExceptionOnError();
-		
-		mysqli_stmt_execute($stmt);
-		$this->throwExceptionOnError();
-		
-		$rows = array();
-		
-		mysqli_stmt_bind_result($stmt, $row->RowID, $row->MemberID, $row->CompanyName, $row->CompanyDesc, $row->YoutubeVideoUrl, $row->GooglePostCode, $row->AddressName, $row->AddressStreet, $row->AddressTown, $row->AddressCounty, $row->AddressPostCode, $row->AddressEmail, $row->AddressTel, $row->AddressMob, $row->AddressFax, $row->status);
-		
-	    while (mysqli_stmt_fetch($stmt)) {
-	      $rows[] = $row;
-	      $row = new stdClass();
-	      mysqli_stmt_bind_result($stmt, $row->RowID, $row->MemberID, $row->CompanyName, $row->CompanyDesc, $row->YoutubeVideoUrl, $row->GooglePostCode, $row->AddressName, $row->AddressStreet, $row->AddressTown, $row->AddressCounty, $row->AddressPostCode, $row->AddressEmail, $row->AddressTel, $row->AddressMob, $row->AddressFax, $row->status);
-	    }
-		
-		mysqli_stmt_free_result($stmt);
-	    $this->mysql->_mysqli_close();
-	
-	    return $rows;
-	}
 
-	/**
-	 * Returns the item corresponding to the value specified for the primary key.
-	 *
-	 * Add authroization or any logical checks for secure access to your data 
-	 *
-	 * 
-	 * @return stdClass
-	 */
+
 	public function getTblProductsByID($itemID) {
 		
 		$stmt = mysqli_prepare($this->mysql->connection, "SELECT * FROM $this->tablename where RowID=?");
@@ -65,7 +28,7 @@ class TblProductsService {
 		mysqli_stmt_execute($stmt);
 		$this->throwExceptionOnError();
 		
-		mysqli_stmt_bind_result($stmt, $row->RowID, $row->MemberID, $row->CompanyName, $row->CompanyDesc, $row->YoutubeVideoUrl, $row->GooglePostCode, $row->AddressName, $row->AddressStreet, $row->AddressTown, $row->AddressCounty, $row->AddressPostCode, $row->AddressEmail, $row->AddressTel, $row->AddressMob, $row->AddressFax, $row->status);
+		mysqli_stmt_bind_result($stmt, $row->RowID, $row->MemberID, $row->ItemName, $row->ItemDesc, $row->YoutubeVideoUrl, $row->GooglePostCode, $row->AddressName, $row->AddressStreet, $row->AddressTown, $row->AddressCounty, $row->AddressPostCode, $row->AddressEmail, $row->AddressTel, $row->AddressMob, $row->AddressFax, $row->status, $row->ImageID, $row->Category);
 		
 		if(mysqli_stmt_fetch($stmt)) {
 			return $row;
@@ -74,90 +37,21 @@ class TblProductsService {
 		}
 	}
 
+
 	/**
-	 * Returns the item corresponding to the value specified for the primary key.
-	 *
-	 * Add authroization or any logical checks for secure access to your data 
-	 *
+	 * Returns list of products that are linked to the keywords
 	 * 
 	 * @return stdClass
+	  SELECT * FROM TblLnkKeywordProducts WHERE KeywordID IN (213582, 579004, 213583, 96711)
+	  SELECT RowID FROM tblKeywords WHERE CRC1 IN (115314769853, 113275458213, 113188262816, 113219423308, 0)
 	 */
-	public function createTblProducts($item) {
-	
-		$stmt = mysqli_prepare($this->mysql->connection, "INSERT INTO $this->tablename (RowID, MemberID, CompanyName, CompanyDesc, YoutubeVideoUrl, GooglePostCode, AddressName, AddressStreet, AddressTown, AddressCounty, AddressPostCode, AddressEmail, AddressTel, AddressMob, AddressFax, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");		
-		$this->throwExceptionOnError();
-		
-		mysqli_bind_param($stmt, 'iisssssssssssssi', $item->RowID, $item->MemberID, $item->CompanyName, $item->CompanyDesc, $item->YoutubeVideoUrl, $item->GooglePostCode, $item->AddressName, $item->AddressStreet, $item->AddressTown, $item->AddressCounty, $item->AddressPostCode, $item->AddressEmail, $item->AddressTel, $item->AddressMob, $item->AddressFax, $item->status);		
-		$this->throwExceptionOnError();
+	public function countAllProducts() {
+		$rec_count=0;
+		$query = "select count(*) from tblProducts";
 
-		mysqli_stmt_execute($stmt);		
+		$stmt = mysqli_prepare($this->mysql->connection, $query);		
 		$this->throwExceptionOnError();
 		
-		$autoid = mysqli_stmt_insert_id($stmt);
-		
-		mysqli_stmt_free_result($stmt);		
-		$this->mysql->_mysqli_close();
-		
-		return $autoid;
-	}
-
-	/**
-	 * Updates the passed item in the table.
-	 *
-	 * Add authroization or any logical checks for secure access to your data 
-	 *
-	 * @param stdClass $item
-	 * @return void
-	 */
-	public function updateTblProducts($item) {
-	
-		$stmt = mysqli_prepare($this->mysql->connection, "UPDATE $this->tablename SET RowID=?, MemberID=?, CompanyName=?, CompanyDesc=?, YoutubeVideoUrl=?, GooglePostCode=?, AddressName=?, AddressStreet=?, AddressTown=?, AddressCounty=?, AddressPostCode=?, AddressEmail=?, AddressTel=?, AddressMob=?, AddressFax=?, status=?	WHERE RowID=?");		
-		$this->throwExceptionOnError();
-		
-		mysqli_bind_param($stmt, 'iisssssssssssssii', $item->RowID, $item->MemberID, $item->CompanyName, $item->CompanyDesc, $item->YoutubeVideoUrl, $item->GooglePostCode, $item->AddressName, $item->AddressStreet, $item->AddressTown, $item->AddressCounty, $item->AddressPostCode, $item->AddressEmail, $item->AddressTel, $item->AddressMob, $item->AddressFax, $item->status, $item->RowID);		
-		$this->throwExceptionOnError();
-
-		mysqli_stmt_execute($stmt);		
-		$this->throwExceptionOnError();
-		
-		mysqli_stmt_free_result($stmt);		
-		$this->mysql->_mysqli_close();
-	}
-
-	/**
-	 * Deletes the item corresponding to the passed primary key value from 
-	 * the table.
-	 *
-	 * Add authroization or any logical checks for secure access to your data 
-	 *
-	 * 
-	 * @return void
-	 */
-	public function deleteTblProducts($itemID) {
-				
-		$stmt = mysqli_prepare($this->mysql->connection, "DELETE FROM $this->tablename WHERE RowID = ?");
-		$this->throwExceptionOnError();
-		
-		mysqli_bind_param($stmt, 'i', $itemID);
-		mysqli_stmt_execute($stmt);
-		$this->throwExceptionOnError();
-		
-		mysqli_stmt_free_result($stmt);		
-		$this->mysql->_mysqli_close();
-	}
-
-
-	/**
-	 * Returns the number of rows in the table.
-	 *
-	 * Add authroization or any logical checks for secure access to your data 
-	 *
-	 * 
-	 */
-	public function count() {
-		$stmt = mysqli_prepare($this->mysql->connection, "SELECT COUNT(*) AS COUNT FROM $this->tablename");
-		$this->throwExceptionOnError();
-
 		mysqli_stmt_execute($stmt);
 		$this->throwExceptionOnError();
 		
@@ -172,44 +66,181 @@ class TblProductsService {
 		
 		return $rec_count;
 	}
-
+	
 
 	/**
-	 * Returns $numItems rows starting from the $startIndex row from the 
-	 * table.
-	 *
-	 * Add authroization or any logical checks for secure access to your data 
-	 *
+	 * Returns list of products that are linked to the keywords
 	 * 
-	 * 
-	 * @return array
+	 * @return stdClass
+	  SELECT * FROM TblLnkKeywordProducts WHERE KeywordID IN (213582, 579004, 213583, 96711)
+	  SELECT RowID FROM tblKeywords WHERE CRC1 IN (115314769853, 113275458213, 113188262816, 113219423308, 0)
 	 */
-	public function getTblProducts_paged($startIndex, $numItems) {
-		
-		$stmt = mysqli_prepare($this->mysql->connection, "SELECT * FROM $this->tablename LIMIT ?, ?");
+	public function countProductsByIDList($searchStr) {
+		$rec_count=0;
+		$query = "select count(DISTINCT productID) from tblLnkKeywordProducts a left join TblKeywords b ON a.KeywordID = b.rowID WHERE CRC1 IN ($searchStr)";
+ 
+		$stmt = mysqli_prepare($this->mysql->connection, $query);		
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'ii', $startIndex, $numItems);
+		mysqli_stmt_execute($stmt);
+		$this->throwExceptionOnError();
+		
+		mysqli_stmt_bind_result($stmt, $rec_count);
+		$this->throwExceptionOnError();
+		
+		mysqli_stmt_fetch($stmt);
+		$this->throwExceptionOnError();
+		
+		mysqli_stmt_free_result($stmt);
+		$this->mysql->_mysqli_close();
+		
+		return $rec_count;
+	}
+	
+	
+	/**
+	 * Returns list of products that are linked to the keywords
+	 * 
+	 * @return stdClass
+	  SELECT * FROM TblLnkKeywordProducts WHERE KeywordID IN (213582, 579004, 213583, 96711)
+	  SELECT RowID FROM tblKeywords WHERE CRC1 IN (115314769853, 113275458213, 113188262816, 113219423308, 0)
+	 */
+	public function getProductsByIDList($searchStr, $startIndex, $numItems) {
+	
+		$query = "select distinct a.*, d.image, 1 from tblProducts A LEFT JOIN TblLnkKeywordProducts B ON A.RowID = B.ProductID LEFT JOIN tblKeywords C ON C.RowID = B.KeywordID LEFT JOIN TblImages D ON d.RowID = a.ImageID  WHERE CRC1 IN ($searchStr) LIMIT $startIndex, $numItems";
+
+		$stmt = mysqli_prepare($this->mysql->connection, $query);		
+		$this->throwExceptionOnError();
+		
 		mysqli_stmt_execute($stmt);
 		$this->throwExceptionOnError();
 		
 		$rows = array();
+		//mysqli_stmt_bind_result($stmt,  $row->RowID,$row->Keyword,$row->CRC1,$row->CRC2,$row->RowID,$row->KeywordID,$row->ProductID,$row->RowID,$row->MemberID,$row->ItemName,$row->ItemDesc,$row->YoutubeVideoUrl,$row->GooglePostCode,$row->AddressName,$row->AddressStreet,$row->AddressTown,$row->AddressCounty,$row->AddressPostCode,$row->AddressEmail,$row->AddressTel,$row->AddressMob,$row->AddressFax,$row->status);
+		mysqli_stmt_bind_result($stmt,  $row->RowID,$row->MemberID,$row->ItemName,$row->ItemDesc,$row->YoutubeVideoUrl,$row->GooglePostCode,$row->AddressName,$row->AddressStreet,$row->AddressTown,$row->AddressCounty,$row->AddressPostCode,$row->AddressEmail,$row->AddressTel,$row->AddressMob,$row->AddressFax,$row->status,$row->ImageID,$row->Category, $row->Image , $row->count);
+
+	    while (mysqli_stmt_fetch($stmt)) {
+	      $rows[] = $row;
+	      $row = new stdClass();
+	      //mysqli_stmt_bind_result($stmt,  $row->RowID,$row->Keyword,$row->CRC1,$row->CRC2,$row->RowID,$row->KeywordID,$row->ProductID,$row->RowID,$row->MemberID,$row->ItemName,$row->ItemDesc,$row->YoutubeVideoUrl,$row->GooglePostCode,$row->AddressName,$row->AddressStreet,$row->AddressTown,$row->AddressCounty,$row->AddressPostCode,$row->AddressEmail,$row->AddressTel,$row->AddressMob,$row->AddressFax,$row->status);
+	   	  mysqli_stmt_bind_result($stmt,  $row->RowID,$row->MemberID,$row->ItemName,$row->ItemDesc,$row->YoutubeVideoUrl,$row->GooglePostCode,$row->AddressName,$row->AddressStreet,$row->AddressTown,$row->AddressCounty,$row->AddressPostCode,$row->AddressEmail,$row->AddressTel,$row->AddressMob,$row->AddressFax,$row->status,$row->ImageID, $row->Category, $row->Image, $row->count);
+	    }
 		
-		mysqli_stmt_bind_result($stmt, $row->RowID, $row->MemberID, $row->CompanyName, $row->CompanyDesc, $row->YoutubeVideoUrl, $row->GooglePostCode, $row->AddressName, $row->AddressStreet, $row->AddressTown, $row->AddressCounty, $row->AddressPostCode, $row->AddressEmail, $row->AddressTel, $row->AddressMob, $row->AddressFax, $row->status);
+		mysqli_stmt_free_result($stmt);
+	   
+	
+		$ctr = $this->countProductsByIDList($searchStr);
+		$this->mysql->_mysqli_close();
+		
+		for ($i=0; $i< count($rows); $i++)
+		{
+			$rows[$i]->count = $ctr;
+			$rows[$i]->Image =  $this->FixEncoding($rows[$i]->Image);
+		}
+	    
+	    return $rows;
+	}
+
+
+
+	/**
+	 * Returns list of products that are linked to the keywords
+	 * 
+	 * @return stdClass
+	  SELECT * FROM TblLnkKeywordProducts WHERE KeywordID IN (213582, 579004, 213583, 96711)
+	  SELECT RowID FROM tblKeywords WHERE CRC1 IN (115314769853, 113275458213, 113188262816, 113219423308, 0)
+	 */
+	public function getAllProductsPaged($startIndex, $numItems) {
+		
+		$query = "select distinct a.*, d.image, 1 from tblProducts A LEFT JOIN TblImages D ON d.RowID = a.ImageID  LIMIT $startIndex, $numItems";
+
+		$stmt = mysqli_prepare($this->mysql->connection, $query);		
+		$this->throwExceptionOnError();
+		
+		mysqli_stmt_execute($stmt);
+		$this->throwExceptionOnError();
+		
+		$rows = array();
+		//mysqli_stmt_bind_result($stmt,  $row->RowID,$row->Keyword,$row->CRC1,$row->CRC2,$row->RowID,$row->KeywordID,$row->ProductID,$row->RowID,$row->MemberID,$row->ItemName,$row->ItemDesc,$row->YoutubeVideoUrl,$row->GooglePostCode,$row->AddressName,$row->AddressStreet,$row->AddressTown,$row->AddressCounty,$row->AddressPostCode,$row->AddressEmail,$row->AddressTel,$row->AddressMob,$row->AddressFax,$row->status);
+		mysqli_stmt_bind_result($stmt,  $row->RowID,$row->MemberID,$row->ItemName,$row->ItemDesc,$row->YoutubeVideoUrl,$row->GooglePostCode,$row->AddressName,$row->AddressStreet,$row->AddressTown,$row->AddressCounty,$row->AddressPostCode,$row->AddressEmail,$row->AddressTel,$row->AddressMob,$row->AddressFax,$row->status,$row->ImageID, $row->Category, $row->Image, $row->count);
 		
 	    while (mysqli_stmt_fetch($stmt)) {
 	      $rows[] = $row;
 	      $row = new stdClass();
-	      mysqli_stmt_bind_result($stmt, $row->RowID, $row->MemberID, $row->CompanyName, $row->CompanyDesc, $row->YoutubeVideoUrl, $row->GooglePostCode, $row->AddressName, $row->AddressStreet, $row->AddressTown, $row->AddressCounty, $row->AddressPostCode, $row->AddressEmail, $row->AddressTel, $row->AddressMob, $row->AddressFax, $row->status);
+	      //mysqli_stmt_bind_result($stmt,  $row->RowID,$row->Keyword,$row->CRC1,$row->CRC2,$row->RowID,$row->KeywordID,$row->ProductID,$row->RowID,$row->MemberID,$row->ItemName,$row->ItemDesc,$row->YoutubeVideoUrl,$row->GooglePostCode,$row->AddressName,$row->AddressStreet,$row->AddressTown,$row->AddressCounty,$row->AddressPostCode,$row->AddressEmail,$row->AddressTel,$row->AddressMob,$row->AddressFax,$row->status);
+	   	  mysqli_stmt_bind_result($stmt,  $row->RowID,$row->MemberID,$row->ItemName,$row->ItemDesc,$row->YoutubeVideoUrl,$row->GooglePostCode,$row->AddressName,$row->AddressStreet,$row->AddressTown,$row->AddressCounty,$row->AddressPostCode,$row->AddressEmail,$row->AddressTel,$row->AddressMob,$row->AddressFax,$row->status,$row->ImageID, $row->Category, $row->Image, $row->count);
 	    }
+		
+		mysqli_stmt_free_result($stmt);
+		
+		$ctr = $this->countAllProducts();
+		
+	    $this->mysql->_mysqli_close();
+	
+		for ($i=0; $i< count($rows); $i++)
+		{
+			$rows[$i]->count = $ctr;
+			$rows[$i]->Image =  $this->FixEncoding($rows[$i]->Image);
+		}
+		
+	    return $rows;
+	}
+
+
+
+	public function createTblProducts($item) {
+	
+		$stmt = mysqli_prepare($this->mysql->connection, "INSERT INTO $this->tablename (RowID, MemberID, ItemName, ItemDesc, YoutubeVideoUrl, GooglePostCode, AddressName, AddressStreet, AddressTown, AddressCounty, AddressPostCode, AddressEmail, AddressTel, AddressMob, AddressFax, status, ImageID, Category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");		
+		$this->throwExceptionOnError();
+		
+		mysqli_bind_param($stmt, 'iisssssssssssssiis', $item->RowID, $item->MemberID, $item->ItemName, $item->ItemDesc, $item->YoutubeVideoUrl, $item->GooglePostCode, $item->AddressName, $item->AddressStreet, $item->AddressTown, $item->AddressCounty, $item->AddressPostCode, $item->AddressEmail, $item->AddressTel, $item->AddressMob, $item->AddressFax, $item->status, $item->ImageID, $row->Category);		
+		$this->throwExceptionOnError();
+
+		mysqli_stmt_execute($stmt);		
+		$this->throwExceptionOnError();
+		
+		$autoid = mysqli_stmt_insert_id($stmt);
 		
 		mysqli_stmt_free_result($stmt);		
 		$this->mysql->_mysqli_close();
 		
-		return $rows;
+		return $autoid;
 	}
+
+
+
+	public function updateTblProducts($item) {
 	
-	
+		$stmt = mysqli_prepare($this->mysql->connection, "UPDATE $this->tablename SET RowID=?, MemberID=?, ItemName=?, ItemDesc=?, YoutubeVideoUrl=?, GooglePostCode=?, AddressName=?, AddressStreet=?, AddressTown=?, AddressCounty=?, AddressPostCode=?, AddressEmail=?, AddressTel=?, AddressMob=?, AddressFax=?, status=?, ImageID=?, Category=? WHERE RowID=?");		
+		$this->throwExceptionOnError();
+		
+		mysqli_bind_param($stmt, 'iisssssssssssssiisi', $item->RowID, $item->MemberID, $item->ItemName, $item->ItemDesc, $item->YoutubeVideoUrl, $item->GooglePostCode, $item->AddressName, $item->AddressStreet, $item->AddressTown, $item->AddressCounty, $item->AddressPostCode, $item->AddressEmail, $item->AddressTel, $item->AddressMob, $item->AddressFax, $item->status, $item->ImageID, $row->Category, $item->RowID);		
+		$this->throwExceptionOnError();
+
+		mysqli_stmt_execute($stmt);		
+		$this->throwExceptionOnError();
+		
+		mysqli_stmt_free_result($stmt);		
+		$this->mysql->_mysqli_close();
+	}
+
+
+	public function deleteTblProducts($itemID) {
+				
+		$stmt = mysqli_prepare($this->mysql->connection, "DELETE FROM $this->tablename WHERE RowID = ?");
+		$this->throwExceptionOnError();
+		
+		mysqli_bind_param($stmt, 'i', $itemID);
+		mysqli_stmt_execute($stmt);
+		$this->throwExceptionOnError();
+		
+		mysqli_stmt_free_result($stmt);		
+		$this->mysql->_mysqli_close();
+	}
+
+
+
+
 
 	/****** ParseEmbedded($html - html tag including youtube video url) *****\
 		Returns Youtube Video URL without html mark-up
@@ -332,6 +363,123 @@ class TblProductsService {
 		return $tags;
 	}
 	
+
+  private function FixEncoding($str)
+  {
+	return base64_encode($str);
+  }
+  
+  function search($str, $start, $limit)
+  {
+  
+  if ($str == "null")
+  	$str = "";
+  	
+  //	$ret = new stdClass();
+    $str = str_replace(",", " ", $str);
+    
+	$this->mysql->php_mode();
+	
+
+	$searchStr = "";
+	
+	//create keyword search string
+	foreach (explode(" ", $str) as $k)
+	{
+		$item = new stdClass();
+		$item->Keyword = strtolower($k);
+		$item->CRC1 = $this->mysql->ComputeCRC($item->Keyword); //generate crc from keyword
+		$item->CRC2 = crc32($item->Keyword) ;
+
+		$item->CRC1 ^= $item->CRC2;
+		$searchStr .= $item->CRC1 . ", ";
+
+	}$searchStr .= "0";
+
+	if ($str == "")
+	{
+		//get all products
+		//$ret->rows =
+		$rows = $this->getAllProductsPaged($start,$limit);
+		
+	}else{
+		//get products for keywords 
+		//$ret->rows =
+		$rows = $this->getProductsByIDList($searchStr, $start,$limit);	
+		
+	}
+		
+	
+  	$this->mysql->_mysqli_close(true);
+
+	return $rows;
+  }
+
+ 
+  function addKeywords($str, $productId)
+  {
+  
+   //echo $str . "\n";
+   
+  	$str = str_replace(" ", ",", $str);
+    
+  	 //delete previous keywords
+	require_once ('TblLnkKeywordProductsService.php');
+	require_once ('TblKeywordsService.php');
+	$clsKeywordLnk = new TblLnkKeywordProductsService();
+	$clsKeyword = new TblKeywordsService();
+	
+	$clsKeyword->mysql->php_mode();
+	$clsKeywordLnk->mysql->php_mode();
+	
+	$clsKeywordLnk->deleteTblProduct($productId);
+	
+	//add new keywords
+	foreach (explode(",", $str) as $k)
+	{
+		$item->Keyword = strtolower($k);
+		$item->CRC1 = $clsKeyword->mysql->ComputeCRC($item->Keyword); //generate crc from keyword
+		$item->CRC2 = crc32($item->Keyword) ;
+
+		if ($item->CRC2)
+		{
+			$item->CRC1 ^= $item->CRC2;
+	
+			//find keyword ID
+			$row = $clsKeyword->getTblKeywordsByCRC($item->CRC1);
+			if (!$row)
+			{
+				 //add to keyword table and get ID
+				 $item->Keyword = strtolower($item->Keyword);
+				 $item->CRC1 = 0;
+				 $item->CRC2 = 0;
+				 $item->RowID = 0;
+			//  echo 'creating keyword ' . $item->Keyword . "<br>";
+				 $item->RowID = $clsKeyword->createTblKeywords($item);
+			}else{
+				$item->RowID = $row->RowID;
+			}
+			
+			//check link doesn't already exist
+			$row = $clsKeywordLnk->getTblLnkKeywordProductsByID($item->RowID, $productId);
+			
+			if (!$row)
+			{
+				//add to link table
+				$item->KeywordID = $item->RowID;
+				$item->ProductID = $productId;
+				$item->RowID = 0;
+				$clsKeywordLnk->createTblLnkKeywordProducts($item);
+			}
+	
+			//echo $item->RowID . " - " . $k . "<br>";
+		}
+	}
+	
+	$clsKeywordLnk->mysql->_mysqli_close(true);
+	$clsKeyword->mysql->_mysqli_close(true);
+  }
+  
 	
 	/**
 	 * Utitity function to throw an exception if an error occurs 

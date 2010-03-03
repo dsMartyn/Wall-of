@@ -29,6 +29,7 @@ class MySqlConnector {
 	
 	/************ php_mode() *************\
 	  if called from PHP then set this
+	  this will stop each mysql function from closing the connection after completing
 	\*************************************/
 	public function php_mode()
 	{
@@ -47,6 +48,23 @@ class MySqlConnector {
 		mysqli_close($this->connection);
 	}
 	
+	/**
+	 * generate a 32bit CRC for the string inputed
+	**/
+	public function ComputeCRC($str)
+	{	
+		$crc = 0xD234F290;
+		
+		 for ($i=0;$i < strlen($str); $i++) 
+		 {
+			$crc = ((($crc << 1) | (($crc & 0x80000000)? 1 : 0)) ^ ord(substr($str,$i,1)));
+		 }
+
+		 return ($crc);
+	}
+
+
+
 	/**
 	 * Utitity function to throw an exception if an error occurs 
 	 * while running a mysql command.

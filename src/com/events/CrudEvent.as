@@ -1,14 +1,20 @@
 package com.events
 {
 	import flash.events.Event;
+	
+	import valueObjects.SearchFields;
 	import valueObjects.TblMembers;
 	
 	public class CrudEvent extends Event
 	{
 		
 		public static const VALID_EMAIL:String = "validEmail";
+		
 		public static const USER_CREATED:String = "userCreated";
 		public static const USER_UPDATED:String = "userUpdated";
+		
+		public static const PRODUCT_CREATED:String = "productCreated";
+		public static const PRODUCT_UPDATED:String = "productUpdated";
 		
 		public static const USER_LOGIN:String = "userLogin";
 		public static const GET_SESSIONID:String = "getSessionID";
@@ -16,16 +22,25 @@ package com.events
 		
 		public static const EMAIL_FRIEND:String = "emailFriend";
 		
+		public static const SEARCH:String = "search"
+		
+		
 		/**
 		 * returns true if VALID_EMAIL and email is valid
 		 * */
 		public var valid:Boolean=false;
 		
 		/**
-		 * returns memberID if user was created
+		 * returns memberID if user was created or updated
 		 * */
 		public var memberId:Number=0;
 
+		
+		/**
+		 * returns productID if product was created or updated
+		 * */
+		public var productId:Number=0;
+		
 		/**
 		 * returns sessionID if user was logged in
 		 * */
@@ -41,7 +56,8 @@ package com.events
 		 * returns member fields 
 		 * */
 		public var memberFields:TblMembers;
-		
+	
+		//public var page:Number;
 		
 		public function CrudEvent(type:String)
 		{

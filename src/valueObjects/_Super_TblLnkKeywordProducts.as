@@ -1,6 +1,6 @@
 /**
  * This is a generated class and is not intended for modfication.  To customize behavior
- * of this value object you may modify the generated sub-class of this class - TblKeywords.as.
+ * of this value object you may modify the generated sub-class of this class - TblLnkKeywordProducts.as.
  */
 
 package valueObjects
@@ -24,8 +24,9 @@ import mx.events.PropertyChangeEvent;
 
 use namespace model_internal;
 
+[Managed]
 [ExcludeClass]
-public class _Super_TblKeywords extends EventDispatcher implements IValueObject
+public class _Super_TblLnkKeywordProducts extends EventDispatcher implements IValueObject
 {
     model_internal static function initRemoteClassAliasSingle(cz:Class) : void 
     {
@@ -35,14 +36,13 @@ public class _Super_TblKeywords extends EventDispatcher implements IValueObject
     {     
     }
 
-	model_internal var _dminternal_model : _TblKeywordsEntityMetadata;
+	model_internal var _dminternal_model : _TblLnkKeywordProductsEntityMetadata;
 
 	/**
 	 * properties
 	 */
-	private var _internal_CRC2 : Number = 0;
-	private var _internal_Keyword : String;
-	private var _internal_CRC1 : Number = 0;
+	private var _internal_ProductID : int;
+	private var _internal_KeywordID : int;
 	private var _internal_RowID : int;
 
     private static var emptyArray:Array = new Array();
@@ -54,9 +54,9 @@ public class _Super_TblKeywords extends EventDispatcher implements IValueObject
     
 	model_internal var _changeWatcherArray:Array = new Array();   
 
-	public function _Super_TblKeywords() 
+	public function _Super_TblLnkKeywordProducts() 
 	{	
-		_model = new _TblKeywordsEntityMetadata(this);
+		_model = new _TblLnkKeywordProductsEntityMetadata(this);
 	
 		// Bind to own data properties for cache invalidation triggering  
        
@@ -66,19 +66,14 @@ public class _Super_TblKeywords extends EventDispatcher implements IValueObject
      * data property getters
      */
 	[Bindable(event="propertyChange")] 
-    public function get CRC2() : Number    
+    public function get ProductID() : int    
     {
-            return _internal_CRC2;
+            return _internal_ProductID;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get Keyword() : String    
+    public function get KeywordID() : int    
     {
-            return _internal_Keyword;
-    }    
-	[Bindable(event="propertyChange")] 
-    public function get CRC1() : Number    
-    {
-            return _internal_CRC1;
+            return _internal_KeywordID;
     }    
 	[Bindable(event="propertyChange")] 
     public function get RowID() : int    
@@ -89,16 +84,15 @@ public class _Super_TblKeywords extends EventDispatcher implements IValueObject
     /**
      * data property setters
      */      
-    public function set CRC2(value:Number) : void 
+    public function set ProductID(value:int) : void 
     {    	
         var recalcValid:Boolean = false;
     	
     	
-    	var oldValue:Number = _internal_CRC2;               
+    	var oldValue:int = _internal_ProductID;               
         if (oldValue !== value)
         {
-        	_internal_CRC2 = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "CRC2", oldValue, _internal_CRC2));
+        	_internal_ProductID = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -106,37 +100,15 @@ public class _Super_TblKeywords extends EventDispatcher implements IValueObject
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set Keyword(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_Keyword == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_Keyword;               
-        if (oldValue !== value)
-        {
-        	_internal_Keyword = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Keyword", oldValue, _internal_Keyword));
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
-    public function set CRC1(value:Number) : void 
+    public function set KeywordID(value:int) : void 
     {    	
         var recalcValid:Boolean = false;
     	
     	
-    	var oldValue:Number = _internal_CRC1;               
+    	var oldValue:int = _internal_KeywordID;               
         if (oldValue !== value)
         {
-        	_internal_CRC1 = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "CRC1", oldValue, _internal_CRC1));
+        	_internal_KeywordID = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -153,7 +125,6 @@ public class _Super_TblKeywords extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_RowID = value;
-        	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "RowID", oldValue, _internal_RowID));
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -193,14 +164,8 @@ public class _Super_TblKeywords extends EventDispatcher implements IValueObject
         var violatedConsts:Array = new Array();    
         var validationFailureMessages:Array = new Array();    
 
-		if (_model.isKeywordAvailable && _internal_Keyword == null)
-		{
-			violatedConsts.push("KeywordIsRequired");
-			validationFailureMessages.push("Keyword is required");
-		}
 
 		var styleValidity:Boolean = true;
-	
 	
 	
 	
@@ -231,14 +196,14 @@ public class _Super_TblKeywords extends EventDispatcher implements IValueObject
 
     [Transient] 
 	[Bindable(event="propertyChange")] 
-    public function get _model() : _TblKeywordsEntityMetadata
+    public function get _model() : _TblLnkKeywordProductsEntityMetadata
     {
 		return model_internal::_dminternal_model;              
     }	
     
-    public function set _model(value : _TblKeywordsEntityMetadata) : void       
+    public function set _model(value : _TblLnkKeywordProductsEntityMetadata) : void       
     {
-    	var oldValue : _TblKeywordsEntityMetadata = model_internal::_dminternal_model;               
+    	var oldValue : _TblLnkKeywordProductsEntityMetadata = model_internal::_dminternal_model;               
         if (oldValue !== value)
         {
         	model_internal::_dminternal_model = value;

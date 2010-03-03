@@ -7,6 +7,7 @@ package services.tblproductsservice
 import mx.rpc.AsyncToken;
 import com.adobe.fiber.core.model_internal;
 import mx.rpc.AbstractOperation;
+import valueObjects.SearchFields;
 import valueObjects.TblProducts;
 import mx.data.RPCDataManager;
 import mx.data.ManagedOperation;
@@ -96,11 +97,6 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
         var operations:Object = new Object();
         var operation:Operation;         
          
-        operation = new Operation(null, "getAllTblProducts");
-		 operation.resultElementType = valueObjects.TblProducts;
-        operations["getAllTblProducts"] = operation;
-         
-     valueObjects.TblProducts._initRemoteClassAlias();
         operation = new Operation(null, "getTblProductsByID");
 		 operation.resultElementType = valueObjects.TblProducts;
         operations["getTblProductsByID"] = operation;
@@ -116,19 +112,36 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
         operation = new Operation(null, "deleteTblProducts");
         operations["deleteTblProducts"] = operation;
          
-        operation = new Operation(null, "count");
-		 operation.resultType = int; 		 
-        operations["count"] = operation;
-         
-        operation = new Operation(null, "getTblProducts_paged");
-		 operation.resultElementType = valueObjects.TblProducts;
-        operations["getTblProducts_paged"] = operation;
-         
-     valueObjects.TblProducts._initRemoteClassAlias();
         operation = new Operation(null, "ParseEmbedded");
 		 operation.resultType = String; 		 
         operations["ParseEmbedded"] = operation;
          
+        operation = new Operation(null, "getProductsByIDList");
+		 operation.resultElementType = valueObjects.TblProducts;
+        operations["getProductsByIDList"] = operation;
+         
+     valueObjects.TblProducts._initRemoteClassAlias();
+        operation = new Operation(null, "addKeywords");
+        operations["addKeywords"] = operation;
+         
+        operation = new Operation(null, "countAllProducts");
+		 operation.resultType = int; 		 
+        operations["countAllProducts"] = operation;
+         
+        operation = new Operation(null, "getAllProductsPaged");
+		 operation.resultElementType = valueObjects.TblProducts;
+        operations["getAllProductsPaged"] = operation;
+         
+     valueObjects.TblProducts._initRemoteClassAlias();
+        operation = new Operation(null, "countProductsByIDList");
+		 operation.resultType = int; 		 
+        operations["countProductsByIDList"] = operation;
+         
+        operation = new Operation(null, "search");
+		 operation.resultElementType = valueObjects.SearchFields;
+        operations["search"] = operation;
+         
+     valueObjects.SearchFields._initRemoteClassAlias();
     
         _serviceControl.operations = operations;   
 		_serviceControl.convertResultHandler = TypeUtility.convertResultHandler;
@@ -158,15 +171,17 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
         dmOperation.parameters = "RowID";
         _tblProductsRPCDataManager.addManagedOperation(dmOperation);     
             
+        dmQuery = new ManagedQuery("getProductsByIDList");
+        dmQuery.propertySpecifier = "picUrl,CompanyDesc,CompanyName,AddressTown,Image,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode";
+        dmQuery.parameters = "searchStr,startIndex,numItems";
+        _tblProductsRPCDataManager.addManagedOperation(dmQuery);                 
+
         dmOperation = new ManagedOperation("updateTblProducts", "update");
         dmOperation.parameters = "item";
         _tblProductsRPCDataManager.addManagedOperation(dmOperation);     
             
-        dmQuery = new ManagedQuery("getTblProducts_paged");
-        dmQuery.propertySpecifier = "RowID,MemberID,CompanyName,CompanyDesc,YoutubeVideoUrl,GooglePostCode,AddressName,AddressStreet,AddressTown,AddressCounty,AddressPostCode,AddressEmail,AddressTel,AddressMob,AddressFax,status";
-        dmQuery.countOperation = "count";
-        dmQuery.pagingEnabled = true;
-        dmQuery.positionalPagingParameters = true;
+        dmQuery = new ManagedQuery("getAllProductsPaged");
+        dmQuery.propertySpecifier = "AddressTown,Image,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode";
         dmQuery.parameters = "startIndex,numItems";
         _tblProductsRPCDataManager.addManagedOperation(dmQuery);                 
 
@@ -174,11 +189,6 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
         dmOperation.parameters = "item";
         _tblProductsRPCDataManager.addManagedOperation(dmOperation);     
             
-        dmQuery = new ManagedQuery("getAllTblProducts");
-        dmQuery.propertySpecifier = "RowID,MemberID,CompanyName,CompanyDesc,YoutubeVideoUrl,GooglePostCode,AddressName,AddressStreet,AddressTown,AddressCounty,AddressPostCode,AddressEmail,AddressTel,AddressMob,AddressFax,status";
-        dmQuery.parameters = "";
-        _tblProductsRPCDataManager.addManagedOperation(dmQuery);                 
-
         dmOperation = new ManagedOperation("deleteTblProducts", "delete");
         dmOperation.parameters = "id";
         _tblProductsRPCDataManager.addManagedOperation(dmOperation);     
@@ -188,25 +198,6 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
          model_internal::initialize();
     }
 
-	/**
-	  * This method is a generated wrapper used to call the 'getAllTblProducts' operation. It returns an AsyncToken whose 
-	  * result property will be populated with the result of the operation when the server response is received. 
-	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-	  */          
-	public function getAllTblProducts() : AsyncToken
-	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getAllTblProducts");
-		var _internal_token:AsyncToken = _internal_operation.send() ;
-
-		return _internal_token;
-	}   
-	 
 	/**
 	  * This method is a generated wrapper used to call the 'getTblProductsByID' operation. It returns an ItemReference whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
@@ -284,44 +275,6 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'count' operation. It returns an AsyncToken whose 
-	  * result property will be populated with the result of the operation when the server response is received. 
-	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-	  */          
-	public function count() : AsyncToken
-	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("count");
-		var _internal_token:AsyncToken = _internal_operation.send() ;
-
-		return _internal_token;
-	}   
-	 
-	/**
-	  * This method is a generated wrapper used to call the 'getTblProducts_paged' operation. It returns an AsyncToken whose 
-	  * result property will be populated with the result of the operation when the server response is received. 
-	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
-	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
-      *
-      * @see mx.rpc.AsyncToken
-      * @see mx.rpc.CallResponder 
-      *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
-	  */          
-	public function getTblProducts_paged() : AsyncToken
-	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getTblProducts_paged");
-		var _internal_token:AsyncToken = _internal_operation.send() ;
-
-		return _internal_token;
-	}   
-	 
-	/**
 	  * This method is a generated wrapper used to call the 'ParseEmbedded' operation. It returns an AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
@@ -336,6 +289,120 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
 	{
 		var _internal_operation:AbstractOperation = _serviceControl.getOperation("ParseEmbedded");
 		var _internal_token:AsyncToken = _internal_operation.send(html) ;
+
+		return _internal_token;
+	}   
+	 
+	/**
+	  * This method is a generated wrapper used to call the 'getProductsByIDList' operation. It returns an AsyncToken whose 
+	  * result property will be populated with the result of the operation when the server response is received. 
+	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+	  */          
+	public function getProductsByIDList(searchStr:Object, startIndex:Object, numItems:Object) : AsyncToken
+	{
+		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getProductsByIDList");
+		var _internal_token:AsyncToken = _internal_operation.send(searchStr,startIndex,numItems) ;
+
+		return _internal_token;
+	}   
+	 
+	/**
+	  * This method is a generated wrapper used to call the 'addKeywords' operation. It returns an AsyncToken whose 
+	  * result property will be populated with the result of the operation when the server response is received. 
+	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+	  */          
+	public function addKeywords(str:String, productId:int) : AsyncToken
+	{
+		var _internal_operation:AbstractOperation = _serviceControl.getOperation("addKeywords");
+		var _internal_token:AsyncToken = _internal_operation.send(str,productId) ;
+
+		return _internal_token;
+	}   
+	 
+	/**
+	  * This method is a generated wrapper used to call the 'countAllProducts' operation. It returns an AsyncToken whose 
+	  * result property will be populated with the result of the operation when the server response is received. 
+	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+	  */          
+	public function countAllProducts() : AsyncToken
+	{
+		var _internal_operation:AbstractOperation = _serviceControl.getOperation("countAllProducts");
+		var _internal_token:AsyncToken = _internal_operation.send() ;
+
+		return _internal_token;
+	}   
+	 
+	/**
+	  * This method is a generated wrapper used to call the 'getAllProductsPaged' operation. It returns an AsyncToken whose 
+	  * result property will be populated with the result of the operation when the server response is received. 
+	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+	  */          
+	public function getAllProductsPaged(startIndex:int, numItems:int) : AsyncToken
+	{
+		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getAllProductsPaged");
+		var _internal_token:AsyncToken = _internal_operation.send(startIndex,numItems) ;
+
+		return _internal_token;
+	}   
+	 
+	/**
+	  * This method is a generated wrapper used to call the 'countProductsByIDList' operation. It returns an AsyncToken whose 
+	  * result property will be populated with the result of the operation when the server response is received. 
+	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+	  */          
+	public function countProductsByIDList(searchStr:String) : AsyncToken
+	{
+		var _internal_operation:AbstractOperation = _serviceControl.getOperation("countProductsByIDList");
+		var _internal_token:AsyncToken = _internal_operation.send(searchStr) ;
+
+		return _internal_token;
+	}   
+	 
+	/**
+	  * This method is a generated wrapper used to call the 'search' operation. It returns an AsyncToken whose 
+	  * result property will be populated with the result of the operation when the server response is received. 
+	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+	  */          
+	public function search(str:String, start:int, limit:int) : AsyncToken
+	{
+		var _internal_operation:AbstractOperation = _serviceControl.getOperation("search");
+		var _internal_token:AsyncToken = _internal_operation.send(str,start,limit) ;
 
 		return _internal_token;
 	}   

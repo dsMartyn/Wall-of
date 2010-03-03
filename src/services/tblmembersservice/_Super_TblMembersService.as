@@ -111,6 +111,7 @@ internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
         operations["createTblMembers"] = operation;
          
         operation = new Operation(null, "updateTblMembers");
+		 operation.resultType = int; 		 
         operations["updateTblMembers"] = operation;
          
         operation = new Operation(null, "deleteTblMembers");

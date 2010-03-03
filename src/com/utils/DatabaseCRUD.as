@@ -5,6 +5,7 @@ package com.utils
 	import flash.events.EventDispatcher;
 	import flash.net.SharedObject;
 	
+	import mx.collections.ArrayCollection;
 	import mx.rpc.CallResponder;
 	import mx.rpc.events.FaultEvent;
 	import mx.rpc.events.ResultEvent;
@@ -17,7 +18,9 @@ package com.utils
 	import services.tblproductsservice.TblProductsService;
 	
 	import valueObjects.LoginFields;
+	import valueObjects.SearchFields;
 	import valueObjects.TblMembers;
+	import valueObjects.TblProducts;
 
 	public class DatabaseCRUD extends EventDispatcher
 	{
@@ -40,12 +43,15 @@ package com.utils
 		//global variables
 		public var go_LoginFields:LoginFields = new LoginFields();
 		public var go_MemberFields:TblMembers = new TblMembers();
+		public var go_ProductFields:ArrayCollection;
 		
 		public var ga_Months:Array = ['Month:','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];	
 		public var ga_Days:Array = ['Day:'];	
 		public var ga_Years:Array = ['Year:'];
 		
 
+		public const MAX_RESULTS_PAGE:Number = 54;
+		
 		public function DatabaseCRUD()
 		{
 			
@@ -107,6 +113,7 @@ package com.utils
 			{
 				this.go_LoginFields.SessionID = 0;
 				this.go_LoginFields.MemberID = 0;
+				this.GetMember(null,this.go_LoginFields.MemberID);
 			}else{
 				this.GetMember(null,this.go_LoginFields.MemberID);
 			}
@@ -135,7 +142,7 @@ package com.utils
 			
 			trace('trying to get memberId from ' + this.go_LoginFields.SessionID);
 			//try get member id from session id
-			this.addEventListener(CrudEvent.GET_SESSIONID, this.GotMemberID);
+			this.addEventListener(CrudEvent.GET_SESSIONID, GotMemberID );
 			this.GetMemberID(null,this.go_LoginFields.SessionID);
 		}
 		
@@ -246,8 +253,8 @@ package com.utils
 				this.dispatchEvent(le_Event);
 			}
 			
-			this.pc_UpdateUser.removeEventListener(ResultEvent.RESULT, this.UpdateUser);
-			this.pc_UpdateUser.removeEventListener(FaultEvent.FAULT, this.UpdateUser);
+			this.pc_UpdateUser.removeEventListener(ResultEvent.RESULT, UpdateUser);
+			this.pc_UpdateUser.removeEventListener(FaultEvent.FAULT, UpdateUser);
 		}
 
 		private var pc_LoginUser:CallResponder = new CallResponder();
@@ -287,8 +294,9 @@ package com.utils
 			
 			if (event is FaultEvent)
 			{
+				trace("login errored");
 				var fault:FaultEvent = event as FaultEvent;
-				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
+				le_Event.errorMsg = "login error: " + fault.fault.faultDetail + ' ' + fault.fault.faultString;
 				le_Event.errored = true;
 				this.dispatchEvent(le_Event);
 			}
@@ -316,7 +324,7 @@ package com.utils
 			{
 				var ln_MemberID:Number = this.pc_GetMemberID.token.result as Number;
 				le_Event.memberId = ln_MemberID;
-				
+				trace('memberId received - ' + ln_MemberID);
 				this.go_LoginFields.MemberID = ln_MemberID;
 				this.dispatchEvent(le_Event);
 			}
@@ -324,6 +332,7 @@ package com.utils
 			if (event is FaultEvent)
 			{
 				var fault:FaultEvent = event as FaultEvent;
+				trace('error getting memberId');
 				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
 				le_Event.errored = true;
 				this.dispatchEvent(le_Event);
@@ -334,8 +343,9 @@ package com.utils
 		}
 		
 		private var pc_GetMember:CallResponder = new CallResponder();
-		public function GetMember(event:Object, memberID:Number=0):void
+		public function GetMember(event:Object, memberID:Number=-1):void
 		{
+			var le_Event:CrudEvent = new CrudEvent(CrudEvent.GET_MEMBERINFO);
 			//event should be NULL if memberiD > 0
 			if (memberID > 0)
 			{
@@ -344,9 +354,15 @@ package com.utils
 				this.pc_GetMember.token = pc_CrudMembers.getTblMembersByID(memberID);
 				trace('GetMember');
 				return;
+			}else if(memberID == 0)
+			{
+				this.dispatchEvent(le_Event);                                                                                                                                               
+				this.pc_GetMember.removeEventListener(ResultEvent.RESULT, GetMember);
+				this.pc_GetMember.removeEventListener(FaultEvent.FAULT, GetMember);
+				return;
 			}
 
-			var le_Event:CrudEvent = new CrudEvent(CrudEvent.GET_MEMBERINFO);
+			
 			trace('GetMember completed');
 			if (event is ResultEvent)	
 			{
@@ -413,6 +429,115 @@ package com.utils
 			this.pc_EmailFriends.removeEventListener(FaultEvent.FAULT, this.EmailFriend);
 		}
 		
+		
+		
+		
+		private var pc_CreateProduct:CallResponder = new CallResponder();
+		public function CreateProduct(event:Object, product:TblProducts=null):void
+		{
+			if (product)
+			{
+				this.pc_CreateProduct.addEventListener(ResultEvent.RESULT, this.CreateProduct);
+				this.pc_CreateProduct.addEventListener(FaultEvent.FAULT, this.CreateProduct);
+				this.pc_CreateProduct.token = pc_CrudProducts.createTblProducts(product);
+				trace('creating product');
+				return;
+			}
+			
+			var le_Event:CrudEvent = new CrudEvent(CrudEvent.PRODUCT_CREATED);
+			trace('creating product completed');
+			if (event is ResultEvent)	
+			{
+				//why does this return member fields instead of rowid?
+				var ln_Value:TblProducts = pc_CreateProduct.token.result as TblProducts;
+				le_Event.productId = ln_Value.RowID;
+				
+				this.dispatchEvent(le_Event);
+			}
+			
+			if (event is FaultEvent)
+			{
+				var fault:FaultEvent = event as FaultEvent;
+				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
+				le_Event.errored = true;
+				this.dispatchEvent(le_Event);
+			}
+			
+			this.pc_CreateProduct.removeEventListener(ResultEvent.RESULT, this.CreateProduct);
+			this.pc_CreateProduct.removeEventListener(FaultEvent.FAULT, this.CreateProduct);
+		}
+		
+		
+		private var pc_UpdateProduct:CallResponder = new CallResponder();
+		public function UpdateProduct(event:Object, product:TblProducts=null):void
+		{
+			if (product)
+			{
+				this.pc_UpdateProduct.addEventListener(ResultEvent.RESULT, this.UpdateProduct);
+				this.pc_UpdateProduct.addEventListener(FaultEvent.FAULT, this.UpdateProduct);
+				this.pc_UpdateProduct.token =  pc_CrudProducts.updateTblProducts(product);
+				trace('update product');
+				return;
+			}
+			
+			var le_Event:CrudEvent = new CrudEvent(CrudEvent.PRODUCT_UPDATED);
+			trace('update product completed');
+			if (event is ResultEvent)	
+			{
+				le_Event.valid = true;
+				this.dispatchEvent(le_Event);
+			}
+			
+			if (event is FaultEvent)
+			{
+				var fault:FaultEvent = event as FaultEvent;
+				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
+				le_Event.errored = true;
+				this.dispatchEvent(le_Event);
+			}
+			
+			this.pc_UpdateProduct.removeEventListener(ResultEvent.RESULT, this.UpdateProduct);
+			this.pc_UpdateProduct.removeEventListener(FaultEvent.FAULT, this.UpdateProduct);
+		}
+		
+		
+		
+		private var pc_Search:CallResponder = new CallResponder();
+		public function Search(event:Object, search:String=null, page:Number=0):void
+		{
+			if (search)
+			{
+				this.pc_Search.addEventListener(ResultEvent.RESULT, this.Search);
+				this.pc_Search.addEventListener(FaultEvent.FAULT, this.Search);
+				this.pc_Search.token =  pc_CrudProducts.search(search,page,MAX_RESULTS_PAGE);
+				trace('Search');
+				return;
+			}
+			
+			var le_Event:CrudEvent = new CrudEvent(CrudEvent.SEARCH);
+			if (event is ResultEvent && pc_Search && pc_Search.token.result)	
+			{
+				var ln_Value:ArrayCollection = pc_Search.token.result as  ArrayCollection;
+				this.go_ProductFields = ln_Value;
+				le_Event.valid = true;
+
+				
+				trace("dispatched");
+				this.dispatchEvent(le_Event);
+			}
+			
+			if (event is FaultEvent)
+			{
+				trace("errored");
+				var fault:FaultEvent = event as FaultEvent;
+				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
+				le_Event.errored = true;
+				this.dispatchEvent(le_Event);
+			}
+			
+			this.pc_UpdateProduct.removeEventListener(ResultEvent.RESULT, this.Search);
+			this.pc_UpdateProduct.removeEventListener(FaultEvent.FAULT, this.Search);
+		}
 		
 	}
 }

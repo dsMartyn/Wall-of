@@ -6,7 +6,7 @@
 		 currentState="ImagesLoading">
 	
 	<s:states>
-		<s:State name="ImagesLoading" enterState="Display3D_LoadImages(event)" />
+		<s:State name="ImagesLoading"  />
 		<s:State name="ViewDisplay" enterState="Display3D_ViewDisplay(event)" />
 	</s:states>
 	
@@ -30,17 +30,14 @@
 			
 			import mx.controls.Label;
 			import mx.core.UIComponent;
-			import mx.events.FlexEvent;
 			
 			import org.papervision3d.Papervision3D;
 			import org.papervision3d.core.culling.ViewportObjectFilter;
 			import org.papervision3d.core.culling.ViewportObjectFilterMode;
 			import org.papervision3d.core.effects.view.ReflectionView;
-			import org.papervision3d.events.FileLoadEvent;
 			import org.papervision3d.events.InteractiveScene3DEvent;
 			import org.papervision3d.materials.BitmapFileMaterial;
 			import org.papervision3d.materials.BitmapMaterial;
-			import org.papervision3d.materials.utils.PrecisionMode;
 			import org.papervision3d.objects.DisplayObject3D;
 			import org.papervision3d.objects.primitives.Plane;
 			
@@ -151,7 +148,7 @@
 				pp_View.viewportReflection.viewportObjectFilter = new ViewportObjectFilter(ViewportObjectFilterMode.INCLUSIVE);
 				
 				po_Images = new ImageLoader(DebugEnable("custom"));
-				po_Images.addEventListener(po_Images.gs_ImageLoaded,Images_Loaded);
+				//po_Images.addEventListener(po_Images.gs_ImageLoaded,Images_Loaded);
 				
 				pp_View.addEventListener(Event.ENTER_FRAME, Display3D_Render);
 				pp_View.viewport.interactiveSceneManager.addEventListener(InteractiveScene3DEvent.OBJECT_PRESS, Display3D_MouseEvent);	
@@ -168,7 +165,7 @@
 			
 				
 				//cache images ready for image loading
-				po_Images.AddImage(pcs_BorderImage,true,true);//cache border image
+				po_Images.AddImage(pcs_BorderImage,true,false);//cache border image
 				po_Images.AddImage(pcs_ErrorImage,true,false);//cache error image
 
 			}
@@ -233,6 +230,7 @@
 						if (pp_Holder)
 						{
 							pa_PlaneClicked.push(pp_Holder.getChildByName(event.face3d.material.name));
+							trace(event.face3d.material.name);
 							dispatchEvent( new Event(pcs_DisplayPlane));
 						}
 						
@@ -261,32 +259,6 @@
 				
 			}
 			
-			
-			/**
-			 * Queue images for loading
-			 * Called after database returns search results
-			 * 
-			 * @param Images is an array of relative paths for the image location <br>
-			 */
-			public function Display3D_LoadImages(event:FlexEvent):void
-			{
-				prgImages.setProgress(0,prgImages.maximum);
-				currentState = "ImagesLoading";
-				pi_Index = 0;
-				pp_View.alpha = 0;
- 
-				//test load some images
-				var lb_ctr:Number = 0;
-				for (;lb_ctr<54;lb_ctr++)
-					po_Images.AddImage("assets/uploaded/logo" + lb_ctr.toString() + ".png");
-
-			}
-			
-
-			public function ClearUp():void
-			{
-				
-			}
 			/**
 			 * Stop Display3D rendering 
 			 * Called when another page is displayed on the main control
@@ -381,6 +353,7 @@
 			/**
 			 * Images Loaded event is raised everytime an image is loaded
 			 */
+			/*
 			protected function Images_Loaded(event:FileLoadEvent):void
 			{
 				var li_ctr:Number = 0;
@@ -417,7 +390,29 @@
 				}
 			}
 			
+			*/
 			
+			/**
+			 * Queue images for loading
+			 * Called after database returns search results
+			 * 
+			 * @param Images is an array of relative paths for the image location <br>
+			 */
+			/*	public function Display3D_LoadImages(event:FlexEvent):void
+			{
+			prgImages.setProgress(0,prgImages.maximum);
+			currentState = "ImagesLoading";
+			pi_Index = 0;
+			pp_View.alpha = 0;
+			
+			
+			
+			//test load some images
+			var lb_ctr:Number = 0;
+			for (;lb_ctr<54;lb_ctr++)
+			po_Images.AddImage("assets/uploaded/logo" + lb_ctr.toString() + ".png");
+			
+			}*/
 			/**
 			 * Draws border to Img and returns a new BitmapMaterial with scaled image
 			 * 
@@ -432,9 +427,9 @@
 				if (!lp_Bitmap)//make sure bitmap was created (out of memory?)
 					return null; 
 
-				lp_Bitmap.precise = true;
-				lp_Bitmap.pixelPrecision = 255;
-				lp_Bitmap.precisionMode = PrecisionMode.STABLE;
+				//lp_Bitmap.precise = true;
+				//lp_Bitmap.pixelPrecision = 255;
+				//lp_Bitmap.precisionMode = PrecisionMode.STABLE;
 				lp_Bitmap.smooth = true;
 				lp_Bitmap.interactive = true;
 				lp_Bitmap.oneSide = !pcb_DoubleSided;
@@ -444,8 +439,6 @@
 				var lp_border:BitmapFileMaterial = po_Images.GetImage(pcs_BorderImage);
 				if (!lp_border)//make sure border image was received
 					return null;
-				
-
 				
 				var mtrx:Matrix = new Matrix();
 				var mtrx1:Matrix = new Matrix();
@@ -457,7 +450,7 @@
 					mtrx.tx = 5;
 					mtrx.ty = 5;
 					mtrx.scale(93 / (img.bitmap.width),   93 / (img.bitmap.height) );
-					lp_Bitmap.bitmap.draw(img.bitmap,mtrx,null,BlendMode.NORMAL,null,true);
+					lp_Bitmap.bitmap.draw(img.bitmap,mtrx,null,BlendMode.NORMAL,null,false);
 				}
 				
 				
@@ -475,20 +468,40 @@
 			 * @param idx index of the image this is relative to the location displayed in the cube
 			 * @param img the BitmapFileMaterial containing the loaded image
 			 * @param justBorder only draw the border not the image (content holder)
+			 * @return index 
 			 */
-			private function AddImage(idx:Number, img:BitmapFileMaterial, justBorder:Boolean = false):void
+			private var pi_Idx:Number=0;
+			
+			public function AddImage(idx:Number, max:Number, imgDisplay:DisplayObject, justBorder:Boolean = false):Number
 			{
-				if (!img)//no image 
-					return;
+				
+				if (!imgDisplay)//no image 
+					return -1;
+				
+				//trace("loading image: " + idx);
+	
+				var loadedBitmap:Bitmap = Bitmap(imgDisplay);
+				var img:BitmapFileMaterial = new BitmapFileMaterial();
+				img.bitmap = new BitmapMaterial(loadedBitmap.bitmapData).bitmap;
+				//img.resetMapping();
+				//img.resetUVS();
+				img.loaded = true; //loadComplete();
+				
+				pi_Idx++;
+				//prgImages.setProgress(prgImages.value+1,max);
+				
+				if (currentState != "ImagesLoading")
+					currentState = "ImagesLoading";
 
+				
 				var lp_Bitmap:BitmapMaterial = CreateImage(img,justBorder);
 				lp_Bitmap.name =  "bmpTile" + idx.toString();
 				//create a plane to hold bitmap
-				var lp_plane:Plane = new Plane(lp_Bitmap, pci_TileWidth,pci_TileHeight,2,2);
+				var lp_plane:Plane = new Plane(lp_Bitmap, pci_TileWidth,pci_TileHeight,1,1);
 				if (!lp_plane)//error creating plane! (out of mem?)
-					return;
+					return -1;
 			
-				lp_plane.name = "bmpTile" + idx.toString();
+				//lp_plane.name = "bmpTile" + idx.toString();
 				lp_plane.rotationY = - (idx * pci_angle) * (180 / Math.PI) + 90;
 				lp_plane.x = (Math.cos(idx * pci_angle ) * 326)  ;
 				lp_plane.z = (Math.sin(idx * pci_angle) * 320);
@@ -496,29 +509,53 @@
 				
 				var lp_holder:DisplayObject3D = new DisplayObject3D();
 				if (!lp_holder)//error creating displayObject! (out of mem?)
-					return;
+					return -1;
 				
 				lp_holder.name = "bmpTile" + idx.toString();
 				lp_holder.useOwnContainer=true;
 				lp_holder.addChild(lp_plane);
 			
-
 				//remove any old images
-				pp_View.scene.removeChildByName(lp_holder.name);//garbage will clear this up?
+				//pp_View.scene.removeChildByName(lp_holder.name);//garbage will clear this up?
 				pp_View.scene.addChild(lp_holder);
 				
 				if(idx<18)
 					pp_View.viewportReflection.viewportObjectFilter.addObject(lp_holder);
+				
+			
+				//change state and display images
+				if (currentState != "ViewDisplay" &&  pi_Idx >= max)
+				{
+					currentState = "ViewDisplay";  
+					Display3D_Show(null);
+				}
+				
+				return pi_Idx;
+				
 			}
 			
+			public function ClearUp():void
+			{
+				pi_Idx=0;
+				this.prgImages.setProgress(0,0);
+				
+				var idx:Number=0;
+				for (idx=0;idx<54;idx++)
+					pp_View.scene.removeChildByName("bmpTile" + idx.toString());
+			}
 			/**
 			 * Renders an alpha gradient to the reflection camera view 
 			 * 
 			 * @param width StageWidth
 			 * @param height StageHeight
 			 */
+			public var go_AddedDropOff:Boolean;
+			
 			protected function addDropOff(width:Number, height:Number):void
 			{
+				if (go_AddedDropOff)
+					return;
+				go_AddedDropOff = true;
 				var shape:Sprite = new Sprite();
 				var mxBox:Matrix = new Matrix();
 				mxBox.createGradientBox( width, height , Math.PI/2 , 0 , 0 );
@@ -526,7 +563,7 @@
 				shape.graphics.drawRect( 0, 0, width, height );
 				shape.graphics.endFill();
 				shape.cacheAsBitmap=true;
-				shape.filters.push(new BlurFilter(10,10,1));
+				//shape.filters.push(new BlurFilter(10,10,1));
 				shape.y = 150;
 				
 				pp_View.viewportReflection.cacheAsBitmap = true;

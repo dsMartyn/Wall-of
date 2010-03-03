@@ -1,6 +1,6 @@
 <?php
 
-include("DatabaseConnector.php");
+require_once("DatabaseConnector.php");
 
 class TblKeywordsService {
 
@@ -32,12 +32,12 @@ class TblKeywordsService {
 		
 		$rows = array();
 		
-		mysqli_stmt_bind_result($stmt, $row->RowID, $row->ProductID, $row->Keywords);
+		mysqli_stmt_bind_result($stmt, $row->RowID, $row->Keyword, $row->CRC1, $row->CRC2);
 		
 	    while (mysqli_stmt_fetch($stmt)) {
 	      $rows[] = $row;
 	      $row = new stdClass();
-	      mysqli_stmt_bind_result($stmt, $row->RowID, $row->ProductID, $row->Keywords);
+	      mysqli_stmt_bind_result($stmt, $row->RowID, $row->Keyword, $row->CRC1, $row->CRC2);
 	    }
 		
 		mysqli_stmt_free_result($stmt);
@@ -65,7 +65,28 @@ class TblKeywordsService {
 		mysqli_stmt_execute($stmt);
 		$this->throwExceptionOnError();
 		
-		mysqli_stmt_bind_result($stmt, $row->RowID, $row->ProductID, $row->Keywords);
+		mysqli_stmt_bind_result($stmt, $row->RowID, $row->Keyword, $row->CRC1, $row->CRC2);
+		
+		if(mysqli_stmt_fetch($stmt)) {
+			return $row;
+		} else {
+			return null;
+		}
+	}
+	
+	
+	public function getTblKeywordsByCRC($crc) {
+		
+		$stmt = mysqli_prepare($this->mysql->connection, "SELECT * FROM $this->tablename where CRC1=?");
+		$this->throwExceptionOnError();
+		
+		mysqli_bind_param($stmt, 'i', $crc);		
+		$this->throwExceptionOnError();
+		
+		mysqli_stmt_execute($stmt);
+		$this->throwExceptionOnError();
+		
+		mysqli_stmt_bind_result($stmt, $row->RowID, $row->Keyword, $row->CRC1, $row->CRC2);
 		
 		if(mysqli_stmt_fetch($stmt)) {
 			return $row;
@@ -84,10 +105,17 @@ class TblKeywordsService {
 	 */
 	public function createTblKeywords($item) {
 	
-		$stmt = mysqli_prepare($this->mysql->connection, "INSERT INTO $this->tablename (RowID, ProductID, Keywords) VALUES (?, ?, ?)");		
+		$stmt = mysqli_prepare($this->mysql->connection, "INSERT INTO $this->tablename (RowID, Keyword, CRC1, CRC2) VALUES (?, ?, ?, ?)");		
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'iii', $item->RowID, $item->ProductID, $item->Keywords);		
+		$item->Keyword = trim(strtolower($item->Keyword));
+		$item->CRC1 = $this->mysql->ComputeCRC($item->Keyword); //generate crc from keyword
+		$item->CRC2 = crc32($item->Keyword) ;
+
+		$item->CRC1 ^= $item->CRC2;
+		
+		
+		mysqli_stmt_bind_param($stmt, 'isii', $item->RowID, $item->Keyword, $item->CRC1, $item->CRC2);		
 		$this->throwExceptionOnError();
 
 		mysqli_stmt_execute($stmt);		
@@ -111,10 +139,16 @@ class TblKeywordsService {
 	 */
 	public function updateTblKeywords($item) {
 	
-		$stmt = mysqli_prepare($this->mysql->connection, "UPDATE $this->tablename SET RowID=?, ProductID=?, Keywords=?	WHERE RowID=?");		
+		$stmt = mysqli_prepare($this->mysql->connection, "UPDATE $this->tablename SET RowID=?, CRC1=?, CRC2=?, Keyword=?	WHERE RowID=?");		
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'iiii', $item->RowID, $item->ProductID, $item->Keywords, $item->RowID);		
+		$item->Keyword = trim(strtolower($item->Keyword));
+		$item->CRC1 = $this->mysql->ComputeCRC($item->Keyword); //generate crc from keyword
+		$item->CRC2 = crc32($item->Keyword);
+		
+		$item->CRC1 ^= $item->CRC2;
+				
+		mysqli_bind_param($stmt, 'iiisi', $item->RowID,  $row->Keyword, $item->CRC1, $item->CRC2, $item->RowID);		
 		$this->throwExceptionOnError();
 
 		mysqli_stmt_execute($stmt);		
@@ -195,18 +229,53 @@ class TblKeywordsService {
 		
 		$rows = array();
 		
-		mysqli_stmt_bind_result($stmt, $row->RowID, $row->ProductID, $row->Keywords);
+		mysqli_stmt_bind_result($stmt, $row->RowID,  $row->Keyword, $row->CRC1, $row->CRC2);
 		
 	    while (mysqli_stmt_fetch($stmt)) {
 	      $rows[] = $row;
 	      $row = new stdClass();
-	      mysqli_stmt_bind_result($stmt, $row->RowID, $row->ProductID, $row->Keywords);
+	      mysqli_stmt_bind_result($stmt, $row->RowID,  $row->Keyword, $row->CRC1, $row->CRC2);
 	    }
 		
 		mysqli_stmt_free_result($stmt);		
 		$this->mysql->_mysqli_close();
 		
 		return $rows;
+	}
+	
+	/**
+	 * Returns list of keywords by list of ID's
+	 * 
+	 * @return stdClass
+	  SELECT * FROM TblLnkKeywordProducts WHERE KeywordID IN (213582, 579004, 213583, 96711)
+	  SELECT RowID FROM tblKeywords WHERE CRC1 IN (115314769853, 113275458213, 113188262816, 113219423308, 0)
+	 */
+	public function getKeywordsByIDList($searchStr) {
+	
+	    $query =  "select * from $this->tablename WHERE CRC1 IN ($searchStr)";
+    
+		$stmt = mysqli_prepare($this->mysql->connection, $query);		
+		$this->throwExceptionOnError();
+		
+		mysqli_stmt_execute($stmt);
+		$this->throwExceptionOnError();
+		
+
+		$rows = array();
+		mysqli_stmt_bind_result($stmt,  $row->RowID, $row->Keyword, $row->CRC1, $row->CRC2);
+		
+		
+	    while (mysqli_stmt_fetch($stmt)) {
+	      $rows[] = $row;
+	      $row = new stdClass();
+	      //mysqli_stmt_bind_result($stmt,  $row->RowID,$row->Keyword,$row->CRC1,$row->CRC2,$row->RowID,$row->KeywordID,$row->ProductID,$row->RowID,$row->MemberID,$row->CompanyName,$row->CompanyDesc,$row->YoutubeVideoUrl,$row->GooglePostCode,$row->AddressName,$row->AddressStreet,$row->AddressTown,$row->AddressCounty,$row->AddressPostCode,$row->AddressEmail,$row->AddressTel,$row->AddressMob,$row->AddressFax,$row->status,$row->picUrl);
+	   	  mysqli_stmt_bind_result($stmt,  $row->RowID, $row->Keyword, $row->CRC1, $row->CRC2);
+	   	}
+		
+		mysqli_stmt_free_result($stmt);
+	    $this->mysql->_mysqli_close();
+	
+	    return $rows;
 	}
 	
 	
