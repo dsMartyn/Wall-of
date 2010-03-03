@@ -2,6 +2,7 @@ package com.utils
 {
 	import com.events.CrudEvent;
 	
+	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.net.SharedObject;
 	
@@ -18,7 +19,6 @@ package com.utils
 	import services.tblproductsservice.TblProductsService;
 	
 	import valueObjects.LoginFields;
-	import valueObjects.SearchFields;
 	import valueObjects.TblMembers;
 	import valueObjects.TblProducts;
 
@@ -93,6 +93,7 @@ package com.utils
 			le_Event.sessionId = 0;
 			le_Event.memberId =0;
 			this.dispatchEvent(le_Event);
+			this.dispatchEvent(new Event("notLoggedIn"));
 		}
 		
 		protected function GotMemberID(event:CrudEvent):void
@@ -281,7 +282,9 @@ package com.utils
 					le_Event.sessionId = 0;
 					le_Event.memberId = 0;
 					le_Event.memberFields = null;
-					this.dispatchEvent(le_Event);	
+					this.dispatchEvent(le_Event);
+					this.dispatchEvent(new Event("notLoggedIn"));
+					
 				}else{
 					le_Event.sessionId = lo_LoginFields.SessionID;
 					le_Event.memberId = lo_LoginFields.MemberID;
@@ -289,6 +292,8 @@ package com.utils
 					this.go_LoginFields.SessionID = lo_LoginFields.SessionID;
 					this.go_LoginFields.MemberID = lo_LoginFields.MemberID;
 					this.dispatchEvent(le_Event);
+					
+
 				}
 			}
 			
@@ -375,11 +380,14 @@ package com.utils
 					le_Event.memberId = 0;
 					le_Event.memberFields = null;
 					this.dispatchEvent(le_Event);
+					this.dispatchEvent(new Event("notLoggedIn"));
 				}else{
 					trace('dispatching GET_MEMBERINFO event');
 					le_Event.memberFields = ln_Member;
 					this.go_MemberFields = ln_Member;
 					this.dispatchEvent(le_Event);
+					trace("Executing event loggedIn");
+					this.dispatchEvent(new Event("loggedIn"));
 				}
 			}
 			
@@ -521,7 +529,6 @@ package com.utils
 				this.go_ProductFields = ln_Value;
 				le_Event.valid = true;
 
-				
 				trace("dispatched");
 				this.dispatchEvent(le_Event);
 			}

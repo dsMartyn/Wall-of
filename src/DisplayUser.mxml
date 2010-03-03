@@ -19,14 +19,14 @@
 		/** menu_show raised when the user has logged in */	
 		[Event(name="menuShow",type="flash.events.Event")]
 		
+		
+		
 	</fx:Metadata>
 	
 	<fx:Script>
 		<![CDATA[
 			import com.events.CrudEvent;
 			import com.utils.*;
-			
-			import flash.desktop.Clipboard;
 			
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
@@ -40,6 +40,7 @@
 			private var pa_InvalidFields:Array = [];
 			private const gcs_Display3D_Show:String = "displayShow";//event dispatcher
 			private const gcs_DisplayMenu_Show:String = "menuShow";//event dispatcher
+			private const gcs_LoggedIn:String = "loggedIn";
 			/**
 			 * returned when database has checked for email address
 			 **/
@@ -352,6 +353,7 @@
 					
 				}
 				
+				
 				Database.removeEventListener(CrudEvent.USER_LOGIN, userlogin);
 			}
 			
@@ -447,11 +449,23 @@
 				cmbYears.dataProvider = Database.ga_Years;
 				
 				this.memberFields = Database.go_MemberFields;
+				var lv_dob:Array;
+				
+				trace(this.memberFields.DOB.toString());
+				
+				if (this.memberFields.DOB.indexOf("/",0)>0)
+				{
+					lv_dob=  this.memberFields.DOB.split("/");
+					cmbYears.selectedIndex = 2011 - int(lv_dob[0]);
+					cmbMonths.selectedIndex = int(lv_dob[1]);
+					cmbDays.selectedIndex = int(lv_dob[2]);
+				}else{
+					lv_dob =  this.memberFields.DOB.split("-");
+					cmbYears.selectedIndex = 2011 - int(lv_dob[0]);
+					cmbMonths.selectedIndex = int(lv_dob[1]);
+					cmbDays.selectedIndex = int(lv_dob[2].toString().substr(0,2));
+				}
 
-				var lv_dob:Array =  this.memberFields.DOB.split("-");
-			    cmbYears.selectedIndex = 2011 - int(lv_dob[0]);
-				cmbMonths.selectedIndex = int(lv_dob[1]);
-				cmbDays.selectedIndex = int(lv_dob[2].toString().substr(0,2));
 
 			}
 

@@ -13,7 +13,7 @@
 	<s:states>
 		<s:State name="Display3D"/>
 		<s:State name="DisplayPlane" enterState="state1_enterStateHandler(event)" />
-		<s:State name="MenuPlane"/>
+		<s:State name="MenuPlane" enterState="state2_enterStateHandler(event)"/>
 	</s:states>
 	
 	<fx:Declarations>
@@ -103,9 +103,9 @@
 	<s:Button id="btnSearch" x="623" y="551" label="Search" click="search_Click(event)" />
 	<mx:HRule width="950" strokeColor="#000000" shadowColor="#2F2F2F" x="38" y="540"/>
 	<mx:LinkButton  click="btnMenu_Click(event)"  label="Menu" id="btnMenu"  fontAntiAliasType="advanced" color="#0631D1" fontSize="18" width="76" x="919.95" y="48" enabled="false"/>
-	<s:Label  x="694" y="33" text="Not logged in." color="#C10000" width="291" textAlign="right" id="lblLoggedIn" x.Display3D="698" y.Display3D="33"/>
+	<s:Label  x="694" y="33" text="Not logged in." color="#C10000" width="291" textAlign="right" id="lblLoggedIn" />
 	<s:Label includeIn="Display3D" x="853" y="579" text="Showing page 0 of 0" color="#2407FF" id="lblResults" verticalAlign="top" width="150" textAlign="center" fontWeight="bold"/>
-	<s:Label includeIn="Display3D" x="334" y="579" text="Search returned 0 results in 0.00 Seconds" width="359" textAlign="center" color="#2407FF" fontWeight="bold" id="lblSearchRes"/>
+	<s:Label includeIn="Display3D" x="307" y="579" text="Search returned 0 results in 0.00 Seconds rendered 0 in 0.00 seconds" width="402" textAlign="center" color="#2407FF" fontWeight="bold" id="lblSearchRes"/>
 
 	<!--
 	<s:HSlider x="457" y="11"  id="sldZoomer" maximum="15" minimum="5" change="c_Display3D.Zoom(sldZoomer.value)" />
@@ -163,6 +163,8 @@
 				//c_Display3D.Display3D_LoadImages(null);
 				Database.addEventListener(CrudEvent.GET_MEMBERINFO, GotMemberInfo);
 				Database.CheckLoggedIn();
+				
+				
 			}
 			
 			public function GotMemberInfo(event:CrudEvent):void
@@ -177,6 +179,7 @@
 				else
 					this.lblLoggedIn.text = "Not logged in.";
 				
+				search_Click(null);
 				Database.removeEventListener(CrudEvent.GET_MEMBERINFO, GotMemberInfo);
 			}
 				
@@ -189,11 +192,22 @@
 				
 			}
 			
-			
+			protected function notLoggedIn(event:Event):void
+			{
+				this.lblLoggedIn.text = "Not logged in.";
+			}
+			protected function loggedIn(event:Event):void
+			{
+				if (Database.go_MemberFields)
+					this.lblLoggedIn.text = "Welcome "  + Database.go_MemberFields.FirstName + ' ' + Database.go_MemberFields.LastName + ".";
+				else
+					this.lblLoggedIn.text = "Logged in";
+				
+			}
 			protected function btnMenu_Click(event:MouseEvent):void
 			{
-				ps_CurrentState = "MenuPlane";
 				
+				ps_CurrentState = "MenuPlane";
 				
 				if (currentState == "Display3D")
 					cmpDisplay3D.Display3D_Hide();
@@ -206,6 +220,10 @@
 					currentState = "Display3D";
 					cmpDisplay3D.Display3D_Show(null);
 				}
+				
+				
+				if (cmpDisplay3D.currentState == "ImagesLoading")
+					currentState = ps_CurrentState;
 			}
 			
 			
@@ -239,7 +257,7 @@
 					if (idx >= Database.go_ProductFields.length)
 					{
 						var li_CurrentTime:int =  getTimer();
-						this.lblSearchRes.text = lblSearchRes.text + " rendered " + ((li_CurrentTime - pi_Time)/1000).toString().substr(0,4) + " Seconds"	
+						this.lblSearchRes.text = lblSearchRes.text + " rendered " + Database.go_ProductFields.length.toString() + " in " + ((li_CurrentTime - pi_Time)/1000).toString().substr(0,4) + " Seconds"	
 					}
 						
 				}
@@ -269,26 +287,31 @@
 			
 			protected function GotSearch(event:CrudEvent):void
 			{
+				var ctr:Number = 0 ;
+				var i:Number=0;
+				var li_CurrentTime:int =  getTimer();
 				
-				
-				if (event.valid == false || !Database.go_ProductFields)
+				if (event.valid == false)
 				{
 					trace("error getting search fields");
-					Alert.show("Error getting search results", event.errorMsg);
+					Alert.show(event.errorMsg, "Error getting search results");
+					return;
+				}
+				if (!Database.go_ProductFields)
+				{
+					this.lblSearchRes.text = "Search found " + ctr.toString() + " results in "  + ((li_CurrentTime - pi_Time)/1000).toString().substr(0,4) 
+						
 					return;
 				}
 				
-				//var li_CurrentTime:int =  getTimer();
-				var ctr:Number = 0 ;
-				var i:Number=0;
-
+				
 				if (Database.go_ProductFields.length>0)
 				{
 					var pf:SearchFields = Database.go_ProductFields[i];
 					ctr = pf.count;
 				}
-				var li_CurrentTime:int =  getTimer();
-				this.lblSearchRes.text = "Search returned " + ctr.toString() + " results in "  + ((li_CurrentTime - pi_Time)/1000).toString().substr(0,4) 
+				
+				this.lblSearchRes.text = "Search found " + ctr.toString() + " results in "  + ((li_CurrentTime - pi_Time)/1000).toString().substr(0,4) 
 				pi_Time = getTimer();
 
 				
@@ -331,10 +354,15 @@
 			protected function search_Click(event:MouseEvent):void
 			{
 				
+				if (event && txtSearch.text =="")
+					return;
+					
 				pi_Time = getTimer();
 				
 				pa_PageCount = [];
 				this.cmpDisplay3D.ClearUp();
+				
+				
 				Database.addEventListener(CrudEvent.SEARCH, GotSearch);
 				var search:String = txtSearch.text;
 				if (search == "")
@@ -350,6 +378,18 @@
 				
 				Database.Search(null,search, pn_CurrentPage );
 				ps_PreviousSearch = search;
+			}
+
+
+			protected function state2_enterStateHandler(event:FlexEvent):void
+			{
+				trace("adding event listener Loggedin");
+				Database.removeEventListener("loggedIn",loggedIn);
+				Database.addEventListener("loggedIn",loggedIn);
+				
+				Database.removeEventListener("notLoggedIn",notLoggedIn);
+				Database.addEventListener("notLoggedIn",notLoggedIn);
+				
 			}
 
 		]]>

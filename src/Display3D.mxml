@@ -10,8 +10,6 @@
 		<s:State name="ViewDisplay" enterState="Display3D_ViewDisplay(event)" />
 	</s:states>
 	
-	<mx:ProgressBar x="376" y="196" id="prgImages" mode="manual" minimum="0" maximum="18" includeIn="ImagesLoading"/>
-	
 	<fx:Metadata>			
 		/** display_hidden raised when the display has stopped rendering completly */	
 		[Event(name="displayVisible",type="flash.events.Event")]
@@ -28,7 +26,7 @@
 			
 			import flash.filters.*;
 			
-			import mx.controls.Label;
+			
 			import mx.core.UIComponent;
 			
 			import org.papervision3d.Papervision3D;
@@ -40,6 +38,8 @@
 			import org.papervision3d.materials.BitmapMaterial;
 			import org.papervision3d.objects.DisplayObject3D;
 			import org.papervision3d.objects.primitives.Plane;
+			
+			import mx.controls.Label;
 			
 			
 			/*
@@ -317,7 +317,8 @@
 						var lp_Plane:Plane = null;
 						for each (lp_Plane in pa_PlaneClicked.reverse())
 						{
-							lp_Plane.yaw(((400/2))/(400/2)*2);
+							if(lp_Plane)
+								lp_Plane.yaw(((400/2))/(400/2)*2);
 						}
 					}
 					//calculate fps
@@ -537,7 +538,7 @@
 			public function ClearUp():void
 			{
 				pi_Idx=0;
-				this.prgImages.setProgress(0,0);
+				//this.prgImages.setProgress(0,0);
 				
 				var idx:Number=0;
 				for (idx=0;idx<54;idx++)
@@ -662,5 +663,6 @@
 			
 		]]>
 	</fx:Script>
+	<mx:Label includeIn="ImagesLoading" x="408" y="194" text="Searching..." fontSize="22" color="#0517FF" fontWeight="bold" textAlign="center"/>
 
 </s:Group>

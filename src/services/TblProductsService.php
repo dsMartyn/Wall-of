@@ -77,7 +77,7 @@ class TblProductsService {
 	 */
 	public function countProductsByIDList($searchStr) {
 		$rec_count=0;
-		$query = "select count(DISTINCT productID) from tblLnkKeywordProducts a left join TblKeywords b ON a.KeywordID = b.rowID WHERE CRC1 IN ($searchStr)";
+		$query = "select count(DISTINCT productID) from tblLnkKeywordProducts a left join tblKeywords b ON a.KeywordID = b.rowID WHERE CRC1 IN ($searchStr)";
  
 		$stmt = mysqli_prepare($this->mysql->connection, $query);		
 		$this->throwExceptionOnError();
@@ -107,7 +107,7 @@ class TblProductsService {
 	 */
 	public function getProductsByIDList($searchStr, $startIndex, $numItems) {
 	
-		$query = "select distinct a.*, d.image, 1 from tblProducts A LEFT JOIN TblLnkKeywordProducts B ON A.RowID = B.ProductID LEFT JOIN tblKeywords C ON C.RowID = B.KeywordID LEFT JOIN TblImages D ON d.RowID = a.ImageID  WHERE CRC1 IN ($searchStr) LIMIT $startIndex, $numItems";
+		$query = "select distinct A.*, D.image, 1 from tblProducts A LEFT JOIN tblLnkKeywordProducts B ON A.RowID = B.ProductID LEFT JOIN tblKeywords C ON C.RowID = B.KeywordID LEFT JOIN tblImages D ON D.RowID = A.ImageID  WHERE CRC1 IN ($searchStr) LIMIT $startIndex, $numItems";
 
 		$stmt = mysqli_prepare($this->mysql->connection, $query);		
 		$this->throwExceptionOnError();
@@ -152,7 +152,7 @@ class TblProductsService {
 	 */
 	public function getAllProductsPaged($startIndex, $numItems) {
 		
-		$query = "select distinct a.*, d.image, 1 from tblProducts A LEFT JOIN TblImages D ON d.RowID = a.ImageID  LIMIT $startIndex, $numItems";
+		$query = "select distinct A.*, D.image, 1 from tblProducts A LEFT JOIN tblImages D ON D.RowID = A.ImageID  LIMIT $startIndex, $numItems";
 
 		$stmt = mysqli_prepare($this->mysql->connection, $query);		
 		$this->throwExceptionOnError();
