@@ -48,7 +48,6 @@
 			
 			public function SetStartX(v:Number):void
 			{
-				trace("startX" + v);
 				pn_StartX = v;
 			}
 			

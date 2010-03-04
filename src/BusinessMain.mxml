@@ -72,7 +72,7 @@
 	<ns1:DisplayPlane id="cmpDisplayPlane" displayShow="cmpDisplay3D.Display3D_Show(event)" includeIn="DisplayPlane"  x="42" y="103"  width="945" height="415"/>
 
 	
-	<s:DropDownList width="99"
+	<s:DropDownList  includeIn="Display3D" width="99"
 					id="ddlSort"
 					prompt="Order By" 
 					x="42.2" y="551">
@@ -83,24 +83,24 @@
 		</s:ArrayCollection>
 	</s:DropDownList>
 	
-	<s:Button  label="&lt;" 
+	<s:Button  includeIn="Display3D" label="&lt;" 
 			   id="btnBack"
 			   width="28" 
 			   x="870.85" y="551"/>
 	
 	 
-	<s:DropDownList id="cmbPages" width="62" x="898.35" y="551"  >
+	<s:DropDownList includeIn="Display3D" id="cmbPages" width="62" x="898.35" y="551"  >
 		<s:ArrayCollection id="cmbPagesArray" />
 	</s:DropDownList>
 	
 	
-	<s:Button  label="&gt;"
+	<s:Button includeIn="Display3D" label="&gt;"
 			   id="btnForward"
 			   width="28" 
 			   x="958.7" y="551"/>
 	
-	<mx:TextInput id="txtSearch" height="20" width="288" x="334" y="552"/>
-	<s:Button id="btnSearch" x="623" y="551" label="Search" click="search_Click(event)" />
+	<mx:TextInput includeIn="Display3D" id="txtSearch" height="20" width="288" x="334" y="552"/>
+	<s:Button includeIn="Display3D" id="btnSearch" x="623" y="551" label="Search" click="search_Click(event)" />
 	<mx:HRule width="950" strokeColor="#000000" shadowColor="#2F2F2F" x="38" y="540"/>
 	<mx:LinkButton  click="btnMenu_Click(event)"  label="Menu" id="btnMenu"  fontAntiAliasType="advanced" color="#0631D1" fontSize="18" width="76" x="919.95" y="48" enabled="false"/>
 	<s:Label  x="694" y="33" text="Not logged in." color="#C10000" width="291" textAlign="right" id="lblLoggedIn" />
@@ -239,7 +239,8 @@
 
 			protected function state1_enterStateHandler(event:FlexEvent):void
 			{
-				cmpDisplayPlane.InitVideo();
+				if (Database.gi_CurrentIndex >= 0)
+					cmpDisplayPlane.InitPlane();
 			}
 			
 			
@@ -353,7 +354,6 @@
 			
 			protected function search_Click(event:MouseEvent):void
 			{
-				
 				if (event && txtSearch.text =="")
 					return;
 					
@@ -383,7 +383,6 @@
 
 			protected function state2_enterStateHandler(event:FlexEvent):void
 			{
-				trace("adding event listener Loggedin");
 				Database.removeEventListener("loggedIn",loggedIn);
 				Database.addEventListener("loggedIn",loggedIn);
 				

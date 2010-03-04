@@ -5,8 +5,6 @@
 		 xmlns:utils="com.utils.*"
 		 xmlns:maps="com.google.maps.*" 
 		 width="940" height="415" xmlns:ns1="*"
-		 initialize="DisplayPlane_Init(event)"
-		  
 		 xmlns:valueObjects="valueObjects.*">
 
 	<fx:Metadata>
@@ -30,8 +28,8 @@
 			import com.google.maps.services.*;
 			import com.utils.*;
 			
+			import valueObjects.SearchFields;
 			import mx.controls.Alert;
-			import mx.events.FlexEvent;
 			
 			private const pcs_Display3D_Show:String = "displayShow";//event dispatcher
 
@@ -47,6 +45,7 @@
 			
 			private var pb_MapReady:Boolean = false;
 			
+			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
 			/**
 			 * Stop DisplayPlane Actions (youtube, maps..) 
 			 * Called when another page is displayed on the main control
@@ -68,22 +67,59 @@
 				
 			}
 
-			protected function DisplayPlane_Init(event:FlexEvent):void
+			
+			protected function loadBitmapCompleteHandler(event:Event):void
 			{
-			//	InitVideo();//if video is enabled
+				var obj:LoaderInfo = event.target as LoaderInfo;
+				if(obj.loader)
+				{
+					trace("assigning immage");
+				
+					this.picImage.smoothBitmapContent = true;
+					this.picImage.source =  obj.loader.content
+					
+				}
 			}
-
 			
 			
 			/** youTube video functionality 
 			 * Init YouTube video player
 			 * TODO - make sure youtube is enabled on account
 			 * */
-			public function InitVideo():void
+			public function InitPlane():void
 			{
+				if (Database.gi_CurrentIndex > Database.go_ProductFields.length || Database.gi_CurrentIndex < 0)
+				{
+					Alert.show("Can't initialize product information","Error loading info");
+					return;
+				}	
+				
+				var pf:SearchFields = Database.go_ProductFields[Database.gi_CurrentIndex];
+
+				var b:Base64 = new Base64();
+				var loader:Loader = new Loader();
+				
+				loader.loadBytes(b.decode(pf.Image));
+				loader.contentLoaderInfo.addEventListener( Event.COMPLETE, loadBitmapCompleteHandler );
+				
+				this.txtDesc.text = pf.ItemDesc;
+				this.txtItemName.text = pf.ItemName;
+				
+				this.txtAddress.text = pf.AddressName + "\n" ;
+				this.txtAddress.text += pf.AddressStreet + "\n" ;
+				this.txtAddress.text += pf.AddressTown + "\n" ;
+				this.txtAddress.text += pf.AddressCounty + "\n" ;
+				this.txtAddress.text += pf.AddressPostCode + "\n" ;
+					
+				this.txtMob.text = pf.AddressMob;
+				this.txtTel.text = pf.AddressTel;
+				this.txtFax.text = pf.AddressFax;
+				this.txtEmail.text = pf.AddressEmail;
+				
+				trace("google: " +  pf.GooglePostCode);
 				//productFields
 				//check if this plane has youtube!
-				if (!po_YouTube)
+				if (!po_YouTube && pf.YoutubeVideoUrl.length > 0)
 				{
 					po_YouTube = new VideoPlayer();
 					po_YouTube.addEventListener("onTimeChange", onPlayerTimeChange);
@@ -100,17 +136,28 @@
 					
 					po_YouTube.autoPlay = true;
 				}else{
-					if (pb_MapReady)
+					if (pb_MapReady && pf.GooglePostCode.length > 0)
 						map_mapevent_mapreadyHandler(null);
 					
 				}
-					po_YouTube.videoID = "VuqZ8AqmLPY";
+				if (pf.YoutubeVideoUrl.length > 0)
+					po_YouTube.videoID = pf.YoutubeVideoUrl;
 					po_YouTube.play();
 			}
 
 			
 			protected function map_mapevent_mapreadyHandler(event:MapEvent):void
 			{
+				var pf:SearchFields = Database.go_ProductFields[Database.gi_CurrentIndex];
+				if (Database.gi_CurrentIndex > Database.go_ProductFields.length || Database.gi_CurrentIndex < 0)
+				{
+					Alert.show("Can't initialize google information","Error loading info");
+					return;
+				}	
+				if (pf.GooglePostCode.length <= 0)
+					return;//no post code!
+				
+				trace("Loading " + pf.GooglePostCode);
 				pb_MapReady = true;
 				map.enableScrollWheelZoom();
 				map.enableContinuousZoom();
@@ -118,7 +165,7 @@
 				map.setMapType(MapType.HYBRID_MAP_TYPE);
 				map.setCenter(new LatLng(42.366662,-71.106262), 11, MapType.NORMAL_MAP_TYPE);
 				
-				doGeocode("1 Infinite Loop Cupertino, CA 95014");
+				doGeocode(pf.GooglePostCode);
 				
 			}
 			
@@ -126,12 +173,14 @@
 								
 				var geocoder:ClientGeocoder = new ClientGeocoder();
 				
+				
 				geocoder.addEventListener(
 					GeocodingEvent.GEOCODING_SUCCESS,
 					function(event:GeocodingEvent):void {
 						var placemarks:Array = event.response.placemarks;
 						if (placemarks.length > 0) {
-							map.setCenter(placemarks[0].point);
+							trace("Found locations:: " + placemarks.length);
+							map.setCenter(placemarks[0].point,11);
 							var marker:Marker = new Marker(placemarks[0].point);
 							
 							marker.addEventListener(MapMouseEvent.CLICK, function (event:MapMouseEvent):void {
@@ -144,10 +193,13 @@
 					GeocodingEvent.GEOCODING_FAILURE,
 					function(event:GeocodingEvent):void {
 						Alert.show("Geocoding failed");
-						trace(event);
-						trace(event.status);
 					});
-				geocoder.geocode(address);
+				
+				var k:ClientGeocoderOptions = new ClientGeocoderOptions();
+				k.countryCode = "uk";
+				geocoder.setOptions(k);
+				trace("Really loading: " + address);
+				geocoder.geocode("ls12 1qb");
 			}
 
 
@@ -265,6 +317,7 @@
 					map.addControl(pg_Position);
 					map.addControl(pg_MapType);
 					
+					
 					addElement(brdMap);
 				}
 			}
@@ -290,12 +343,12 @@
 	
 	
 	<s:Border id="brdLogo" x="0" y="0" width="200" height="200" borderWeight="2">
-		<mx:Image source="@Embed('assets/embedded/logo3.png')" maintainAspectRatio="true" top="0" left="0" right="0" bottom="0" smoothBitmapContent="true" />
+		<mx:Image maintainAspectRatio="true" top="0" left="0" right="0" bottom="0" smoothBitmapContent="true"  id="picImage"/>
 	</s:Border>
 	
 
 	<s:Border id="brdDetails" width="432"  x="214" y="0" height="410" borderWeight="2" >
-		<mx:Text  top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="19"   fontWeight="bold"  color="#0036FF">
+		<mx:Text  top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="19"   fontWeight="bold"  color="#0036FF" id="txtItemName">
 			<mx:htmlText>
 				<![CDATA[
 				<p align="center">
@@ -305,7 +358,7 @@
 			</mx:htmlText>
 		</mx:Text>
 		
-		<mx:Text  top="32" left="0" right="0" bottom="0" condenseWhite="true"   fontAntiAliasType="advanced" text="About Apple&#xd;Incorporated January 4, 1977 Apple is the main manufacturer of a line of personal computers under the Apple Macintosh (Mac) brand name, peripherals, and computer software. ">
+		<mx:Text  top="32" left="0" right="0" bottom="0" condenseWhite="true"   fontAntiAliasType="advanced" text="About Apple&#xd;Incorporated January 4, 1977 Apple is the main manufacturer of a line of personal computers under the Apple Macintosh (Mac) brand name, peripherals, and computer software. " id="txtDesc">
 			<mx:htmlText>
 				<![CDATA[
 				
@@ -337,7 +390,7 @@
 		</mx:Text>
 		
 		
-		<mx:Text  top="28" left="0" right="4" bottom="67" condenseWhite="true" textAlign="center" fontAntiAliasType="advanced" >
+		<mx:Text  top="28" left="0" right="4" bottom="67" condenseWhite="true" textAlign="center" fontAntiAliasType="advanced"  id="txtAddress">
 			<mx:htmlText>
 				<![CDATA[
 				<p align="center">
@@ -352,7 +405,7 @@
 		</mx:Text>
 		
 		
-		<mx:Text  top="135" left="0" right="0" bottom="79" condenseWhite="true" textAlign="center" fontAntiAliasType="advanced"  >
+		<mx:Text  top="135" left="0" right="0" bottom="79" condenseWhite="true" textAlign="center" fontAntiAliasType="advanced"   id="txtEmail">
 			<mx:htmlText>
 				<![CDATA[
 				<p align="center">
@@ -362,7 +415,7 @@
 			</mx:htmlText>
 		</mx:Text>
 	
-		<mx:Text  top="150" left="0" right="0" bottom="49" condenseWhite="true" textAlign="center" fontAntiAliasType="advanced"  >
+		<mx:Text  top="150" left="0" right="0" bottom="49" condenseWhite="true" textAlign="center" fontAntiAliasType="advanced"   id="txtTel">
 			<mx:htmlText>
 				<![CDATA[
 				<p align="center">
@@ -371,7 +424,7 @@
 				]]>
 			</mx:htmlText>
 		</mx:Text>
-		<mx:Text  top="165" left="0" right="0" bottom="49" condenseWhite="true" textAlign="center"  fontAntiAliasType="advanced"  >
+		<mx:Text  top="165" left="0" right="0" bottom="49" condenseWhite="true" textAlign="center"  fontAntiAliasType="advanced"   id="txtMob">
 			<mx:htmlText>
 				<![CDATA[
 				<p align="center">
@@ -381,7 +434,7 @@
 			</mx:htmlText>
 		</mx:Text>
 		
-		<mx:Text  top="180" left="0" right="0" bottom="49" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" >
+		<mx:Text  top="180" left="0" right="0" bottom="49" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced"  id="txtFax">
 			<mx:htmlText>
 				<![CDATA[
 				<p align="center">
@@ -397,7 +450,7 @@
 		<maps:Map 
 			id="map" 
 			key="ABQIAAAAHwh9srwjPeuXQxD4mp-h2xSLqpdYARPcqm42NaxkNDpu43T8ZRR_faH5tvSCMzUAmKWyn66_k1IUbQ" 
-			top="0" left="0" right="0" bottom="0"
+			top="0" left="0" right="0" bottom="0"  
 		   mapevent_mapready="map_mapevent_mapreadyHandler(event)"
 		/>
 		

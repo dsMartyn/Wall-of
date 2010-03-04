@@ -50,6 +50,8 @@ package com.utils
 		public var ga_Years:Array = ['Year:'];
 		
 
+		public var gi_CurrentIndex:Number=-1;
+		
 		public const MAX_RESULTS_PAGE:Number = 54;
 		
 		public function DatabaseCRUD()
