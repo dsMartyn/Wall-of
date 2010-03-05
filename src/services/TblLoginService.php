@@ -1,6 +1,6 @@
 <?php
 
-include("DatabaseConnector.php");
+require_once("DatabaseConnector.php");
 
 class TblLoginService {
 

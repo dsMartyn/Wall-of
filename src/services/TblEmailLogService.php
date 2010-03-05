@@ -1,6 +1,6 @@
 <?php
 
-include("DatabaseConnector.php");
+require_once("DatabaseConnector.php");
 
 class TblEmailLogService {
 
@@ -215,7 +215,7 @@ class TblEmailLogService {
 		-- 
 		returns void
 	\*****************************/
-	private function email_reg_info($to, $name, $memberID)
+	public function email_reg_info($to, $name, $memberID)
 	{
 		$subject = 'Account registration.';
 		
@@ -229,6 +229,7 @@ class TblEmailLogService {
 		mail($to, $subject, $message, $headers);
 		
 		//store email in log
+		$item = new StdClass();
 		$item->RowID=0;
 		$item->Email = $to;
 		$item->Sender = "no-reply@wall-of.com";
@@ -246,7 +247,7 @@ class TblEmailLogService {
 		-- 
 		returns void
 	\*****************************/
-	private function email_update_info($to, $name, $memberID)
+	public function email_update_info($to, $name, $memberID)
 	{
 		$subject = 'Account Updated.';
 		
@@ -261,6 +262,7 @@ class TblEmailLogService {
 		
 		
 		//store email in log
+		$item = new StdClass();
 		$item->RowID=0;
 		$item->Email = $to;
 		$item->Sender = "no-reply@wall-of.com";
@@ -296,6 +298,7 @@ class TblEmailLogService {
 		mail($to, $subject, $message, $headers);
 		
 		//store email in log
+		$item = new StdClass();
 		$item->RowID=0;
 		$item->Email = $to;
 		$item->Sender = "no-reply@wall-of.com";

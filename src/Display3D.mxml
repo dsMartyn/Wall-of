@@ -112,8 +112,8 @@
 			private var pp_Holder:DisplayObject3D = null;
 			private var pa_PlaneClicked:Array = new Array();
 			
-			private const pcs_ErrorImage:String = "assets/error.png";
-			private const pcs_BorderImage:String = "assets/border.png";
+			private const pcs_ErrorImage:String = "http://www.wall-of.com/wallof/assets/error.png";//"assets/error.png";
+			private const pcs_BorderImage:String = "http://www.wall-of.com/wallof/assets/border.png";//"assets/border.png";
 			private const pci_angle:Number = Math.PI * 2 * 3 / 54;
 			private const pci_rad:Number = 180 / Math.PI;
 			private const pcb_DoubleSided:Boolean = true;//used to yaw selected plane

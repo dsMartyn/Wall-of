@@ -451,7 +451,7 @@
 				this.memberFields = Database.go_MemberFields;
 				var lv_dob:Array;
 				
-				trace(this.memberFields.DOB.toString());
+				//trace(this.memberFields.DOB.toString());
 				
 				if (this.memberFields.DOB.indexOf("/",0)>0)
 				{

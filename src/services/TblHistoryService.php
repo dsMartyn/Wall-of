@@ -1,6 +1,6 @@
 <?php
 
-include("DatabaseConnector.php");
+require_once("DatabaseConnector.php");
 
 class TblHistoryService {
 
@@ -87,7 +87,7 @@ class TblHistoryService {
 		$stmt = mysqli_prepare($this->mysql->connection, "INSERT INTO $this->tablename (RowID, IPAddress, Page, Referrer, MemberID) VALUES (?, ?, ?, ?, ?)");		
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'iiiii', $item->RowID, $item->IPAddress, $item->Page, $item->Referrer, $item->MemberID);		
+		mysqli_bind_param($stmt, 'isssi', $item->RowID, $item->IPAddress, $item->Page, $item->Referrer, $item->MemberID);		
 		$this->throwExceptionOnError();
 
 		mysqli_stmt_execute($stmt);		
@@ -114,7 +114,7 @@ class TblHistoryService {
 		$stmt = mysqli_prepare($this->mysql->connection, "UPDATE $this->tablename SET RowID=?, IPAddress=?, Page=?, Referrer=?, MemberID=?	WHERE RowID=?");		
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'iiiiii', $item->RowID, $item->IPAddress, $item->Page, $item->Referrer, $item->MemberID, $item->RowID);		
+		mysqli_bind_param($stmt, 'isssii', $item->RowID, $item->IPAddress, $item->Page, $item->Referrer, $item->MemberID, $item->RowID);		
 		$this->throwExceptionOnError();
 
 		mysqli_stmt_execute($stmt);		

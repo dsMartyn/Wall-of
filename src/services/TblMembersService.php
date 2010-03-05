@@ -1,6 +1,6 @@
 <?php
 
-include("DatabaseConnector.php");
+require_once("DatabaseConnector.php");
 
 class TblMembersService {
 
@@ -98,6 +98,11 @@ class TblMembersService {
 		mysqli_stmt_free_result($stmt);		
 		$this->mysql->_mysqli_close();
 		
+		
+		require_once("TblEmailLogService.php");
+		//$email->mysql->php_mode();
+		$email = new TblEmailLogService();
+		$email->email_reg_info($item->UserName, $item->FirstName . ' ' . $item->LastName, $autoid);
 		return $autoid;
 	}
 
@@ -122,6 +127,11 @@ class TblMembersService {
 		
 		mysqli_stmt_free_result($stmt);		
 		$this->mysql->_mysqli_close();
+		
+		require_once("TblEmailLogService.php");
+		//$email->mysql->php_mode();
+		$email = new TblEmailLogService();
+		$email->email_update_info($item->UserName, $item->FirstName . ' ' . $item->LastName, $item->RowID);
 		
 		return  $item->RowID;
 	}
