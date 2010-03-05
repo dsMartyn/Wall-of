@@ -17,6 +17,7 @@ package com.utils
 		public static function InitEncoreChar() : Vector.<int>
 		{
 			var encodeChars:Vector.<int> = new Vector.<int>();
+			trace("init encoder");
 			// We could push the number directly, but i think it's nice to see the characters (with no overhead on encode/decode)
 			var chars:String = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 			for (var i:int = 0; i < 64; i++)
@@ -39,6 +40,7 @@ package com.utils
 		
 		public static function InitDecodeChar() : Vector.<int>
 		{
+			trace("init decoder");
 			var decodeChars:Vector.<int> = new Vector.<int>();
 			
 			decodeChars.push(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,   
@@ -123,6 +125,7 @@ package com.utils
 			out = new ByteArray();   
 			var byteString:ByteArray = new ByteArray();   
 			byteString.writeUTFBytes(str);
+			
 			while (i < len) 
 			{   
 				//c1   

@@ -183,12 +183,35 @@
 				Database.removeEventListener(CrudEvent.GET_MEMBERINFO, GotMemberInfo);
 			}
 				
+			protected function getProductInfo(event:CrudEvent):void
+			{
+				
+				if (event.valid)
+				{
+				ps_CurrentState = "DisplayPlane";
+				cmpDisplay3D.Display3D_Hide();
+				}else{
+					Alert.show(event.errorMsg,"Error getting product information");
+					trace("Error getting info");
+					
+				}
+				return;
+			}
 			
 			//hide Display3D and show DisplayPlane
 			protected function Display3D_Plane(event:Event):void
 			{
-				ps_CurrentState = "DisplayPlane";
-				cmpDisplay3D.Display3D_Hide();
+				if (Database.gi_CurrentIndex > Database.go_SearchFields.length || Database.gi_CurrentIndex < 0)
+				{
+					Alert.show("Can't initialize product information","Error loading info");
+					return;
+				}	
+		
+				Database.addEventListener(CrudEvent.GET_PRODUCTINFO, getProductInfo);
+				var sf:SearchFields = Database.go_SearchFields[Database.gi_CurrentIndex];
+				
+				
+				Database.GetProduct(null,sf.RowID);
 				
 			}
 			
@@ -254,11 +277,11 @@
 				var obj:LoaderInfo = event.target as LoaderInfo;
 				if(obj.loader)
 				{
-					var idx:Number = this.cmpDisplay3D.AddImage(int(obj.loader.name), Database.go_ProductFields.length, obj.loader.content);
-					if (idx >= Database.go_ProductFields.length)
+					var idx:Number = this.cmpDisplay3D.AddImage(int(obj.loader.name), Database.go_SearchFields.length, obj.loader.content);
+					if (idx >= Database.go_SearchFields.length)
 					{
 						var li_CurrentTime:int =  getTimer();
-						this.lblSearchRes.text = lblSearchRes.text + " rendered " + Database.go_ProductFields.length.toString() + " in " + ((li_CurrentTime - pi_Time)/1000).toString().substr(0,4) + " Seconds"	
+						this.lblSearchRes.text = lblSearchRes.text + " rendered " + Database.go_SearchFields.length.toString() + " in " + ((li_CurrentTime - pi_Time)/1000).toString().substr(0,4) + " Seconds"	
 					}
 						
 				}
@@ -268,20 +291,21 @@
 			{
 				trace("Error");	
 			}
+
 			
+			
+			private var po_base:Base64 = new Base64();
 			private function ProcessProduct(product:SearchFields, idx:Number, length:Number):void
 			{
-				
-				var b:Base64 = new Base64();
 				var loader:Loader = new Loader();
+				//decodeFromHex(product.Image);
 				
-				loader.loadBytes(b.decode(product.Image));
+				loader.loadBytes( po_base.decode(product.Image) );
 				loader.name = (idx).toString();
-			//	loader.contentLoaderInfo.addEventListener( ProgressEvent.PROGRESS, loadBitmapProgressHandler );
+				
+				//	loader.contentLoaderInfo.addEventListener( ProgressEvent.PROGRESS, loadBitmapProgressHandler );
 				loader.contentLoaderInfo.addEventListener( Event.COMPLETE, loadBitmapCompleteHandler );
-				//loader.contentLoaderInfo.addEventListener( IOErrorEvent.IO_ERROR, loadBitmapErrorHandler );
-	
-			//	this.cmpDisplay3D.AddImage(idx+1, length, loader.content);
+				//	loader.contentLoaderInfo.addEventListener( IOErrorEvent.IO_ERROR, loadBitmapErrorHandler );
 			}
 			
 			private var pi_Time:int;
@@ -298,7 +322,7 @@
 					Alert.show(event.errorMsg, "Error getting search results");
 					return;
 				}
-				if (!Database.go_ProductFields)
+				if (!Database.go_SearchFields)
 				{
 					this.lblSearchRes.text = "Search found " + ctr.toString() + " results in "  + ((li_CurrentTime - pi_Time)/1000).toString().substr(0,4) 
 						
@@ -306,9 +330,9 @@
 				}
 				
 				
-				if (Database.go_ProductFields.length>0)
+				if (Database.go_SearchFields.length>0)
 				{
-					var pf:SearchFields = Database.go_ProductFields[i];
+					var pf:SearchFields = Database.go_SearchFields[i];
 					ctr = pf.count;
 				}
 				
@@ -316,11 +340,11 @@
 				pi_Time = getTimer();
 
 				
-				for (i=0;i<Database.go_ProductFields.length;i++)
+				for (i=0;i<Database.go_SearchFields.length;i++)
 				{
-					pf = Database.go_ProductFields[i];
+					pf = Database.go_SearchFields[i];
 					ctr = pf.count;
-					ProcessProduct(pf, i, Database.go_ProductFields.length);
+					ProcessProduct(pf, i, Database.go_SearchFields.length);
 				}
 	
 				var iCtr:Number = ctr / Database.MAX_RESULTS_PAGE;

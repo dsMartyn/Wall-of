@@ -2,7 +2,6 @@ package com.events
 {
 	import flash.events.Event;
 	
-	import valueObjects.SearchFields;
 	import valueObjects.TblMembers;
 	
 	public class CrudEvent extends Event
@@ -24,6 +23,7 @@ package com.events
 		
 		public static const SEARCH:String = "search"
 		
+		public static const GET_PRODUCTINFO:String = "getProductInfo";
 		
 		/**
 		 * returns true if VALID_EMAIL and email is valid

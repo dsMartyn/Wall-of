@@ -98,7 +98,7 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
         var operation:Operation;         
          
         operation = new Operation(null, "getTblProductsByID");
-		 operation.resultElementType = valueObjects.TblProducts;
+		 operation.resultType = valueObjects.TblProducts; 		 
         operations["getTblProductsByID"] = operation;
          
      valueObjects.TblProducts._initRemoteClassAlias();

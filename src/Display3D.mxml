@@ -319,7 +319,7 @@
 						var lp_Plane:Plane = null;
 						for each (lp_Plane in pa_PlaneClicked.reverse())
 						{
-							if(lp_Plane)
+							//if(lp_Plane)
 								lp_Plane.yaw(((400/2))/(400/2)*2);
 						}
 					}
@@ -507,7 +507,7 @@
 				if (!lp_plane)//error creating plane! (out of mem?)
 					return -1;
 			
-				//lp_plane.name = "bmpTile" + idx.toString();
+				lp_plane.name = "bmpTile" + idx.toString();
 				lp_plane.rotationY = - (idx * pci_angle) * (180 / Math.PI) + 90;
 				lp_plane.x = (Math.cos(idx * pci_angle ) * 326)  ;
 				lp_plane.z = (Math.sin(idx * pci_angle) * 320);
@@ -545,7 +545,7 @@
 			{
 				pi_Idx=0;
 				//this.prgImages.setProgress(0,0);
-				
+				pa_PlaneClicked = [];
 				var idx:Number=0;
 				for (idx=0;idx<54;idx++)
 					pp_View.scene.removeChildByName("bmpTile" + idx.toString());

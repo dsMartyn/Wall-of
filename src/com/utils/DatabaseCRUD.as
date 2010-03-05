@@ -43,7 +43,10 @@ package com.utils
 		//global variables
 		public var go_LoginFields:LoginFields = new LoginFields();
 		public var go_MemberFields:TblMembers = new TblMembers();
-		public var go_ProductFields:ArrayCollection;
+		public var go_SearchFields:ArrayCollection;
+		public var go_ProductFields:TblProducts;
+		
+		//public var go_ProductFields:TblProducts;
 		
 		public var ga_Months:Array = ['Month:','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];	
 		public var ga_Days:Array = ['Day:'];	
@@ -512,6 +515,55 @@ package com.utils
 		
 		
 		
+		private var pc_GetProduct:CallResponder = new CallResponder();
+		public function GetProduct(event:Object, productId:Number=-1):void
+		{
+			var fault:FaultEvent;
+			
+			if (productId >= 0)
+			{
+				this.pc_GetProduct.addEventListener(ResultEvent.RESULT, this.GetProduct);
+				this.pc_GetProduct.addEventListener(FaultEvent.FAULT, this.GetProduct);
+				this.pc_GetProduct.token =  pc_CrudProducts.getTblProductsByID(productId);
+				trace('Get Product: ' + productId);
+				return;
+			}
+			
+			trace("got event back");
+			var le_Event:CrudEvent = new CrudEvent(CrudEvent.GET_PRODUCTINFO);
+			if (event is ResultEvent && pc_GetProduct && pc_GetProduct.token.result)	
+			{
+				var ln_Value:TblProducts = pc_GetProduct.token.result as  TblProducts;
+				if (!ln_Value)
+				{
+					trace("errored");
+					fault = event as FaultEvent;
+					le_Event.errorMsg = "Error allocating data";
+					le_Event.errored = true;
+					this.dispatchEvent(le_Event);
+				}else{
+					this.go_ProductFields = ln_Value;
+					le_Event.valid = true;
+					
+					trace("dispatched");
+					this.dispatchEvent(le_Event);
+				}
+			}
+			
+			if (event is FaultEvent)
+			{
+				trace("errored");
+				fault = event as FaultEvent;
+				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
+				le_Event.errored = true;
+				this.dispatchEvent(le_Event);
+			}
+			
+			this.pc_GetProduct.removeEventListener(ResultEvent.RESULT, this.GetProduct);
+			this.pc_GetProduct.removeEventListener(FaultEvent.FAULT, this.GetProduct);
+		}
+		
+		
 		private var pc_Search:CallResponder = new CallResponder();
 		public function Search(event:Object, search:String=null, page:Number=0):void
 		{
@@ -528,7 +580,7 @@ package com.utils
 			if (event is ResultEvent && pc_Search && pc_Search.token.result)	
 			{
 				var ln_Value:ArrayCollection = pc_Search.token.result as  ArrayCollection;
-				this.go_ProductFields = ln_Value;
+				this.go_SearchFields = ln_Value;
 				le_Event.valid = true;
 
 				trace("dispatched");

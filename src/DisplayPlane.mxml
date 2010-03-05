@@ -28,8 +28,9 @@
 			import com.google.maps.services.*;
 			import com.utils.*;
 			
-			import valueObjects.SearchFields;
 			import mx.controls.Alert;
+			
+			import valueObjects.*;
 			
 			private const pcs_Display3D_Show:String = "displayShow";//event dispatcher
 
@@ -53,7 +54,10 @@
 			public function DisplayPlane_Stop():void
 			{				
 				po_mapFull=false;
-				po_YouTube.stop();
+				if (po_YouTube)
+					po_YouTube.stop();
+				
+				//exitFull();
 			
 			}
 
@@ -61,7 +65,9 @@
 			protected function btnBack_Click(event:MouseEvent):void
 			{
 				po_mapFull=false;
-				po_YouTube.stop();
+				if (po_YouTube)
+					po_YouTube.stop();
+
 				
 				dispatchEvent(new Event(pcs_Display3D_Show));
 				
@@ -73,11 +79,8 @@
 				var obj:LoaderInfo = event.target as LoaderInfo;
 				if(obj.loader)
 				{
-					trace("assigning immage");
-				
 					this.picImage.smoothBitmapContent = true;
 					this.picImage.source =  obj.loader.content
-					
 				}
 			}
 			
@@ -88,18 +91,19 @@
 			 * */
 			public function InitPlane():void
 			{
-				if (Database.gi_CurrentIndex > Database.go_ProductFields.length || Database.gi_CurrentIndex < 0)
+				if (Database.gi_CurrentIndex > Database.go_SearchFields.length || Database.gi_CurrentIndex < 0 || !Database.go_ProductFields)
 				{
 					Alert.show("Can't initialize product information","Error loading info");
 					return;
 				}	
 				
-				var pf:SearchFields = Database.go_ProductFields[Database.gi_CurrentIndex];
+				var pf:TblProducts = Database.go_ProductFields;
+				var sf:SearchFields = Database.go_SearchFields[Database.gi_CurrentIndex];
 
 				var b:Base64 = new Base64();
 				var loader:Loader = new Loader();
 				
-				loader.loadBytes(b.decode(pf.Image));
+				loader.loadBytes(b.decode(sf.Image));
 				loader.contentLoaderInfo.addEventListener( Event.COMPLETE, loadBitmapCompleteHandler );
 				
 				this.txtDesc.text = pf.ItemDesc;
@@ -137,25 +141,41 @@
 					po_YouTube.autoPlay = true;
 				}else{
 					if (pb_MapReady && pf.GooglePostCode.length > 0)
-						map_mapevent_mapreadyHandler(null);
+						onMapReady(null);
 					
 				}
 				if (pf.YoutubeVideoUrl.length > 0)
 					po_YouTube.videoID = pf.YoutubeVideoUrl;
 					po_YouTube.play();
+				
 			}
 
 			
-			protected function map_mapevent_mapreadyHandler(event:MapEvent):void
+			protected function onMapPreinitialize(event:MapEvent):void
 			{
-				var pf:SearchFields = Database.go_ProductFields[Database.gi_CurrentIndex];
-				if (Database.gi_CurrentIndex > Database.go_ProductFields.length || Database.gi_CurrentIndex < 0)
+				trace("Map Pre-initialize");
+			}
+			
+			protected function onMapReady(event:MapEvent):void
+			{
+					
+				if (Database.gi_CurrentIndex > Database.go_SearchFields.length || Database.gi_CurrentIndex < 0 || !Database.go_ProductFields)
 				{
+					trace(Database.gi_CurrentIndex > Database.go_SearchFields.length);
+					trace(Database.gi_CurrentIndex < 0);
+					trace(!Database.go_ProductFields);
+						
 					Alert.show("Can't initialize google information","Error loading info");
 					return;
 				}	
+				
+				var pf:TblProducts = Database.go_ProductFields;
+				
 				if (pf.GooglePostCode.length <= 0)
 					return;//no post code!
+				
+				map.addEventListener(MapEvent.MAP_PREINITIALIZE, onMapPreinitialize);
+				
 				
 				trace("Loading " + pf.GooglePostCode);
 				pb_MapReady = true;
@@ -163,43 +183,45 @@
 				map.enableContinuousZoom();
 				
 				map.setMapType(MapType.HYBRID_MAP_TYPE);
-				map.setCenter(new LatLng(42.366662,-71.106262), 11, MapType.NORMAL_MAP_TYPE);
+				map.setCenter(new LatLng(42.366662,-71.106262), 16, MapType.NORMAL_MAP_TYPE);
 				
 				doGeocode(pf.GooglePostCode);
 				
 			}
 			
+			protected function GeoCode_Success(event:GeocodingEvent):void 
+			{
+				var placemarks:Array = event.response.placemarks;
+				if (placemarks.length > 0) {
+					map.setCenter(placemarks[0].point,16);
+					var marker:Marker = new Marker(placemarks[0].point);
+					
+					marker.addEventListener(MapMouseEvent.CLICK, function (event:MapMouseEvent):void {
+						marker.openInfoWindow(new InfoWindowOptions({content: placemarks[0].address}));
+					});
+					
+					marker.openInfoWindow(new InfoWindowOptions({content: placemarks[0].address}));
+					map.addOverlay(marker);
+				}
+			}
+				
+			protected function GeoCode_Failure(event:GeocodingEvent):void {
+				Alert.show("Geocoding failed");
+			}
+			
+			
 			private function doGeocode(address:String):void {
 								
-				var geocoder:ClientGeocoder = new ClientGeocoder();
+				var options:ClientGeocoderOptions = new ClientGeocoderOptions();
+				options.countryCode = "uk";
 				
+				var geocoder:ClientGeocoder = new ClientGeocoder(options);
 				
-				geocoder.addEventListener(
-					GeocodingEvent.GEOCODING_SUCCESS,
-					function(event:GeocodingEvent):void {
-						var placemarks:Array = event.response.placemarks;
-						if (placemarks.length > 0) {
-							trace("Found locations:: " + placemarks.length);
-							map.setCenter(placemarks[0].point,11);
-							var marker:Marker = new Marker(placemarks[0].point);
-							
-							marker.addEventListener(MapMouseEvent.CLICK, function (event:MapMouseEvent):void {
-								marker.openInfoWindow(new InfoWindowOptions({content: placemarks[0].address}));
-							});
-							map.addOverlay(marker);
-						}
-					});
-				geocoder.addEventListener(
-					GeocodingEvent.GEOCODING_FAILURE,
-					function(event:GeocodingEvent):void {
-						Alert.show("Geocoding failed");
-					});
+				geocoder.addEventListener(GeocodingEvent.GEOCODING_SUCCESS,GeoCode_Success);
+				geocoder.addEventListener(GeocodingEvent.GEOCODING_FAILURE,GeoCode_Failure);
 				
-				var k:ClientGeocoderOptions = new ClientGeocoderOptions();
-				k.countryCode = "uk";
-				geocoder.setOptions(k);
-				trace("Really loading: " + address);
-				geocoder.geocode("ls12 1qb");
+			
+				geocoder.geocode(address);
 			}
 
 
@@ -451,7 +473,7 @@
 			id="map" 
 			key="ABQIAAAAHwh9srwjPeuXQxD4mp-h2xSLqpdYARPcqm42NaxkNDpu43T8ZRR_faH5tvSCMzUAmKWyn66_k1IUbQ" 
 			top="0" left="0" right="0" bottom="0"  
-		   mapevent_mapready="map_mapevent_mapreadyHandler(event)"
+		   mapevent_mapready="onMapReady(event)"
 		/>
 		
 		<s:Button id="btnMapPrint" click="mapPrint_Click(event);" label="Print" height="21" width="66" bottom="25" right="94"/>

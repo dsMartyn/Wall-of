@@ -44,8 +44,8 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
 	private var _internal_picUrl : Object;
 	private var _internal_CompanyDesc : String;
 	private var _internal_CompanyName : Object;
-	private var _internal_AddressTown : String;
 	private var _internal_Image : String;
+	private var _internal_AddressTown : String;
 	private var _internal_AddressEmail : String;
 	private var _internal_status : int;
 	private var _internal_AddressFax : String;
@@ -57,6 +57,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
 	private var _internal_AddressName : String;
 	private var _internal_MemberID : int;
 	private var _internal_RowID : int;
+	private var _internal_Category : String;
 	private var _internal_ImageID : int;
 	private var _internal_AddressStreet : String;
 	private var _internal_ItemDesc : String;
@@ -99,14 +100,14 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
             return _internal_CompanyName;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get AddressTown() : String    
-    {
-            return _internal_AddressTown;
-    }    
-	[Bindable(event="propertyChange")] 
     public function get Image() : String    
     {
             return _internal_Image;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get AddressTown() : String    
+    {
+            return _internal_AddressTown;
     }    
 	[Bindable(event="propertyChange")] 
     public function get AddressEmail() : String    
@@ -162,6 +163,11 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     public function get RowID() : int    
     {
             return _internal_RowID;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get Category() : String    
+    {
+            return _internal_Category;
     }    
 	[Bindable(event="propertyChange")] 
     public function get ImageID() : int    
@@ -252,26 +258,6 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set AddressTown(value:String) : void 
-    {    	
-        var recalcValid:Boolean = false;
-    	if (value == null || _internal_AddressTown == null)
-    	{
-    		recalcValid = true;
-    	}	
-    	
-    	
-    	var oldValue:String = _internal_AddressTown;               
-        if (oldValue !== value)
-        {
-        	_internal_AddressTown = value;
-        }    	     
-        
-        if (recalcValid && model_internal::_cacheInitialized_isValid)
-        {
-            model_internal::isValid_der = model_internal::calculateIsValid();
-        }  
-    }    
     public function set Image(value:String) : void 
     {    	
         var recalcValid:Boolean = false;
@@ -285,6 +271,26 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_Image = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set AddressTown(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_AddressTown == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_AddressTown;               
+        if (oldValue !== value)
+        {
+        	_internal_AddressTown = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -500,6 +506,26 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
+    public function set Category(value:String) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_Category == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:String = _internal_Category;               
+        if (oldValue !== value)
+        {
+        	_internal_Category = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
     public function set ImageID(value:int) : void 
     {    	
         var recalcValid:Boolean = false;
@@ -643,15 +669,15 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
 			violatedConsts.push("CompanyNameIsRequired");
 			validationFailureMessages.push("CompanyName is required");
 		}
-		if (_model.isAddressTownAvailable && _internal_AddressTown == null)
-		{
-			violatedConsts.push("AddressTownIsRequired");
-			validationFailureMessages.push("AddressTown is required");
-		}
 		if (_model.isImageAvailable && _internal_Image == null)
 		{
 			violatedConsts.push("ImageIsRequired");
 			validationFailureMessages.push("Image is required");
+		}
+		if (_model.isAddressTownAvailable && _internal_AddressTown == null)
+		{
+			violatedConsts.push("AddressTownIsRequired");
+			validationFailureMessages.push("AddressTown is required");
 		}
 		if (_model.isAddressEmailAvailable && _internal_AddressEmail == null)
 		{
@@ -693,6 +719,11 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
 			violatedConsts.push("AddressNameIsRequired");
 			validationFailureMessages.push("AddressName is required");
 		}
+		if (_model.isCategoryAvailable && _internal_Category == null)
+		{
+			violatedConsts.push("CategoryIsRequired");
+			validationFailureMessages.push("Category is required");
+		}
 		if (_model.isAddressStreetAvailable && _internal_AddressStreet == null)
 		{
 			violatedConsts.push("AddressStreetIsRequired");
@@ -715,6 +746,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
 		}
 
 		var styleValidity:Boolean = true;
+	
 	
 	
 	

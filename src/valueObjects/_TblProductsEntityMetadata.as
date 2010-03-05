@@ -21,12 +21,12 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
 {
 	private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "AddressTown", "Image", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
+    model_internal static var allProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "Image", "AddressTown", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "Category", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "AddressTown", "Image", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "AddressTown", "Image", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
+    model_internal static var allRequiredProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "Image", "AddressTown", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "Category", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "Image", "AddressTown", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "Category", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "AddressTown", "Image", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
+    model_internal static var dataProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "Image", "AddressTown", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "Category", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;    
@@ -48,8 +48,8 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
             model_internal::dependentsOnMap["picUrl"] = new Array();
             model_internal::dependentsOnMap["CompanyDesc"] = new Array();
             model_internal::dependentsOnMap["CompanyName"] = new Array();
-            model_internal::dependentsOnMap["AddressTown"] = new Array();
             model_internal::dependentsOnMap["Image"] = new Array();
+            model_internal::dependentsOnMap["AddressTown"] = new Array();
             model_internal::dependentsOnMap["AddressEmail"] = new Array();
             model_internal::dependentsOnMap["status"] = new Array();
             model_internal::dependentsOnMap["AddressFax"] = new Array();
@@ -61,6 +61,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
             model_internal::dependentsOnMap["AddressName"] = new Array();
             model_internal::dependentsOnMap["MemberID"] = new Array();
             model_internal::dependentsOnMap["RowID"] = new Array();
+            model_internal::dependentsOnMap["Category"] = new Array();
             model_internal::dependentsOnMap["ImageID"] = new Array();
             model_internal::dependentsOnMap["AddressStreet"] = new Array();
             model_internal::dependentsOnMap["ItemDesc"] = new Array();
@@ -302,13 +303,13 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isAddressTownAvailable():Boolean
+     public function get isImageAvailable():Boolean
      {
         return true;
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isImageAvailable():Boolean
+     public function get isAddressTownAvailable():Boolean
      {
         return true;
      }                       
@@ -380,6 +381,12 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      }                       
                   
      [Bindable(event="propertyChange")] 
+     public function get isCategoryAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
      public function get isImageIDAvailable():Boolean
      {
         return true;
@@ -438,13 +445,13 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get AddressTownStyle():Style
+    public function get ImageStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get ImageStyle():Style
+    public function get AddressTownStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      
@@ -511,6 +518,12 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
     
     [Bindable(event="propertyChange")]   
     public function get RowIDStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get CategoryStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      
