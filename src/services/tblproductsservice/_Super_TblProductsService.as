@@ -9,6 +9,7 @@ import com.adobe.fiber.core.model_internal;
 import mx.rpc.AbstractOperation;
 import valueObjects.SearchFields;
 import valueObjects.TblProducts;
+import valueObjects.TblProductsView;
 import mx.data.RPCDataManager;
 import mx.data.ManagedOperation;
 import mx.data.ManagedAssociation;
@@ -142,6 +143,15 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
         operations["search"] = operation;
          
      valueObjects.SearchFields._initRemoteClassAlias();
+        operation = new Operation(null, "GetProductsForUserPaged");
+		 operation.resultElementType = valueObjects.TblProductsView;
+        operations["GetProductsForUserPaged"] = operation;
+         
+     valueObjects.TblProductsView._initRemoteClassAlias();
+        operation = new Operation(null, "countAllProductsMemberID");
+		 operation.resultType = Object; 		 
+        operations["countAllProductsMemberID"] = operation;
+         
     
         _serviceControl.operations = operations;   
 		_serviceControl.convertResultHandler = TypeUtility.convertResultHandler;
@@ -403,6 +413,44 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
 	{
 		var _internal_operation:AbstractOperation = _serviceControl.getOperation("search");
 		var _internal_token:AsyncToken = _internal_operation.send(str,start,limit) ;
+
+		return _internal_token;
+	}   
+	 
+	/**
+	  * This method is a generated wrapper used to call the 'GetProductsForUserPaged' operation. It returns an AsyncToken whose 
+	  * result property will be populated with the result of the operation when the server response is received. 
+	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+	  */          
+	public function GetProductsForUserPaged(MemberID:Object, startIndex:Object, numItems:Object) : AsyncToken
+	{
+		var _internal_operation:AbstractOperation = _serviceControl.getOperation("GetProductsForUserPaged");
+		var _internal_token:AsyncToken = _internal_operation.send(MemberID,startIndex,numItems) ;
+
+		return _internal_token;
+	}   
+	 
+	/**
+	  * This method is a generated wrapper used to call the 'countAllProductsMemberID' operation. It returns an AsyncToken whose 
+	  * result property will be populated with the result of the operation when the server response is received. 
+	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+	  */          
+	public function countAllProductsMemberID(MemberID:Object) : AsyncToken
+	{
+		var _internal_operation:AbstractOperation = _serviceControl.getOperation("countAllProductsMemberID");
+		var _internal_token:AsyncToken = _internal_operation.send(MemberID) ;
 
 		return _internal_token;
 	}   

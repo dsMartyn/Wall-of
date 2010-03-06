@@ -21,6 +21,7 @@ package com.utils
 	import valueObjects.LoginFields;
 	import valueObjects.TblMembers;
 	import valueObjects.TblProducts;
+	import valueObjects.TblProductsView;
 
 	public class DatabaseCRUD extends EventDispatcher
 	{
@@ -32,6 +33,21 @@ package com.utils
 		private var pc_Crud:Crud = new Crud();
 		*/
 		
+		public const pc_name:String = "Enter Company Name";
+		public const pc_street:String = "Enter Street Name";
+		public const pc_town:String = "Enter Town";
+		public const pc_county:String = "Enter County";
+		public const pc_postcode:String = "Ener Post Code";
+		public const pc_email:String = "Enter Email address";
+		public const pc_tel:String = "Enter Number";
+		public const pc_mob:String = "Enter Mobile";
+		public const pc_fax:String = "Enter Fax";
+		public const pc_companyName:String = "Enter Company name";
+		public const pc_companyDesc:String = "Enter company Descrption\nYear it was established\nany offers.";
+		public const pc_mapsPostCode:String = "LS12 1QB";
+		public const pc_youTubeURL:String = "http://www.youtube.com/watch?v=Va8Sh4Agr58";
+		
+		
 		//private variables
 		private var pc_CrudEmailLog:TblEmailLogService = new TblEmailLogService();
 		private var pc_CrudProducts:TblProductsService = new TblProductsService();
@@ -41,13 +57,34 @@ package com.utils
 		private var pc_CrudLogin:TblLoginService = new TblLoginService();
 	
 		//global variables
+		/** 
+		 * Login fields contains memberID + SessionID when logging in  
+		**/
 		public var go_LoginFields:LoginFields = new LoginFields();
+		
+		/**
+		 * MemberFields contains username and info for that user when logging in
+		**/
 		public var go_MemberFields:TblMembers = new TblMembers();
+		
+		/**
+		 * SearchFields contains Image which is Base64 Encoded *change this*
+		**/
 		public var go_SearchFields:ArrayCollection;
+		
+		/**
+		 * ProductFields this contain the product information for the clicked product
+		**/
 		public var go_ProductFields:TblProducts;
 		
-		//public var go_ProductFields:TblProducts;
-		
+	
+		[bindable]
+		/**
+		 * Product view for MemberID 
+		 * @see MAX_RESULTS_VIEW
+		 */		
+		public var go_ProductsView:ArrayCollection;
+
 		public var ga_Months:Array = ['Month:','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];	
 		public var ga_Days:Array = ['Day:'];	
 		public var ga_Years:Array = ['Year:'];
@@ -55,7 +92,17 @@ package com.utils
 
 		public var gi_CurrentIndex:Number=-1;
 		
+		/**
+		 * this is how many results are rendered when searching
+		**/
 		public const MAX_RESULTS_PAGE:Number = 54;
+		
+		/**
+		 * this is how many results are shown in the product view list 
+		 **/
+		public const MAX_RESULTS_VIEW:Number = 10;
+		
+
 		
 		public function DatabaseCRUD()
 		{
@@ -529,7 +576,6 @@ package com.utils
 				return;
 			}
 			
-			trace("got event back");
 			var le_Event:CrudEvent = new CrudEvent(CrudEvent.GET_PRODUCTINFO);
 			if (event is ResultEvent && pc_GetProduct && pc_GetProduct.token.result)	
 			{
@@ -542,10 +588,11 @@ package com.utils
 					le_Event.errored = true;
 					this.dispatchEvent(le_Event);
 				}else{
+					trace("Got Product Fields");
+					
 					this.go_ProductFields = ln_Value;
 					le_Event.valid = true;
 					
-					trace("dispatched");
 					this.dispatchEvent(le_Event);
 				}
 			}
@@ -599,6 +646,59 @@ package com.utils
 			this.pc_UpdateProduct.removeEventListener(ResultEvent.RESULT, this.Search);
 			this.pc_UpdateProduct.removeEventListener(FaultEvent.FAULT, this.Search);
 		}
+		
+		
+		
+		private var pc_GetProductView:CallResponder = new CallResponder();
+		public function GetProductView(event:Object, memberId:Number=-1, start:Number=0):void
+		{
+			var fault:FaultEvent;
+			
+			if (memberId >= 0)
+			{
+				this.pc_GetProductView.addEventListener(ResultEvent.RESULT, this.GetProductView);
+				this.pc_GetProductView.addEventListener(FaultEvent.FAULT, this.GetProductView);
+				this.pc_GetProductView.token =   pc_CrudProducts.GetProductsForUserPaged(memberId, start, this.MAX_RESULTS_VIEW);
+				trace('Get Product: ' + memberId);
+				return;
+			}
+			
+			trace("got event back");
+			var le_Event:CrudEvent = new CrudEvent(CrudEvent.GET_PRODUCTVIEW_INFO);
+			if (event is ResultEvent && pc_GetProductView && pc_GetProductView.token.result)	
+			{
+				var ln_Value:ArrayCollection = pc_GetProductView.token.result as ArrayCollection;
+				if (!ln_Value)
+				{
+					trace("errored");
+					fault = event as FaultEvent;
+					le_Event.errorMsg = "Error allocating data";
+					le_Event.errored = true;
+					le_Event.valid = false;
+					this.dispatchEvent(le_Event);
+				}else{
+					this.go_ProductsView = ln_Value;
+					le_Event.valid = true;
+					
+					trace("dispatched");
+					this.dispatchEvent(le_Event);
+				}
+			}
+			
+			if (event is FaultEvent)
+			{
+				trace("errored");
+				fault = event as FaultEvent;
+				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
+				le_Event.errored = true;
+				le_Event.valid = false;
+				this.dispatchEvent(le_Event);
+			}
+			
+			this.pc_GetProductView.removeEventListener(ResultEvent.RESULT, this.GetProductView);
+			this.pc_GetProductView.removeEventListener(FaultEvent.FAULT, this.GetProductView);
+		}
+		
 		
 	}
 }

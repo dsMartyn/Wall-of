@@ -17,63 +17,49 @@ import mx.events.PropertyChangeEvent;
 use namespace model_internal;
 
 [ExcludeClass]
-internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
+internal class _TblProductsViewEntityMetadata extends AbstractEntityMetadata
 {
 	private static var emptyArray:Array = new Array();
 
-    model_internal static var allProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "Image", "AddressTown", "Clicks", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "Category", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
+    model_internal static var allProperties:Array = new Array("Map", "Image", "Clicks", "RowID", "Keywords", "YouTube", "Category", "Name", "count");
     model_internal static var allAssociationProperties:Array = new Array();
-    model_internal static var allRequiredProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "Image", "AddressTown", "Clicks", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "Category", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
-    model_internal static var allAlwaysAvailableProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "Image", "AddressTown", "Clicks", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "Category", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
+    model_internal static var allRequiredProperties:Array = new Array("Map", "Image", "Clicks", "RowID", "Keywords", "YouTube", "Category", "Name", "count");
+    model_internal static var allAlwaysAvailableProperties:Array = new Array("Map", "Image", "Clicks", "RowID", "Keywords", "YouTube", "Category", "Name", "count");
     model_internal static var guardedProperties:Array = new Array();
-    model_internal static var dataProperties:Array = new Array("picUrl", "CompanyDesc", "CompanyName", "Image", "AddressTown", "Clicks", "AddressEmail", "status", "AddressFax", "AddressMob", "AddressTel", "YoutubeVideoUrl", "AddressCounty", "ItemName", "AddressName", "MemberID", "RowID", "Category", "ImageID", "AddressStreet", "ItemDesc", "GooglePostCode", "AddressPostCode");
+    model_internal static var dataProperties:Array = new Array("Map", "Image", "Clicks", "RowID", "Keywords", "YouTube", "Category", "Name", "count");
     model_internal static var derivedProperties:Array = new Array();
     model_internal static var collectionProperties:Array = new Array();
     model_internal static var collectionBaseMap:Object;    
-    model_internal static var entityName:String = "TblProducts";
+    model_internal static var entityName:String = "TblProductsView";
     model_internal static var dependentsOnMap:Object;    
     model_internal static var dependedOnServices:Array =  new Array();
     
     
-    model_internal var _instance:_Super_TblProducts;
+    model_internal var _instance:_Super_TblProductsView;
     model_internal static var _nullStyle:Style = new Style();
     
-    public function _TblProductsEntityMetadata(tblProducts : _Super_TblProducts)
+    public function _TblProductsViewEntityMetadata(tblProductsView : _Super_TblProductsView)
     {
         // initialize property maps
         if (model_internal::dependentsOnMap == null)
         {
             // depenents map
             model_internal::dependentsOnMap = new Object();
-            model_internal::dependentsOnMap["picUrl"] = new Array();
-            model_internal::dependentsOnMap["CompanyDesc"] = new Array();
-            model_internal::dependentsOnMap["CompanyName"] = new Array();
+            model_internal::dependentsOnMap["Map"] = new Array();
             model_internal::dependentsOnMap["Image"] = new Array();
-            model_internal::dependentsOnMap["AddressTown"] = new Array();
             model_internal::dependentsOnMap["Clicks"] = new Array();
-            model_internal::dependentsOnMap["AddressEmail"] = new Array();
-            model_internal::dependentsOnMap["status"] = new Array();
-            model_internal::dependentsOnMap["AddressFax"] = new Array();
-            model_internal::dependentsOnMap["AddressMob"] = new Array();
-            model_internal::dependentsOnMap["AddressTel"] = new Array();
-            model_internal::dependentsOnMap["YoutubeVideoUrl"] = new Array();
-            model_internal::dependentsOnMap["AddressCounty"] = new Array();
-            model_internal::dependentsOnMap["ItemName"] = new Array();
-            model_internal::dependentsOnMap["AddressName"] = new Array();
-            model_internal::dependentsOnMap["MemberID"] = new Array();
             model_internal::dependentsOnMap["RowID"] = new Array();
+            model_internal::dependentsOnMap["Keywords"] = new Array();
+            model_internal::dependentsOnMap["YouTube"] = new Array();
             model_internal::dependentsOnMap["Category"] = new Array();
-            model_internal::dependentsOnMap["ImageID"] = new Array();
-            model_internal::dependentsOnMap["AddressStreet"] = new Array();
-            model_internal::dependentsOnMap["ItemDesc"] = new Array();
-            model_internal::dependentsOnMap["GooglePostCode"] = new Array();
-            model_internal::dependentsOnMap["AddressPostCode"] = new Array();
+            model_internal::dependentsOnMap["Name"] = new Array();
+            model_internal::dependentsOnMap["count"] = new Array();
                         
             // collection base map
             model_internal::collectionBaseMap = new Object()
         }                        
         
-        model_internal::_instance = tblProducts;     
+        model_internal::_instance = tblProductsView;     
     }
     
     override public function getEntityName():String
@@ -114,7 +100,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
     override public function getDependants(propertyName:String):Array
     {
        if (model_internal::dataProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a data property of entity TblProducts");  
+            throw new Error(propertyName + " is not a data property of entity TblProductsView");  
             
        return model_internal::dependentsOnMap[propertyName] as Array;  
     }
@@ -132,7 +118,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
     override public function getCollectionBase(propertyName:String):String
     {
        if (model_internal::collectionProperties.indexOf(propertyName) == -1)
-            throw new Error(propertyName + " is not a collection property of entity TblProducts");  
+            throw new Error(propertyName + " is not a collection property of entity TblProductsView");  
             
        return model_internal::collectionBaseMap[propertyName];
     }                
@@ -146,7 +132,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      {
          if (model_internal::allProperties.indexOf(propertyName) == -1)
          {
-         	throw new Error(propertyName + " does not exist for entity TblProducts");
+         	throw new Error(propertyName + " does not exist for entity TblProductsView");
          }     
            
          return model_internal::_instance[propertyName];
@@ -156,7 +142,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      {
          if (model_internal::dataProperties.indexOf(propertyName) == -1)
          {
-              throw new Error(propertyName + " is not a data property of entity TblProducts");
+              throw new Error(propertyName + " is not a data property of entity TblProductsView");
          }  
                                                      
          model_internal::_instance[propertyName] = value;
@@ -188,7 +174,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      {         
          if (model_internal::allProperties.indexOf(propertyName) == -1)
          {
-         	throw new Error(propertyName + " does not exist for entity TblProducts");
+         	throw new Error(propertyName + " does not exist for entity TblProductsView");
          }   
                 
          if (model_internal::allAlwaysAvailableProperties.indexOf(propertyName) != -1)
@@ -208,7 +194,6 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      override public function getIdentityMap():Object
      {
          var returnMap:Object = new Object();
-         returnMap["RowID"] = model_internal::_instance.RowID;
        
          return returnMap;
      }       
@@ -286,19 +271,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
     }       
      
      [Bindable(event="propertyChange")] 
-     public function get isPicUrlAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isCompanyDescAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isCompanyNameAvailable():Boolean
+     public function get isMapAvailable():Boolean
      {
         return true;
      }                       
@@ -310,73 +283,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isAddressTownAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
      public function get isClicksAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isAddressEmailAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isStatusAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isAddressFaxAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isAddressMobAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isAddressTelAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isYoutubeVideoUrlAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isAddressCountyAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isItemNameAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isAddressNameAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isMemberIDAvailable():Boolean
      {
         return true;
      }                       
@@ -388,37 +295,31 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      }                       
                   
      [Bindable(event="propertyChange")] 
+     public function get isKeywordsAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
+     public function get isYouTubeAvailable():Boolean
+     {
+        return true;
+     }                       
+                  
+     [Bindable(event="propertyChange")] 
      public function get isCategoryAvailable():Boolean
      {
         return true;
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isImageIDAvailable():Boolean
+     public function get isNameAvailable():Boolean
      {
         return true;
      }                       
                   
      [Bindable(event="propertyChange")] 
-     public function get isAddressStreetAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isItemDescAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isGooglePostCodeAvailable():Boolean
-     {
-        return true;
-     }                       
-                  
-     [Bindable(event="propertyChange")] 
-     public function get isAddressPostCodeAvailable():Boolean
+     public function get isCountAvailable():Boolean
      {
         return true;
      }                       
@@ -434,19 +335,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      }
 
     [Bindable(event="propertyChange")]   
-    public function get picUrlStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get CompanyDescStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get CompanyNameStyle():Style
+    public function get MapStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      
@@ -458,73 +347,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get AddressTownStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
     public function get ClicksStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get AddressEmailStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get statusStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get AddressFaxStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get AddressMobStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get AddressTelStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get YoutubeVideoUrlStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get AddressCountyStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get ItemNameStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get AddressNameStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get MemberIDStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      
@@ -536,37 +359,31 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
     }      
     
     [Bindable(event="propertyChange")]   
+    public function get KeywordsStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
+    public function get YouTubeStyle():Style
+    {
+		return model_internal::_nullStyle;		
+    }      
+    
+    [Bindable(event="propertyChange")]   
     public function get CategoryStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get ImageIDStyle():Style
+    public function get NameStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get AddressStreetStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get ItemDescStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get GooglePostCodeStyle():Style
-    {
-		return model_internal::_nullStyle;		
-    }      
-    
-    [Bindable(event="propertyChange")]   
-    public function get AddressPostCodeStyle():Style
+    public function get countStyle():Style
     {
 		return model_internal::_nullStyle;		
     }      

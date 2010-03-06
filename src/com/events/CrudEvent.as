@@ -24,7 +24,7 @@ package com.events
 		public static const SEARCH:String = "search"
 		
 		public static const GET_PRODUCTINFO:String = "getProductInfo";
-		
+		public static const GET_PRODUCTVIEW_INFO:String = "getProductViewInfo";
 		/**
 		 * returns true if VALID_EMAIL and email is valid
 		 * */

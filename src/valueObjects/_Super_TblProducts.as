@@ -46,6 +46,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
 	private var _internal_CompanyName : Object;
 	private var _internal_Image : String;
 	private var _internal_AddressTown : String;
+	private var _internal_Clicks : Object;
 	private var _internal_AddressEmail : String;
 	private var _internal_status : int;
 	private var _internal_AddressFax : String;
@@ -108,6 +109,11 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     public function get AddressTown() : String    
     {
             return _internal_AddressTown;
+    }    
+	[Bindable(event="propertyChange")] 
+    public function get Clicks() : Object    
+    {
+            return _internal_Clicks;
     }    
 	[Bindable(event="propertyChange")] 
     public function get AddressEmail() : String    
@@ -291,6 +297,26 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
         if (oldValue !== value)
         {
         	_internal_AddressTown = value;
+        }    	     
+        
+        if (recalcValid && model_internal::_cacheInitialized_isValid)
+        {
+            model_internal::isValid_der = model_internal::calculateIsValid();
+        }  
+    }    
+    public function set Clicks(value:Object) : void 
+    {    	
+        var recalcValid:Boolean = false;
+    	if (value == null || _internal_Clicks == null)
+    	{
+    		recalcValid = true;
+    	}	
+    	
+    	
+    	var oldValue:Object = _internal_Clicks;               
+        if (oldValue !== value)
+        {
+        	_internal_Clicks = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -679,6 +705,11 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
 			violatedConsts.push("AddressTownIsRequired");
 			validationFailureMessages.push("AddressTown is required");
 		}
+		if (_model.isClicksAvailable && _internal_Clicks == null)
+		{
+			violatedConsts.push("ClicksIsRequired");
+			validationFailureMessages.push("Clicks is required");
+		}
 		if (_model.isAddressEmailAvailable && _internal_AddressEmail == null)
 		{
 			violatedConsts.push("AddressEmailIsRequired");
@@ -746,6 +777,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
 		}
 
 		var styleValidity:Boolean = true;
+	
 	
 	
 	

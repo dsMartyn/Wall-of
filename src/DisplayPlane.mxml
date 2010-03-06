@@ -79,8 +79,22 @@
 				var obj:LoaderInfo = event.target as LoaderInfo;
 				if(obj.loader)
 				{
+					
 					this.picImage.smoothBitmapContent = true;
 					this.picImage.source =  obj.loader.content
+						
+						
+					this.picImage.width = obj.loader.width;
+					this.picImage.height = obj.loader.height;
+					
+					
+					if (this.picImage.width > 200)
+						this.picImage.width = 200;
+					
+					if (this.picImage.height > 200)
+						this.picImage.height = 200;
+					this.picImage.x =  brdLogo.width /2 - (obj.loader.width /2);
+					this.picImage.y =  brdLogo.height /2 -  (obj.loader.height /2); 
 				}
 			}
 			
@@ -365,7 +379,7 @@
 	
 	
 	<s:Border id="brdLogo" x="0" y="0" width="200" height="200" borderWeight="2">
-		<mx:Image maintainAspectRatio="true" top="0" left="0" right="0" bottom="0" smoothBitmapContent="true"  id="picImage"/>
+		<mx:Image maintainAspectRatio="true"  smoothBitmapContent="true"  id="picImage" />
 	</s:Border>
 	
 
@@ -380,18 +394,7 @@
 			</mx:htmlText>
 		</mx:Text>
 		
-		<mx:Text  top="32" left="0" right="0" bottom="0" condenseWhite="true"   fontAntiAliasType="advanced" text="About Apple&#xd;Incorporated January 4, 1977 Apple is the main manufacturer of a line of personal computers under the Apple Macintosh (Mac) brand name, peripherals, and computer software. " id="txtDesc">
-			<mx:htmlText>
-				<![CDATA[
-				
-				About Apple Inc<br>
-				Incorporated January 4, 1977 Apple is the main manufacturer of a line of personal computers under the Apple Macintosh (Mac) brand name, peripherals, and computer software.
-				<br><br>
-				Apple Inc. is an American multinational corporation that designs and manufactures consumer electronics and computer software products. The company's best-known hardware products include Macintosh computers, the iPod, and the iPhone. Apple software includes the Mac OS X operating system, the iTunes media browser, the iLife suite of multimedia and creativity software, the iWork suite of productivity software, Final Cut Studio, a suite of professional audio and film-industry software products, and Logic Studio, a suite of audio tools. The company operates more than 250 retail stores in nine countries, and an online store where hardware and software products are sold.
-				
-				]]>
-			</mx:htmlText>
-		</mx:Text>
+		<mx:Text  top="32" left="0" right="0" bottom="0" condenseWhite="true"   fontAntiAliasType="advanced" id="txtDesc"/>
 		
 		<s:Button label="Back"  click="btnBack_Click(event)" x="10" y="379"/>
 	</s:Border>

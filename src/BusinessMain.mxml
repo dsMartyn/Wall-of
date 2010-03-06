@@ -281,7 +281,7 @@
 					if (idx >= Database.go_SearchFields.length)
 					{
 						var li_CurrentTime:int =  getTimer();
-						this.lblSearchRes.text = lblSearchRes.text + " rendered " + Database.go_SearchFields.length.toString() + " in " + ((li_CurrentTime - pi_Time)/1000).toString().substr(0,4) + " Seconds"	
+						this.lblSearchRes.text = lblSearchRes.text + " rendered "  + ((li_CurrentTime - pi_Time)/1000).toString().substr(0,4) 	
 					}
 						
 				}
@@ -347,6 +347,10 @@
 					ProcessProduct(pf, i, Database.go_SearchFields.length);
 				}
 	
+				li_CurrentTime =  getTimer();
+				this.lblSearchRes.text = lblSearchRes.text + " decoded in " + ((li_CurrentTime - pi_Time)/1000).toString().substr(0,4) 	
+				pi_Time = getTimer();
+					
 				var iCtr:Number = ctr / Database.MAX_RESULTS_PAGE;
 				
 				
@@ -372,15 +376,20 @@
 				lblResults.text = "Showing page " + (pn_CurrentPage+1).toString() + " of " + (i-1).toString();
 				
 			}
-
-			
-
 			
 			protected function search_Click(event:MouseEvent):void
 			{
 				if (event && txtSearch.text =="")
 					return;
-					
+				//check new search
+				if (ps_PreviousSearch != search)
+					cmbPages.selectedIndex = 0;
+				else
+				{
+					trace("already searched");
+					return; //already searched this
+				}
+				
 				pi_Time = getTimer();
 				
 				pa_PageCount = [];
@@ -392,10 +401,7 @@
 				if (search == "")
 					search = "null"
 						
-				//check new search
-				if (ps_PreviousSearch != search)
-					cmbPages.selectedIndex = 0;
-				
+
 				pn_CurrentPage = cmbPages.selectedIndex;
 				if (pn_CurrentPage == -1)
 					pn_CurrentPage = 0;

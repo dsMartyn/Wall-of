@@ -957,7 +957,7 @@
         <item name="returnType">opaque</item>
       </annotation>
       <annotation name="ValidProperties">
-        <item name="propertySpecifier">AddressTown,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,Category,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode</item>
+        <item name="propertySpecifier">AddressTown,Clicks,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,Category,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode</item>
       </annotation>
     </function>
     <function name="createTblProducts" arguments="item:TblProducts" return-type="integer">
@@ -1058,6 +1058,24 @@
         <item name="analyzed">true</item>
       </annotation>
     </function>
+    <function name="GetProductsForUserPaged" arguments="MemberID:opaque,startIndex:opaque,numItems:opaque" return-type="TblProductsView[]">
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">Map,Image,Clicks,RowID,Keywords,YouTube,Category,Name,count</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="countAllProductsMemberID" arguments="MemberID:opaque" return-type="opaque">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
   </service>
   <entity name="SearchFields">
     <annotation name="EntityProperties">
@@ -1082,6 +1100,35 @@
     <property name="RowID" type="integer" required="true"/>
     <property name="count" type="integer" required="true"/>
   </entity>
+  <entity name="TblProductsView">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">TblProductsView</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">TblProductsService</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="GetProductsForUserPaged">
+      <item name="propertySpecifier">Map,Image,Clicks,RowID,Keywords,YouTube,Category,Name,count</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">valueObjects/_Super_TblProductsView.as~#~valueObjects/_TblProductsViewEntityMetadata.as~#~valueObjects/TblProductsView.as~#~</item>
+    </annotation>
+    <property name="Map" type="integer" required="true"/>
+    <property name="Image" type="integer" required="true"/>
+    <property name="Clicks" type="opaque" required="true"/>
+    <property name="RowID" type="integer" required="true"/>
+    <property name="Keywords" type="integer" required="true"/>
+    <property name="YouTube" type="integer" required="true"/>
+    <property name="Category" type="opaque" required="true"/>
+    <property name="Name" type="string" required="true"/>
+    <property name="count" type="integer" required="true"/>
+  </entity>
   <entity name="TblProducts" persistent="true">
     <annotation name="EntityProperties">
       <item name="EntityOriginalName">TblProducts</item>
@@ -1100,9 +1147,6 @@
       <item name="managingService">TblProductsService</item>
       <item name="fillFunc">getProductsByIDList,getAllProductsPaged</item>
     </annotation>
-    <annotation name="getTblProductsByID">
-      <item name="propertySpecifier">AddressTown,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,Category,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode</item>
-    </annotation>
     <annotation name="ActionScriptGeneration">
       <item name="Package">valueObjects</item>
     </annotation>
@@ -1115,11 +1159,15 @@
     <annotation name="getProductsByIDList">
       <item name="propertySpecifier">picUrl,CompanyDesc,CompanyName,AddressTown,Image,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode</item>
     </annotation>
+    <annotation name="getTblProductsByID">
+      <item name="propertySpecifier">AddressTown,Clicks,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,Category,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode</item>
+    </annotation>
     <property name="picUrl" type="opaque" required="true"/>
     <property name="CompanyDesc" type="string" required="true"/>
     <property name="CompanyName" type="opaque" required="true"/>
     <property name="Image" type="string" required="true"/>
     <property name="AddressTown" type="string" required="true"/>
+    <property name="Clicks" type="opaque" required="true"/>
     <property name="AddressEmail" type="string" required="true"/>
     <property name="status" type="integer" required="true"/>
     <property name="AddressFax" type="string" required="true"/>
