@@ -392,7 +392,13 @@
 			
 			protected function search_Click(event:MouseEvent):void
 			{
-				if (event || ps_PreviousSearch == search)
+				
+				var search:String = txtSearch.text;
+				if (search == "")
+					search = "null"
+						
+						
+				if ( ps_PreviousSearch == search)
 					return;
 				//check new search
 				if (ps_PreviousSearch != search)
@@ -410,10 +416,7 @@
 				
 				
 				Database.addEventListener(CrudEvent.SEARCH, GotSearch);
-				var search:String = txtSearch.text;
-				if (search == "")
-					search = "null"
-						
+
 
 				pn_CurrentPage = cmbPages.selectedIndex;
 				if (pn_CurrentPage == -1)
