@@ -23,8 +23,8 @@
 	<fx:Script>
 		<![CDATA[
 			import com.utils.DatabaseCRUD;
-			
 			import mx.events.*;
+			import flash.filters.*;
 			
 			private const gcs_Display3D_Show:String = "displayShow";//event dispatcher
 			
@@ -84,6 +84,19 @@
 				}
 			}
 
+
+			protected function mouseOverHandler(event:MouseEvent):void
+			{
+				var lv_gfilter:GlowFilter = new GlowFilter(0x005cc3, 20, 10, 10, 40, 1,true);
+				event.target.filters  = [lv_gfilter];
+			}
+
+			
+			protected function mouseOutHandler(event:MouseEvent):void
+			{
+				event.target.filters  = [];
+			}
+			
 		]]>
 	</fx:Script>
 	
@@ -95,12 +108,31 @@
 	</fx:Declarations>
 	
 	<s:Button  includeIn="menu" id="btnBack" x="10" y="384" label="Back"  click="btnBack_Click(event)"/>
-	<mx:LinkButton includeIn="menu" x="437.25" y="223.95" label="Logout" click="btnLogout_Click(event)" />
-	<mx:LinkButton includeIn="menu" x="430.75" y="172.45" label="Products" click="btnProducts_Click(event)"/>
-	<mx:LinkButton includeIn="menu" x="417.85" y="115.8" label="Email a friend" click="btnEmailFriend_Click(event)"/>
-	<mx:LinkButton includeIn="menu" x="414.85" y="270.8" label="Account Settings" click="btnUserSettings_Click(event)"/>
-	
+
 	<local:DisplayUser id="DisplayUserMenu" includeIn="userMenu"  displayShow="Register_Hide(event)"  menuShow="menu_Show(event)" />
 	<local:DisplayEmailFriend  includeIn="emailFriend" menuShow="menu_Show(event);" />
 	<local:DisplayProducts  includeIn="productsMenu" menuShow="menu_Show(event);"/>
+	
+	
+	
+	
+	
+	
+	
+	<mx:Image includeIn="menu" x="237.95" y="133.5" source="@Embed('assets/embedded/menu/emailfriends.png')" id="btnEmailFriends" 
+			  mouseOver="mouseOverHandler(event)"  mouseOut="mouseOutHandler(event)" click="btnEmailFriend_Click(event)" />
+	<mx:LinkButton includeIn="menu" x="237.8" y="245.3" label="Email a friend" click="btnEmailFriend_Click(event)" width="113"/>
+	
+	<mx:Image includeIn="menu" x="354.95" y="133.5" source="@Embed('assets/embedded/menu/products.png')" 
+			  mouseOver="mouseOverHandler(event)"  mouseOut="mouseOutHandler(event)" click="btnProducts_Click(event)"/>
+	<mx:LinkButton includeIn="menu" x="354.7" y="244.95" label="Products" click="btnProducts_Click(event)" width="113"/>
+	
+	<mx:Image includeIn="menu" x="471.95" y="133.5" source="@Embed('assets/embedded/menu/logout.png')" 
+			  mouseOver="mouseOverHandler(event)"  mouseOut="mouseOutHandler(event)" click="btnLogout_Click(event)"/>
+	<mx:LinkButton includeIn="menu" x="472.2" y="245.45" label="Logout" click="btnLogout_Click(event)"  width="113"/>
+	
+	<mx:Image includeIn="menu" x="588.95" y="133.5" source="@Embed('assets/embedded/menu/userprefs.png')"
+			  mouseOver="mouseOverHandler(event)"  mouseOut="mouseOutHandler(event)" click="btnUserSettings_Click(event)"/>
+	<mx:LinkButton includeIn="menu" x="588.8" y="245.3" label="Account Settings" click="btnUserSettings_Click(event)" width="113"/>
+	
 </s:Group>
