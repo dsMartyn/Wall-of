@@ -186,9 +186,11 @@
 			protected function Display3D_ViewDisplay(event:Event):void
 			{
 				//setup stage scaling
+				if (stage){
 				stage.scaleMode = StageScaleMode.EXACT_FIT;
 				stage.align = StageAlign.TOP_LEFT;
-	
+				}
+				
 				pp_View.camera.useClipping = true;
 				pp_View.cameraReflection.useClipping = true;
 				//setup the camera
@@ -205,10 +207,12 @@
 				po_comp.addChild(pp_View);
 				addElement(po_comp);
 
-				var distance_x:Number = (539  - this.stage.width * 0.5) * 0.003;
-				pi_angle -= distance_x;
-				pp_View.camera.orbit(pi_Pitch, pi_Yaw + pi_angle);
-				
+				if (stage)
+				{
+					var distance_x:Number = (539  - this.stage.width * 0.5) * 0.003;
+					pi_angle -= distance_x;
+					pp_View.camera.orbit(pi_Pitch, pi_Yaw + pi_angle);
+				}
 			}
 			
 			protected function Display3D_MouseEvent(event:InteractiveScene3DEvent):void
