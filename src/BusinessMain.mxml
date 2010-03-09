@@ -99,7 +99,7 @@
 			   width="28" 
 			   x="958.7" y="551"/>
 	
-	<mx:TextInput includeIn="Display3D" id="txtSearch" height="20" width="288" x="334" y="552"/>
+	<mx:TextInput includeIn="Display3D" id="txtSearch" height="20" width="288" x="336" y="552" keyUp="txtSearch_keyUpHandler(event)" />
 	<s:Button includeIn="Display3D" id="btnSearch" x="623" y="551" label="Search" click="search_Click(event)" />
 	<mx:HRule width="950" strokeColor="#000000" shadowColor="#2F2F2F" x="38" y="540"/>
 	<mx:LinkButton  click="btnMenu_Click(event)"  label="Menu" id="btnMenu"  fontAntiAliasType="advanced" color="#0631D1" fontSize="18" width="76" x="919.95" y="48" enabled="false"/>
@@ -303,11 +303,19 @@
 			{
 				
 				var loader:Loader = new Loader();
+				
+				
 				//decodeFromHex(product.Image);
+				if (product.Image.length <= 0)
+				{
+					loader.load(new URLRequest("assets/error.png"));
 				
-				loader.loadBytes( po_base.decode(product.Image) );
+				}else{
+					loader.loadBytes( po_base.decode(product.Image) );
+					
+				}
+				
 				loader.name = (idx).toString();
-				
 				//	loader.contentLoaderInfo.addEventListener( ProgressEvent.PROGRESS, loadBitmapProgressHandler );
 				loader.contentLoaderInfo.addEventListener( Event.COMPLETE, loadBitmapCompleteHandler );
 				//	loader.contentLoaderInfo.addEventListener( IOErrorEvent.IO_ERROR, loadBitmapErrorHandler );
@@ -384,7 +392,7 @@
 			
 			protected function search_Click(event:MouseEvent):void
 			{
-				if ((event && txtSearch.text =="") || ps_PreviousSearch == search)
+				if (event || ps_PreviousSearch == search)
 					return;
 				//check new search
 				if (ps_PreviousSearch != search)
@@ -423,6 +431,16 @@
 				
 				Database.removeEventListener("notLoggedIn",notLoggedIn);
 				Database.addEventListener("notLoggedIn",notLoggedIn);
+				
+			}
+
+
+			protected function txtSearch_keyUpHandler(event:KeyboardEvent):void
+			{
+				if (event.keyCode == 13)
+				{
+					search_Click(null);
+				}
 				
 			}
 
