@@ -557,10 +557,12 @@
 				this.AssignPostCode();
 			}
 
+			
 			private var ProductList:ArrayCollection = new ArrayCollection();
 			private var CurrentPage:Number = 0;
 			protected function GetProductViewInfo(event:CrudEvent):void
 			{
+				Database.removeEventListener(CrudEvent.GET_PRODUCTVIEW_INFO, GetProductViewInfo);
 				if (event.valid == false)
 				{
 					Alert.show(event.errorMsg, "Error getting products");
@@ -598,15 +600,7 @@
 			
 			protected function viewProducts_EnterState(event:FlexEvent):void
 			{
-			
-				trace("Getting products for: " + Database.go_LoginFields.MemberID);
-				
-				CurrentPage = 0;
-				ProductList.removeAll();
-				
-				Database.addEventListener(CrudEvent.GET_PRODUCTVIEW_INFO, GetProductViewInfo);
-				Database.GetProductView(null, Database.go_LoginFields.MemberID, 0);
-				// TODO Auto-generated method stub
+				ReloadView();
 			}
 
 			protected function gotProductInfo(event:CrudEvent):void
@@ -634,6 +628,14 @@
 			}
 
 	
+			private function ReloadView():void
+			{
+				CurrentPage = 0;
+				ProductList.removeAll();
+				
+				Database.addEventListener(CrudEvent.GET_PRODUCTVIEW_INFO, GetProductViewInfo);
+				Database.GetProductView(null, Database.go_LoginFields.MemberID, 0);	
+			}
 			protected function DeleteProduct_Click(event:MouseEvent):void
 			{
 				var pv:TblProductsView = this.dataGrid.selectedItem as TblProductsView;
@@ -646,11 +648,21 @@
 					lo_Alert.addEventListener(CloseEvent.CLOSE, AlertDelete_Closed);
 				}
 			}
-			
+			protected function deletedProduct(event:CrudEvent):void
+			{
+				if (event.errored)
+					Alert.show(event.errorMsg, "Error deleting product");
+				
+				Database.removeEventListener(CrudEvent.DELETE_PRODUCT, deletedProduct);
+				
+				ReloadView();
+			}
 			protected function AlertDelete_Closed(event:CloseEvent):void
 			{
 				if (event.detail==Alert.YES) {
-					trace('delete product');
+					var pv:TblProductsView = this.dataGrid.selectedItem as TblProductsView;
+					Database.addEventListener(CrudEvent.DELETE_PRODUCT, deletedProduct);
+					Database.DeleteProduct(null, pv.RowID);
 				}
 			}
 			
@@ -734,7 +746,7 @@
 	<s:Label x="410.8" y="23.4" text="Edit Products" fontSize="18" verticalAlign="middle" fontWeight="bold" includeIn="viewProducts" />
 	<s:Button includeIn="viewProducts" label="New Product"  id="btnNewProuct" x="655.65" y="345.3" click="CreateProduct_Click(event)" />
 	<s:Button includeIn="viewProducts" x="753.75" y="345.3" id="btnDelete"  label="Delete"  />
-	<s:Button includeIn="viewProducts" label="Delete Product"  id="btnDeleteProduct" x="545.65" y="345.3" click="DeleteProduct_Click(event)" />
+	<s:Button includeIn="viewProducts" label="Delete Product"  id="btnDeleteProduct" x="116.5" y="345.3" click="DeleteProduct_Click(event)" />
 	
 	<mx:DataGrid includeIn="viewProducts" 
 				 id="dataGrid" 

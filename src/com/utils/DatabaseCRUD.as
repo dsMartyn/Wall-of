@@ -806,5 +806,40 @@ package com.utils
 		}
 		
 		
+		
+		private var pc_DeleteProduct:CallResponder = new CallResponder();
+		public function DeleteProduct(event:Object,  productId:Number=-1):void
+		{
+			var fault:FaultEvent;
+			
+			if (productId > 0)
+			{
+				this.pc_DeleteProduct.addEventListener(ResultEvent.RESULT, this.DeleteProduct);
+				this.pc_DeleteProduct.addEventListener(FaultEvent.FAULT, this.DeleteProduct);
+				this.pc_DeleteProduct.token =  pc_CrudProducts.deleteTblProducts(productId);
+				trace('Delete Product: ' + productId);
+				return;
+			}
+			
+			var le_Event:CrudEvent = new CrudEvent(CrudEvent.DELETE_PRODUCT);
+			
+			if (event is FaultEvent)
+			{
+				trace("DeleteProduct errored");
+				fault = event as FaultEvent;
+				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
+				le_Event.errored = true;
+				le_Event.valid = false;
+				this.dispatchEvent(le_Event);
+			}else{
+				trace("dispatched event");
+				le_Event.valid = true;
+				this.dispatchEvent(le_Event);
+			}
+			
+			this.pc_DeleteProduct.removeEventListener(ResultEvent.RESULT, this.DeleteProduct);
+			this.pc_DeleteProduct.removeEventListener(FaultEvent.FAULT, this.DeleteProduct);
+		}
+		
 	}
 }

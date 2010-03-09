@@ -29,6 +29,7 @@ package com.events
 		public static const GET_PRODUCT_KEYWORDS:String = "getProductKeywords";
 		public static const ADD_KEYWORDS:String = "addKeywords";
 		
+		public static const DELETE_PRODUCT:String = "deleteProduct";
 		/**
 		 * returns true if VALID_EMAIL and email is valid
 		 * */
