@@ -220,7 +220,7 @@
 			}
 				
 			protected function GeoCode_Failure(event:GeocodingEvent):void {
-				Alert.show("Geocoding failed");
+				//Alert.show("Geocoding failed");
 			}
 			
 			

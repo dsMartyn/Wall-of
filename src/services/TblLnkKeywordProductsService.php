@@ -141,7 +141,7 @@ class TblLnkKeywordProductsService {
 		$stmt = mysqli_prepare($this->mysql->connection, "DELETE FROM $this->tablename WHERE ProductID = ?");
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'i', $itemID);
+		mysqli_bind_param($stmt, 'i', $productID);
 		mysqli_stmt_execute($stmt);
 		$this->throwExceptionOnError();
 		
@@ -155,7 +155,7 @@ class TblLnkKeywordProductsService {
 		$stmt = mysqli_prepare($this->mysql->connection, "DELETE FROM $this->tablename WHERE KeywordID = ?");
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'i', $itemID);
+		mysqli_bind_param($stmt, 'i', $keywordID);
 		mysqli_stmt_execute($stmt);
 		$this->throwExceptionOnError();
 		

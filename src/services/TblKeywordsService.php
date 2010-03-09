@@ -243,6 +243,35 @@ class TblKeywordsService {
 		return $rows;
 	}
 	
+	
+	public function getKeywordsByProductID($productId) {
+	
+	    $query =  "SELECT A.RowID, A.Keyword FROM tblKeywords A INNER JOIN TblLnkKeywordProducts B ON A.RowID = B.KeyWordID WHERE ProductID = $productId";
+    
+		$stmt = mysqli_prepare($this->mysql->connection, $query);		
+		$this->throwExceptionOnError();
+		 
+		mysqli_stmt_execute($stmt);
+		$this->throwExceptionOnError();
+		
+
+		$rows = array();
+		mysqli_stmt_bind_result($stmt,  $row->RowID, $row->Keyword);
+		
+		
+	    while (mysqli_stmt_fetch($stmt)) {
+	      $rows[] = $row;
+	      $row = new stdClass();
+	   	  mysqli_stmt_bind_result($stmt,  $row->RowID, $row->Keyword);
+	   	}
+		
+		mysqli_stmt_free_result($stmt);
+	    $this->mysql->_mysqli_close();
+	
+	    return $rows;
+	}
+	
+	
 	/**
 	 * Returns list of keywords by list of ID's
 	 * 

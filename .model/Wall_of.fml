@@ -416,315 +416,6 @@
     <property name="ContactNumber" type="string" required="true"/>
     <property name="StartDate" type="string" required="true"/>
   </entity>
-  <service name="TblKeywordsService">
-    <annotation name="ActionScriptGeneration">
-      <item name="Destination">TblKeywordsService</item>
-      <item name="Endpoint">gateway.php</item>
-      <item name="ServiceType">RemoteObject</item>
-      <item name="Package">services.tblkeywordsservice</item>
-      <item name="Source">TblKeywordsService</item>
-    </annotation>
-    <annotation name="ASFilesGenerated">
-      <item name="ASFilesGenerated">services/tblkeywordsservice/_Super_TblKeywordsService.as~#~services/tblkeywordsservice/TblKeywordsService.as~#~</item>
-    </annotation>
-    <annotation name="ServiceTypeGroup">
-      <item name="ServiceBackendType">PHP</item>
-    </annotation>
-    <annotation name="ServiceConfig">
-      <item name="PHP_RELATIVE_LOCATION">TestDev-debug/services/TblKeywordsService.php</item>
-      <item name="PHP_CLASS_NAME">TblKeywordsService</item>
-      <item name="LINKED_FILE">TblKeywordsService.php</item>
-      <item name="PHP_SERVER_ROOT">/Users/martyngilbertson/Sites/wall-of</item>
-      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
-      <item name="PHP_LOCATION">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblKeywordsService.php</item>
-      <item name="PHP_SERVER_ROOT_URL">http://localhost/~martyngilbertson/wall-of/</item>
-      <item name="ABSOLUTE_ENDPOINT">http://localhost/~martyngilbertson/wall-of/TestDev-debug/gateway.php</item>
-      <item name="PHP_SERVICES_FOLDER">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services</item>
-    </annotation>
-    <function name="getAllTblKeywords" return-type="TblKeywords[]">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-      </annotation>
-      <annotation name="ValidProperties">
-        <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
-      </annotation>
-    </function>
-    <function name="getTblKeywordsByID" arguments="itemID:integer" return-type="TblKeywords">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <annotation name="ValidProperties">
-        <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
-      </annotation>
-    </function>
-    <function name="createTblKeywords" arguments="item:TblKeywords" return-type="integer">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="updateTblKeywords" arguments="item:opaque" return-type="void">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="deleteTblKeywords" arguments="itemID:integer" return-type="void">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="count" return-type="integer">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="getTblKeywords_paged" arguments="startIndex:integer,numItems:integer" return-type="TblKeywords[]">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <annotation name="ValidProperties">
-        <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
-      </annotation>
-    </function>
-    <function name="getTblKeywordsByCRC" arguments="crc:integer" return-type="TblKeywords[]">
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <annotation name="ValidProperties">
-        <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
-      </annotation>
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-    </function>
-    <function name="getKeywordsByIDList" arguments="searchStr:string" return-type="TblKeywords[]">
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <annotation name="ValidProperties">
-        <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
-      </annotation>
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-    </function>
-  </service>
-  <entity name="TblKeywords">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">TblKeywords</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">TblKeywordsService</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="getTblKeywordsByID">
-      <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <annotation name="ASFilesGenerated">
-      <item name="ASFilesGenerated">valueObjects/_Super_TblKeywords.as~#~valueObjects/_TblKeywordsEntityMetadata.as~#~valueObjects/TblKeywords.as~#~</item>
-    </annotation>
-    <annotation name="getAllTblKeywords">
-      <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
-    </annotation>
-    <annotation name="getTblKeywords_paged">
-      <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
-    </annotation>
-    <annotation name="getKeywordsByIDList">
-      <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
-    </annotation>
-    <annotation name="getTblKeywordsByCRC">
-      <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
-    </annotation>
-    <property name="CRC2" type="double" required="true" default="0"/>
-    <property name="Keyword" type="string" required="true"/>
-    <property name="CRC1" type="double" required="true" default="0"/>
-    <property name="RowID" type="integer" required="true"/>
-  </entity>
-  <service name="TblLnkKeywordProductsService">
-    <annotation name="ActionScriptGeneration">
-      <item name="Destination">TblLnkKeywordProductsService</item>
-      <item name="Endpoint">gateway.php</item>
-      <item name="ServiceType">RemoteObject</item>
-      <item name="Package">services.tbllnkkeywordproductsservice</item>
-      <item name="Source">TblLnkKeywordProductsService</item>
-    </annotation>
-    <annotation name="ASFilesGenerated">
-      <item name="ASFilesGenerated">services/tbllnkkeywordproductsservice/_Super_TblLnkKeywordProductsService.as~#~services/tbllnkkeywordproductsservice/TblLnkKeywordProductsService.as~#~</item>
-    </annotation>
-    <annotation name="ServiceTypeGroup">
-      <item name="ServiceBackendType">PHP</item>
-    </annotation>
-    <annotation name="ServiceConfig">
-      <item name="PHP_RELATIVE_LOCATION">TestDev-debug/services/TblLnkKeywordProductsService.php</item>
-      <item name="PHP_CLASS_NAME">TblLnkKeywordProductsService</item>
-      <item name="LINKED_FILE">TblLnkKeywordProductsService.php</item>
-      <item name="PHP_SERVER_ROOT">/Users/martyngilbertson/Sites/wall-of</item>
-      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
-      <item name="PHP_LOCATION">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblLnkKeywordProductsService.php</item>
-      <item name="PHP_SERVER_ROOT_URL">http://localhost/~martyngilbertson/wall-of/</item>
-      <item name="ABSOLUTE_ENDPOINT">http://localhost/~martyngilbertson/wall-of/TestDev-debug/gateway.php</item>
-      <item name="PHP_SERVICES_FOLDER">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services</item>
-    </annotation>
-    <function name="getAllTblLnkKeywordProducts" return-type="TblLnkKeywordProducts[]">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="getTblLnkKeywordProductsByID" arguments="keywordId:integer,productId:integer" return-type="TblLnkKeywordProducts">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <annotation name="ValidProperties">
-        <item name="propertySpecifier">ProductID,KeywordID,RowID</item>
-      </annotation>
-    </function>
-    <function name="createTblLnkKeywordProducts" arguments="item:TblLnkKeywordProducts" return-type="integer">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="updateTblLnkKeywordProducts" arguments="item:TblLnkKeywordProducts" return-type="void">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="count" return-type="integer">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="getTblLnkKeywordProducts_paged" arguments="startIndex:integer,numItems:integer" return-type="TblLnkKeywordProducts[]">
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-      <annotation name="original signature">
-        <item name="inputParams">opaque,opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-    </function>
-    <function name="deleteTblProduct" arguments="productID:integer" return-type="void">
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-    </function>
-    <function name="deleteTblKeyword" arguments="keywordID:integer" return-type="void">
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-    </function>
-    <function name="getTblLnkKeywordProductsList" arguments="searchStr:string" return-type="TblLnkKeywordProducts[]">
-      <annotation name="original signature">
-        <item name="inputParams">opaque</item>
-        <item name="returnType">opaque</item>
-      </annotation>
-      <annotation name="ValidProperties">
-        <item name="propertySpecifier">ProductID,KeywordID,RowID</item>
-      </annotation>
-      <annotation name="analyze group">
-        <item name="analyzed">true</item>
-      </annotation>
-    </function>
-  </service>
-  <entity name="TblLnkKeywordProducts" persistent="true">
-    <annotation name="EntityProperties">
-      <item name="EntityOriginalName">TblLnkKeywordProducts</item>
-    </annotation>
-    <annotation name="service Group">
-      <item name="service">TblLnkKeywordProductsService</item>
-    </annotation>
-    <annotation name="ServerProperties">
-      <item name="IncludeRemoteClass">nonempty</item>
-    </annotation>
-    <annotation name="DataManagement">
-      <item name="create">createTblLnkKeywordProducts</item>
-      <item name="update">updateTblLnkKeywordProducts</item>
-      <item name="fillFunc">getAllTblLnkKeywordProducts,getTblLnkKeywordProducts_paged,getTblLnkKeywordProductsList</item>
-      <item name="managingService">TblLnkKeywordProductsService</item>
-      <item name="findItem">getTblLnkKeywordProductsByID</item>
-    </annotation>
-    <annotation name="getTblLnkKeywordProductsByID">
-      <item name="propertySpecifier">ProductID,KeywordID,RowID</item>
-    </annotation>
-    <annotation name="getAllTblLnkKeywordProducts">
-      <item name="propertySpecifier">ProductID,KeywordID,RowID</item>
-    </annotation>
-    <annotation name="getTblLnkKeywordProducts_paged">
-      <item name="propertySpecifier">ProductID,KeywordID,RowID</item>
-      <item name="pagingEnabled">true</item>
-      <item name="positionalPagingParameters">true</item>
-      <item name="countOperation">count</item>
-    </annotation>
-    <annotation name="ActionScriptGeneration">
-      <item name="Package">valueObjects</item>
-    </annotation>
-    <annotation name="ASFilesGenerated">
-      <item name="ASFilesGenerated">valueObjects/_Super_TblLnkKeywordProducts.as~#~valueObjects/_TblLnkKeywordProductsEntityMetadata.as~#~valueObjects/TblLnkKeywordProducts.as~#~</item>
-    </annotation>
-    <annotation name="getTblLnkKeywordProductsList">
-      <item name="propertySpecifier">ProductID,KeywordID,RowID</item>
-    </annotation>
-    <property name="ProductID" type="integer" required="true"/>
-    <property name="KeywordID" type="integer" required="true"/>
-    <id name="RowID" type="integer"/>
-  </entity>
   <service name="TblLoginService">
     <annotation name="ActionScriptGeneration">
       <item name="Destination">TblLoginService</item>
@@ -923,6 +614,349 @@
     <property name="SessionID" type="integer" required="true"/>
     <property name="MemberID" type="integer" required="true"/>
   </entity>
+  <service name="TblKeywordsService">
+    <annotation name="ActionScriptGeneration">
+      <item name="Destination">TblKeywordsService</item>
+      <item name="Endpoint">gateway.php</item>
+      <item name="ServiceType">RemoteObject</item>
+      <item name="Package">services.tblkeywordsservice</item>
+      <item name="Source">TblKeywordsService</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">services/tblkeywordsservice/_Super_TblKeywordsService.as~#~services/tblkeywordsservice/TblKeywordsService.as~#~</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">PHP</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="PHP_RELATIVE_LOCATION">TestDev-debug/services/TblKeywordsService.php</item>
+      <item name="PHP_CLASS_NAME">TblKeywordsService</item>
+      <item name="LINKED_FILE">TblKeywordsService.php</item>
+      <item name="PHP_SERVER_ROOT">/Users/martyngilbertson/Sites/wall-of</item>
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="PHP_LOCATION">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblKeywordsService.php</item>
+      <item name="PHP_SERVER_ROOT_URL">http://localhost/~martyngilbertson/wall-of/</item>
+      <item name="ABSOLUTE_ENDPOINT">http://localhost/~martyngilbertson/wall-of/TestDev-debug/gateway.php</item>
+      <item name="PHP_SERVICES_FOLDER">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services</item>
+    </annotation>
+    <function name="getAllTblKeywords" return-type="TblKeywords[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
+      </annotation>
+    </function>
+    <function name="getTblKeywordsByID" arguments="itemID:integer" return-type="TblKeywords">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
+      </annotation>
+    </function>
+    <function name="createTblKeywords" arguments="item:TblKeywords" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="updateTblKeywords" arguments="item:opaque" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="deleteTblKeywords" arguments="itemID:integer" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="count" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getTblKeywords_paged" arguments="startIndex:integer,numItems:integer" return-type="TblKeywords[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
+      </annotation>
+    </function>
+    <function name="getTblKeywordsByCRC" arguments="crc:integer" return-type="TblKeywords[]">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="getKeywordsByIDList" arguments="searchStr:string" return-type="TblKeywords[]">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="getKeywordsByProductID" arguments="productId:double" return-type="TblProductKeywords[]">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">Keyword,RowID</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+  </service>
+  <entity name="TblProductKeywords">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">TblProductKeywords</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">TblKeywordsService</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getKeywordsByProductID">
+      <item name="propertySpecifier">Keyword,RowID</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">valueObjects/_Super_TblProductKeywords.as~#~valueObjects/_TblProductKeywordsEntityMetadata.as~#~valueObjects/TblProductKeywords.as~#~</item>
+    </annotation>
+    <property name="Keyword" type="string" required="true"/>
+    <property name="RowID" type="integer" required="true"/>
+  </entity>
+  <entity name="TblKeywords">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">TblKeywords</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">TblKeywordsService</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="getTblKeywordsByID">
+      <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">valueObjects/_Super_TblKeywords.as~#~valueObjects/_TblKeywordsEntityMetadata.as~#~valueObjects/TblKeywords.as~#~</item>
+    </annotation>
+    <annotation name="getAllTblKeywords">
+      <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
+    </annotation>
+    <annotation name="getTblKeywords_paged">
+      <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
+    </annotation>
+    <annotation name="getKeywordsByIDList">
+      <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
+    </annotation>
+    <annotation name="getTblKeywordsByCRC">
+      <item name="propertySpecifier">CRC2,Keyword,CRC1,RowID</item>
+    </annotation>
+    <property name="CRC2" type="double" required="true" default="0"/>
+    <property name="Keyword" type="string" required="true"/>
+    <property name="CRC1" type="double" required="true" default="0"/>
+    <property name="RowID" type="integer" required="true"/>
+  </entity>
+  <service name="TblLnkKeywordProductsService">
+    <annotation name="ActionScriptGeneration">
+      <item name="Destination">TblLnkKeywordProductsService</item>
+      <item name="Endpoint">gateway.php</item>
+      <item name="ServiceType">RemoteObject</item>
+      <item name="Package">services.tbllnkkeywordproductsservice</item>
+      <item name="Source">TblLnkKeywordProductsService</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">services/tbllnkkeywordproductsservice/_Super_TblLnkKeywordProductsService.as~#~services/tbllnkkeywordproductsservice/TblLnkKeywordProductsService.as~#~</item>
+    </annotation>
+    <annotation name="ServiceTypeGroup">
+      <item name="ServiceBackendType">PHP</item>
+    </annotation>
+    <annotation name="ServiceConfig">
+      <item name="PHP_RELATIVE_LOCATION">TestDev-debug/services/TblLnkKeywordProductsService.php</item>
+      <item name="PHP_CLASS_NAME">TblLnkKeywordProductsService</item>
+      <item name="LINKED_FILE">TblLnkKeywordProductsService.php</item>
+      <item name="PHP_SERVER_ROOT">/Users/martyngilbertson/Sites/wall-of</item>
+      <item name="DEFAULT_ENTITY_PACKAGE">valueObjects</item>
+      <item name="PHP_LOCATION">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblLnkKeywordProductsService.php</item>
+      <item name="PHP_SERVER_ROOT_URL">http://localhost/~martyngilbertson/wall-of/</item>
+      <item name="ABSOLUTE_ENDPOINT">http://localhost/~martyngilbertson/wall-of/TestDev-debug/gateway.php</item>
+      <item name="PHP_SERVICES_FOLDER">/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services</item>
+    </annotation>
+    <function name="getAllTblLnkKeywordProducts" return-type="TblLnkKeywordProducts[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getTblLnkKeywordProductsByID" arguments="keywordId:integer,productId:integer" return-type="TblLnkKeywordProducts">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">ProductID,KeywordID,RowID</item>
+      </annotation>
+    </function>
+    <function name="createTblLnkKeywordProducts" arguments="item:TblLnkKeywordProducts" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="updateTblLnkKeywordProducts" arguments="item:TblLnkKeywordProducts" return-type="void">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="count" return-type="integer">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="getTblLnkKeywordProducts_paged" arguments="startIndex:integer,numItems:integer" return-type="TblLnkKeywordProducts[]">
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+      <annotation name="original signature">
+        <item name="inputParams">opaque,opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+    </function>
+    <function name="deleteTblProduct" arguments="productID:integer" return-type="void">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="deleteTblKeyword" arguments="keywordID:integer" return-type="void">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+    <function name="getTblLnkKeywordProductsList" arguments="searchStr:string" return-type="TblLnkKeywordProducts[]">
+      <annotation name="original signature">
+        <item name="inputParams">opaque</item>
+        <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">ProductID,KeywordID,RowID</item>
+      </annotation>
+      <annotation name="analyze group">
+        <item name="analyzed">true</item>
+      </annotation>
+    </function>
+  </service>
+  <entity name="TblLnkKeywordProducts" persistent="true">
+    <annotation name="EntityProperties">
+      <item name="EntityOriginalName">TblLnkKeywordProducts</item>
+    </annotation>
+    <annotation name="service Group">
+      <item name="service">TblLnkKeywordProductsService</item>
+    </annotation>
+    <annotation name="ServerProperties">
+      <item name="IncludeRemoteClass">nonempty</item>
+    </annotation>
+    <annotation name="DataManagement">
+      <item name="create">createTblLnkKeywordProducts</item>
+      <item name="update">updateTblLnkKeywordProducts</item>
+      <item name="fillFunc">getAllTblLnkKeywordProducts,getTblLnkKeywordProducts_paged,getTblLnkKeywordProductsList</item>
+      <item name="managingService">TblLnkKeywordProductsService</item>
+      <item name="findItem">getTblLnkKeywordProductsByID</item>
+    </annotation>
+    <annotation name="getTblLnkKeywordProductsByID">
+      <item name="propertySpecifier">ProductID,KeywordID,RowID</item>
+    </annotation>
+    <annotation name="getAllTblLnkKeywordProducts">
+      <item name="propertySpecifier">ProductID,KeywordID,RowID</item>
+    </annotation>
+    <annotation name="getTblLnkKeywordProducts_paged">
+      <item name="propertySpecifier">ProductID,KeywordID,RowID</item>
+      <item name="pagingEnabled">true</item>
+      <item name="positionalPagingParameters">true</item>
+      <item name="countOperation">count</item>
+    </annotation>
+    <annotation name="ActionScriptGeneration">
+      <item name="Package">valueObjects</item>
+    </annotation>
+    <annotation name="ASFilesGenerated">
+      <item name="ASFilesGenerated">valueObjects/_Super_TblLnkKeywordProducts.as~#~valueObjects/_TblLnkKeywordProductsEntityMetadata.as~#~valueObjects/TblLnkKeywordProducts.as~#~</item>
+    </annotation>
+    <annotation name="getTblLnkKeywordProductsList">
+      <item name="propertySpecifier">ProductID,KeywordID,RowID</item>
+    </annotation>
+    <property name="ProductID" type="integer" required="true"/>
+    <property name="KeywordID" type="integer" required="true"/>
+    <id name="RowID" type="integer"/>
+  </entity>
   <service name="TblProductsService">
     <annotation name="ActionScriptGeneration">
       <item name="Destination">TblProductsService</item>
@@ -960,7 +994,7 @@
         <item name="propertySpecifier">AddressTown,Clicks,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,Category,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode</item>
       </annotation>
     </function>
-    <function name="createTblProducts" arguments="item:TblProducts" return-type="integer">
+    <function name="createTblProducts" arguments="item:opaque" return-type="integer">
       <annotation name="analyze group">
         <item name="analyzed">true</item>
       </annotation>
@@ -969,13 +1003,16 @@
         <item name="returnType">opaque</item>
       </annotation>
     </function>
-    <function name="updateTblProducts" arguments="item:TblProducts" return-type="void">
+    <function name="updateTblProducts" arguments="item:opaque" return-type="opaque">
       <annotation name="analyze group">
-        <item name="analyzed">true</item>
+        <item name="analyzed">false</item>
       </annotation>
       <annotation name="original signature">
         <item name="inputParams">opaque</item>
         <item name="returnType">opaque</item>
+      </annotation>
+      <annotation name="ValidProperties">
+        <item name="propertySpecifier">AddressTown,Clicks,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,Category,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode</item>
       </annotation>
     </function>
     <function name="deleteTblProducts" arguments="itemID:integer" return-type="void">
@@ -996,13 +1033,13 @@
         <item name="analyzed">true</item>
       </annotation>
     </function>
-    <function name="getProductsByIDList" arguments="searchStr:opaque,startIndex:opaque,numItems:opaque" return-type="TblProducts[]">
+    <function name="getProductsByIDList" arguments="searchStr:opaque,startIndex:opaque,numItems:opaque" return-type="opaque[]">
       <annotation name="original signature">
         <item name="inputParams">opaque,opaque,opaque</item>
         <item name="returnType">opaque</item>
       </annotation>
       <annotation name="analyze group">
-        <item name="analyzed">true</item>
+        <item name="analyzed">false</item>
       </annotation>
       <annotation name="ValidProperties">
         <item name="propertySpecifier">picUrl,CompanyDesc,CompanyName,AddressTown,Image,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode</item>
@@ -1025,7 +1062,7 @@
         <item name="analyzed">true</item>
       </annotation>
     </function>
-    <function name="getAllProductsPaged" arguments="startIndex:integer,numItems:integer" return-type="TblProducts[]">
+    <function name="getAllProductsPaged" arguments="startIndex:integer,numItems:integer" return-type="opaque[]">
       <annotation name="original signature">
         <item name="inputParams">opaque,opaque</item>
         <item name="returnType">opaque</item>
@@ -1034,7 +1071,7 @@
         <item name="propertySpecifier">AddressTown,Image,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode</item>
       </annotation>
       <annotation name="analyze group">
-        <item name="analyzed">true</item>
+        <item name="analyzed">false</item>
       </annotation>
     </function>
     <function name="countProductsByIDList" arguments="searchStr:string" return-type="integer">
@@ -1058,7 +1095,7 @@
         <item name="analyzed">true</item>
       </annotation>
     </function>
-    <function name="GetProductsForUserPaged" arguments="MemberID:opaque,startIndex:opaque,numItems:opaque" return-type="TblProductsView[]">
+    <function name="GetProductsForUserPaged" arguments="MemberID:double,startIndex:double,numItems:double" return-type="TblProductsView[]">
       <annotation name="original signature">
         <item name="inputParams">opaque,opaque,opaque</item>
         <item name="returnType">opaque</item>
@@ -1119,17 +1156,17 @@
     <annotation name="ASFilesGenerated">
       <item name="ASFilesGenerated">valueObjects/_Super_TblProductsView.as~#~valueObjects/_TblProductsViewEntityMetadata.as~#~valueObjects/TblProductsView.as~#~</item>
     </annotation>
-    <property name="Map" type="integer" required="true"/>
-    <property name="Image" type="integer" required="true"/>
-    <property name="Clicks" type="opaque" required="true"/>
+    <property name="Map" type="boolean" required="true"/>
+    <property name="Image" type="boolean" required="true"/>
+    <property name="Clicks" type="integer" required="true"/>
     <property name="RowID" type="integer" required="true"/>
     <property name="Keywords" type="integer" required="true"/>
-    <property name="YouTube" type="integer" required="true"/>
-    <property name="Category" type="opaque" required="true"/>
+    <property name="YouTube" type="boolean" required="true"/>
+    <property name="Category" type="string" required="true"/>
     <property name="Name" type="string" required="true"/>
     <property name="count" type="integer" required="true"/>
   </entity>
-  <entity name="TblProducts" persistent="true">
+  <entity name="TblProducts">
     <annotation name="EntityProperties">
       <item name="EntityOriginalName">TblProducts</item>
     </annotation>
@@ -1139,13 +1176,8 @@
     <annotation name="ServerProperties">
       <item name="IncludeRemoteClass">nonempty</item>
     </annotation>
-    <annotation name="DataManagement">
-      <item name="create">createTblProducts</item>
-      <item name="update">updateTblProducts</item>
-      <item name="get">getTblProductsByID</item>
-      <item name="delete">deleteTblProducts</item>
-      <item name="managingService">TblProductsService</item>
-      <item name="fillFunc">getProductsByIDList,getAllProductsPaged</item>
+    <annotation name="getTblProductsByID">
+      <item name="propertySpecifier">AddressTown,Clicks,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,Category,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode</item>
     </annotation>
     <annotation name="ActionScriptGeneration">
       <item name="Package">valueObjects</item>
@@ -1153,21 +1185,8 @@
     <annotation name="ASFilesGenerated">
       <item name="ASFilesGenerated">valueObjects/_Super_TblProducts.as~#~valueObjects/_TblProductsEntityMetadata.as~#~valueObjects/TblProducts.as~#~</item>
     </annotation>
-    <annotation name="getAllProductsPaged">
-      <item name="propertySpecifier">AddressTown,Image,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode</item>
-    </annotation>
-    <annotation name="getProductsByIDList">
-      <item name="propertySpecifier">picUrl,CompanyDesc,CompanyName,AddressTown,Image,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode</item>
-    </annotation>
-    <annotation name="getTblProductsByID">
-      <item name="propertySpecifier">AddressTown,Clicks,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,Category,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode</item>
-    </annotation>
-    <property name="picUrl" type="opaque" required="true"/>
-    <property name="CompanyDesc" type="string" required="true"/>
-    <property name="CompanyName" type="opaque" required="true"/>
-    <property name="Image" type="string" required="true"/>
     <property name="AddressTown" type="string" required="true"/>
-    <property name="Clicks" type="opaque" required="true"/>
+    <property name="Clicks" type="integer" required="true"/>
     <property name="AddressEmail" type="string" required="true"/>
     <property name="status" type="integer" required="true"/>
     <property name="AddressFax" type="string" required="true"/>
@@ -1178,7 +1197,7 @@
     <property name="ItemName" type="string" required="true"/>
     <property name="AddressName" type="string" required="true"/>
     <property name="MemberID" type="integer" required="true"/>
-    <id name="RowID" type="integer"/>
+    <property name="RowID" type="integer" required="true"/>
     <property name="Category" type="string" required="true"/>
     <property name="ImageID" type="integer" required="true"/>
     <property name="AddressStreet" type="string" required="true"/>

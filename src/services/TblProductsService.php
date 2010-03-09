@@ -190,10 +190,14 @@ class TblProductsService {
 
 	public function createTblProducts($item) {
 	
-		$stmt = mysqli_prepare($this->mysql->connection, "INSERT INTO $this->tablename (RowID, MemberID, ItemName, ItemDesc, YoutubeVideoUrl, GooglePostCode, AddressName, AddressStreet, AddressTown, AddressCounty, AddressPostCode, AddressEmail, AddressTel, AddressMob, AddressFax, status, ImageID, Category) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");		
+		$stmt = mysqli_prepare($this->mysql->connection, "INSERT INTO $this->tablename (RowID, MemberID, ItemName, ItemDesc, YoutubeVideoUrl, GooglePostCode, AddressName, AddressStreet, AddressTown, AddressCounty,AddressPostCode, AddressEmail, AddressTel, AddressMob, AddressFax, status, ImageID, Category, Clicks) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");		
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'iisssssssssssssiisi', $item->RowID, $item->MemberID, $item->ItemName, $item->ItemDesc, $item->YoutubeVideoUrl, $item->GooglePostCode, $item->AddressName, $item->AddressStreet, $item->AddressTown, $item->AddressCounty, $item->AddressPostCode, $item->AddressEmail, $item->AddressTel, $item->AddressMob, $item->AddressFax, $item->status, $item->ImageID, $row->Category, $row->Clicks);		
+		mysqli_bind_param($stmt, 'iisssssssssssssiisi', $item->RowID, $item->MemberID, $item->ItemName, $item->ItemDesc, 
+									$item->YoutubeVideoUrl, $item->GooglePostCode, $item->AddressName, $item->AddressStreet, 
+									$item->AddressTown, $item->AddressCounty, $item->AddressPostCode, $item->AddressEmail, 
+									$item->AddressTel, $item->AddressMob, $item->AddressFax, $item->status, $item->ImageID, 
+									$item->Category, $item->Clicks);		
 		$this->throwExceptionOnError();
 
 		mysqli_stmt_execute($stmt);		
@@ -211,10 +215,16 @@ class TblProductsService {
 
 	public function updateTblProducts($item) {
 	
-		$stmt = mysqli_prepare($this->mysql->connection, "UPDATE $this->tablename SET RowID=?, MemberID=?, ItemName=?, ItemDesc=?, YoutubeVideoUrl=?, GooglePostCode=?, AddressName=?, AddressStreet=?, AddressTown=?, AddressCounty=?, AddressPostCode=?, AddressEmail=?, AddressTel=?, AddressMob=?, AddressFax=?, status=?, ImageID=?, Category=?, Clicks=? WHERE RowID=?");
+		$stmt = mysqli_prepare($this->mysql->connection, 
+		"UPDATE $this->tablename SET RowID=?, MemberID=?, ItemName=?, ItemDesc=?, YoutubeVideoUrl=?, GooglePostCode=?, AddressName=?, AddressStreet=?, AddressTown=?, AddressCounty=?, AddressPostCode=?, AddressEmail=?, AddressTel=?, AddressMob=?, AddressFax=?, status=?, ImageID=?, Category=?, Clicks=? WHERE RowID=?");
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'iisssssssssssssiisii', $item->RowID, $item->MemberID, $item->ItemName, $item->ItemDesc, $item->YoutubeVideoUrl, $item->GooglePostCode, $item->AddressName, $item->AddressStreet, $item->AddressTown, $item->AddressCounty, $item->AddressPostCode, $item->AddressEmail, $item->AddressTel, $item->AddressMob, $item->AddressFax, $item->status, $item->ImageID, $row->Category, $rows->Clicks, $item->RowID);		
+		mysqli_bind_param($stmt, 'iisssssssssssssiisii', $item->RowID, $item->MemberID, $item->ItemName, $item->ItemDesc,
+									 $item->YoutubeVideoUrl, $item->GooglePostCode, $item->AddressName, 
+									 $item->AddressStreet, $item->AddressTown, $item->AddressCounty, 
+									 $item->AddressPostCode, $item->AddressEmail, $item->AddressTel, 
+									 $item->AddressMob, $item->AddressFax, $item->status, $item->ImageID, 
+									 $item->Category, $item->Clicks, $item->RowID);		
 		$this->throwExceptionOnError();
 
 		mysqli_stmt_execute($stmt);		
@@ -222,6 +232,8 @@ class TblProductsService {
 		
 		mysqli_stmt_free_result($stmt);		
 		$this->mysql->_mysqli_close();
+		
+		return $item;
 	}
 
 
@@ -437,6 +449,7 @@ class TblProductsService {
 	//add new keywords
 	foreach (explode(",", $str) as $k)
 	{
+		$item = new StdClass();
 		$item->Keyword = strtolower($k);
 		$item->CRC1 = $clsKeyword->mysql->ComputeCRC($item->Keyword); //generate crc from keyword
 		$item->CRC2 = crc32($item->Keyword) ;
