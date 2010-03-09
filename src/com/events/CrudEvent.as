@@ -25,6 +25,10 @@ package com.events
 		
 		public static const GET_PRODUCTINFO:String = "getProductInfo";
 		public static const GET_PRODUCTVIEW_INFO:String = "getProductViewInfo";
+		
+		public static const GET_PRODUCT_KEYWORDS:String = "getProductKeywords";
+		public static const ADD_KEYWORDS:String = "addKeywords";
+		
 		/**
 		 * returns true if VALID_EMAIL and email is valid
 		 * */

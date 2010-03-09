@@ -10,11 +10,6 @@ import mx.rpc.AbstractOperation;
 import valueObjects.SearchFields;
 import valueObjects.TblProducts;
 import valueObjects.TblProductsView;
-import mx.data.RPCDataManager;
-import mx.data.ManagedOperation;
-import mx.data.ManagedAssociation;
-import mx.data.ManagedQuery;
-import mx.data.ItemReference;
 import mx.collections.ItemResponder;
 import mx.rpc.remoting.RemoteObject; 
 import mx.rpc.remoting.Operation;
@@ -25,69 +20,6 @@ import com.adobe.serializers.utility.TypeUtility;
 [ExcludeClass]
 internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
 {      
-    private var _tblProductsRPCDataManager : RPCDataManager;         
-    private var managersArray : Array = new Array();
-        
-    public const DATA_MANAGER_TBLPRODUCTS : String = "TblProducts";         
-        
-    public function getDataManager(dataManagerName:String) : RPCDataManager
-    {
-        switch (dataManagerName)
-        {
-             case (DATA_MANAGER_TBLPRODUCTS):
-                return _tblProductsRPCDataManager;      
-            default:
-                return null;
-        }
-    }
-    
-    /**
-     * Commit all of the pending changes for this DataService, as well as all of the pending changes of all DataServices
-     * sharing the same DataStore.  By default, a DataService shares the same DataStore with other DataServices if they have 
-     * managed association properties and share the same set of channels. 
-     *
-     * @see mx.data.DataManager
-     * @see mx.data.DataStore
-     *
-     * @param itemsOrCollections:Array This is an optional parameter which defaults to null when
-     *  you want to commit all pending changes.  If you want to commit a subset of the pending
-     *  changes use this argument to specify a list of managed ListCollectionView instances
-     *  and/or managed items.  ListCollectionView objects are most typically ArrayCollections
-     *  you have provided to your fill method.  The items appropriate for this method are
-     *  any managed version of the item.  These are any items you retrieve from getItem, createItem
-     *  or using the getItemAt method from a managed collection.  Only changes for the
-     *  items defined by any of the values in this array will be committed.
-     *
-     * @param cascadeCommit if true, also commit changes made to any associated
-     *  items supplied in this list.
-     *
-     *  @return AsyncToken that is returned in <code>call</code> property of
-     *  either the <code>ResultEvent.RESULT</code> or in the
-     *  <code>FaultEvent.FAULT</code>.
-     *  Custom data can be attached to this object and inspected later
-     *  during the event handling phase.  If no changes have been made
-     *  to the relevant items, null is returned instead of an AsyncToken.
-     */
-    public function commit(itemsOrCollections:Array=null, cascadeCommit:Boolean=false):AsyncToken
-    {
-    	return _tblProductsRPCDataManager.dataStore.commit(itemsOrCollections, cascadeCommit);
-    }
-    
-    /**
-     *  Reverts all pending (uncommitted) changes for this DataService, as well as all of the pending changes of all DataServics
-     *  sharing the same DataStore.  By default, a DataService shares the same DataStore with other DataServices if they have 
-     * managed association properties and share the same set of channels. 
-     *
-     * @see mx.data.DataManager
-     * @see mx.data.DataStore
-     *
-     *  @return true if any changes were reverted.
-     *  
-     */
-    public function revertChanges():Boolean
-    {
-        return _tblProductsRPCDataManager.dataStore.revertChanges();
-    }    
        
     // Constructor
     public function _Super_TblProductsService()
@@ -108,6 +40,7 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
         operations["createTblProducts"] = operation;
          
         operation = new Operation(null, "updateTblProducts");
+		 operation.resultType = Object; 		 
         operations["updateTblProducts"] = operation;
          
         operation = new Operation(null, "deleteTblProducts");
@@ -118,10 +51,9 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
         operations["ParseEmbedded"] = operation;
          
         operation = new Operation(null, "getProductsByIDList");
-		 operation.resultElementType = valueObjects.TblProducts;
+		 operation.resultElementType = Object;
         operations["getProductsByIDList"] = operation;
          
-     valueObjects.TblProducts._initRemoteClassAlias();
         operation = new Operation(null, "addKeywords");
         operations["addKeywords"] = operation;
          
@@ -130,10 +62,9 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
         operations["countAllProducts"] = operation;
          
         operation = new Operation(null, "getAllProductsPaged");
-		 operation.resultElementType = valueObjects.TblProducts;
+		 operation.resultElementType = Object;
         operations["getAllProductsPaged"] = operation;
          
-     valueObjects.TblProducts._initRemoteClassAlias();
         operation = new Operation(null, "countProductsByIDList");
 		 operation.resultType = int; 		 
         operations["countProductsByIDList"] = operation;
@@ -159,108 +90,64 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
         _serviceControl.endpoint = "gateway.php";
 		_serviceControl.destination = "TblProductsService";
         
-        var managedAssociation : ManagedAssociation;
-    	var managedAssocsArray : Array;
-        // initialize TblProducts data manager     
-        _tblProductsRPCDataManager = new RPCDataManager();        
-        managersArray.push(_tblProductsRPCDataManager);
-        
-        managedAssocsArray = new Array();
-        
-        _tblProductsRPCDataManager.destination = "tblProductsRPCDataManager";
-        _tblProductsRPCDataManager.service = _serviceControl;        
-        _tblProductsRPCDataManager.identities =  "RowID";      
-        _tblProductsRPCDataManager.itemClass = valueObjects.TblProducts; 
-        
-                   
     
-        var dmOperation : ManagedOperation;
-        var dmQuery : ManagedQuery;
-         
-        dmOperation = new ManagedOperation("getTblProductsByID", "get");
-        dmOperation.parameters = "RowID";
-        _tblProductsRPCDataManager.addManagedOperation(dmOperation);     
-            
-        dmQuery = new ManagedQuery("getProductsByIDList");
-        dmQuery.propertySpecifier = "picUrl,CompanyDesc,CompanyName,AddressTown,Image,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode";
-        dmQuery.parameters = "searchStr,startIndex,numItems";
-        _tblProductsRPCDataManager.addManagedOperation(dmQuery);                 
-
-        dmOperation = new ManagedOperation("updateTblProducts", "update");
-        dmOperation.parameters = "item";
-        _tblProductsRPCDataManager.addManagedOperation(dmOperation);     
-            
-        dmQuery = new ManagedQuery("getAllProductsPaged");
-        dmQuery.propertySpecifier = "AddressTown,Image,AddressEmail,status,AddressFax,AddressMob,AddressTel,YoutubeVideoUrl,AddressCounty,ItemName,AddressName,MemberID,RowID,ImageID,AddressStreet,ItemDesc,GooglePostCode,AddressPostCode";
-        dmQuery.parameters = "startIndex,numItems";
-        _tblProductsRPCDataManager.addManagedOperation(dmQuery);                 
-
-        dmOperation = new ManagedOperation("createTblProducts", "create");
-        dmOperation.parameters = "item";
-        _tblProductsRPCDataManager.addManagedOperation(dmOperation);     
-            
-        dmOperation = new ManagedOperation("deleteTblProducts", "delete");
-        dmOperation.parameters = "id";
-        _tblProductsRPCDataManager.addManagedOperation(dmOperation);     
-            
-        _serviceControl.managers = managersArray;
                       
          model_internal::initialize();
     }
 
 	/**
-	  * This method is a generated wrapper used to call the 'getTblProductsByID' operation. It returns an ItemReference whose 
+	  * This method is a generated wrapper used to call the 'getTblProductsByID' operation. It returns an AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
       *
-      * @see mx.data.ItemReference
+      * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an ItemReference whose result property will be populated with the result of the operation when the server response is received.
+      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function getTblProductsByID(itemID:int) : ItemReference
+	public function getTblProductsByID(itemID:int) : AsyncToken
 	{
 		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getTblProductsByID");
-		var _internal_token:ItemReference = _internal_operation.send(itemID) as ItemReference;
+		var _internal_token:AsyncToken = _internal_operation.send(itemID) ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'createTblProducts' operation. It returns an ItemReference whose 
+	  * This method is a generated wrapper used to call the 'createTblProducts' operation. It returns an AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
       *
-      * @see mx.data.ItemReference
+      * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an ItemReference whose result property will be populated with the result of the operation when the server response is received.
+      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function createTblProducts(item:valueObjects.TblProducts) : ItemReference
+	public function createTblProducts(item:Object) : AsyncToken
 	{
 		var _internal_operation:AbstractOperation = _serviceControl.getOperation("createTblProducts");
-		var _internal_token:ItemReference = _internal_operation.send(item) as ItemReference;
+		var _internal_token:AsyncToken = _internal_operation.send(item) ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'updateTblProducts' operation. It returns an ItemReference whose 
+	  * This method is a generated wrapper used to call the 'updateTblProducts' operation. It returns an AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
       *
-      * @see mx.data.ItemReference
+      * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an ItemReference whose result property will be populated with the result of the operation when the server response is received.
+      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function updateTblProducts(item:valueObjects.TblProducts) : ItemReference
+	public function updateTblProducts(item:Object) : AsyncToken
 	{
 		var _internal_operation:AbstractOperation = _serviceControl.getOperation("updateTblProducts");
-		var _internal_token:ItemReference = _internal_operation.send(item) as ItemReference;
+		var _internal_token:AsyncToken = _internal_operation.send(item) ;
 
 		return _internal_token;
 	}   
@@ -428,7 +315,7 @@ internal class _Super_TblProductsService extends RemoteObjectServiceWrapper
       *
       * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function GetProductsForUserPaged(MemberID:Object, startIndex:Object, numItems:Object) : AsyncToken
+	public function GetProductsForUserPaged(MemberID:Number, startIndex:Number, numItems:Number) : AsyncToken
 	{
 		var _internal_operation:AbstractOperation = _serviceControl.getOperation("GetProductsForUserPaged");
 		var _internal_token:AsyncToken = _internal_operation.send(MemberID,startIndex,numItems) ;

@@ -8,6 +8,7 @@ import mx.rpc.AsyncToken;
 import com.adobe.fiber.core.model_internal;
 import mx.rpc.AbstractOperation;
 import valueObjects.TblKeywords;
+import valueObjects.TblProductKeywords;
 import mx.collections.ItemResponder;
 import mx.rpc.remoting.RemoteObject; 
 import mx.rpc.remoting.Operation;
@@ -67,6 +68,11 @@ internal class _Super_TblKeywordsService extends RemoteObjectServiceWrapper
         operations["getKeywordsByIDList"] = operation;
          
      valueObjects.TblKeywords._initRemoteClassAlias();
+        operation = new Operation(null, "getKeywordsByProductID");
+		 operation.resultElementType = valueObjects.TblProductKeywords;
+        operations["getKeywordsByProductID"] = operation;
+         
+     valueObjects.TblProductKeywords._initRemoteClassAlias();
     
         _serviceControl.operations = operations;   
 		_serviceControl.convertResultHandler = TypeUtility.convertResultHandler;
@@ -246,6 +252,25 @@ internal class _Super_TblKeywordsService extends RemoteObjectServiceWrapper
 	{
 		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getKeywordsByIDList");
 		var _internal_token:AsyncToken = _internal_operation.send(searchStr) ;
+
+		return _internal_token;
+	}   
+	 
+	/**
+	  * This method is a generated wrapper used to call the 'getKeywordsByProductID' operation. It returns an AsyncToken whose 
+	  * result property will be populated with the result of the operation when the server response is received. 
+	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+	  */          
+	public function getKeywordsByProductID(productId:Number) : AsyncToken
+	{
+		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getKeywordsByProductID");
+		var _internal_token:AsyncToken = _internal_operation.send(productId) ;
 
 		return _internal_token;
 	}   

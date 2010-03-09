@@ -9,6 +9,7 @@
 	<s:states>
 		<s:State name="viewProducts" enterState="viewProducts_EnterState(event)" />
 		<s:State name="editProduct"  enterState="editProducts_EnterState(event)" />
+		<s:State name="newProduct"  enterState="editProducts_EnterState(event)" />
 	</s:states>
 	<fx:Metadata>
 		/** menu_show raised when the menu should be shown again */	
@@ -41,12 +42,14 @@
 			import mx.rpc.xml.SimpleXMLDecoder;
 			
 			import spark.events.*;
+			
+			import valueObjects.*;
 			private const gcs_DisplayMenu_Show:String = "menuShow";//event dispatcher
 			
 
-			
+			private var pb_textChanged:Boolean = false;
 			private var po_fileRef:FileReference = new FileReference();
-			private var urlUpload:URLRequest;
+			private var po_urlUpload:URLRequest;
 			
 			[bindable]
 			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
@@ -56,10 +59,100 @@
 				dispatchEvent(new Event(gcs_DisplayMenu_Show));
 			}
 
+			
+			protected function getKeywords(event:CrudEvent):void
+			{
+				
+				if (event.valid)
+				{
+					if (Database.go_KeywordFields && Database.go_KeywordFields.length > 0)
+					{
+						var i:Number=0;
+						this.listKeywords.dataProvider = Database.go_KeywordFields;
+
+					}
+					trace("got keywords");
+				}else{
+					Alert.show(event.errorMsg, "Error getting keywords for this product");
+					trace(event.errorMsg);	
+				}
+				Database.removeEventListener(CrudEvent.GET_PRODUCT_KEYWORDS, getKeywords);
+			}
+			
+			
+			protected function editProducts_EnterState(event:FlexEvent):void
+			{
+				
+				trace("Getting keyword for product: " + productFields.RowID);
+				
+				if (this.productFields.RowID> 0)
+				{
+					Database.addEventListener(CrudEvent.GET_PRODUCT_KEYWORDS, getKeywords);
+					Database.GetProductKeywords(null, this.productFields.RowID);
+				}				
+				
+				reset();
+				if (this.productFields.Category)
+					this.txtCategory.text = this.productFields.Category;
+				if (this.productFields.AddressCounty) 
+					this.txtAddressCounty.text = this.productFields.AddressCounty;
+				if (this.productFields.AddressEmail)
+					this.txtAddressEmail.text = this.productFields.AddressEmail;
+				if (this.productFields.AddressFax)
+					this.txtAddressFax.text = this.productFields.AddressFax;
+				if (this.productFields.AddressMob)
+					this.txtAddressMob.text = this.productFields.AddressMob;
+				if (this.productFields.AddressName)
+					this.txtAddressName.text = this.productFields.AddressName;
+				if (this.productFields.AddressPostCode)
+					this.txtAddressPostCode.text = this.productFields.AddressPostCode;
+				if (this.productFields.AddressStreet)
+					this.txtAddressStreet.text = this.productFields.AddressStreet;
+				if (this.productFields.AddressTel)
+					this.txtAddressTel.text = this.productFields.AddressTel;
+				if (this.productFields.AddressTown)
+					this.txtAddressTown.text = this.productFields.AddressTown;
+				if (this.productFields.ItemName)
+					this.txtCompanyName.text = this.productFields.ItemName;
+				if (this.productFields.ItemDesc)
+					this.txtCompanyDesc.text = this.productFields.ItemDesc;
+				if (this.productFields.GooglePostCode)
+					this.txtMAPPostCode.text = this.productFields.GooglePostCode;
+				this.txtPicUrl.text = "";
+				if (this.productFields.YoutubeVideoUrl)
+					this.txtVideoURL.text = this.productFields.YoutubeVideoUrl;
+			}
+			
+			protected function reset():void
+			{
+				txtAddressName.text = Database.pc_name;
+				txtAddressStreet.text = Database.pc_street;
+				txtAddressTown.text = Database.pc_town;
+				txtAddressCounty.text = Database.pc_county;
+				txtAddressPostCode.text = Database.pc_postcode;
+				txtAddressEmail.text = Database.pc_email;
+				txtAddressTel.text = Database.pc_tel;
+				txtAddressMob.text = Database.pc_mob;
+				txtAddressFax.text = Database.pc_fax;
+				txtCompanyName.text = Database.pc_companyName;
+				txtCompanyDesc.text = Database.pc_companyDesc;
+				txtCategory.text = Database.pc_Category;
+				
+				txtMAPPostCode.text  = Database.pc_mapsPostCode;
+				txtVideoURL.text = Database.pc_youTubeURL;
+			}
+
+			
 			private function AssignFields():void
 			{
+				
+				var tmpRowID:Number = productFields.RowID;
+				productFields = new  TblProducts;
+				productFields.RowID = tmpRowID;
 				productFields.MemberID = Database.go_LoginFields.MemberID;
 				
+				if (txtCategory.text != Database.pc_Category)
+					productFields.Category = this.txtCategory.text;
 				if (txtAddressCounty.text != Database.pc_county)
 					productFields.AddressCounty = this.txtAddressCounty.text;
 				if (txtAddressEmail.text != Database.pc_email)
@@ -82,9 +175,14 @@
 					productFields.ItemDesc = this.txtCompanyDesc.text;
 				if (txtCompanyName.text != Database.pc_companyName)
 					productFields.ItemName = this.txtCompanyName.text;
+			
 				
-				productFields.picUrl = this.txtPicUrl.text;
+			//	productFields.picUrl = this.txtPicUrl.text;
+				
+				if (this.txtMAPPostCode.text != Database.pc_mapsPostCode)
 				productFields.GooglePostCode = this.txtMAPPostCode.text;
+				
+				if (this.txtVideoURL.text != Database.pc_youTubeURL )
 				productFields.YoutubeVideoUrl = this.txtVideoURL.text;
 			}
 			
@@ -97,19 +195,51 @@
 				Modify_Product();
 			}*/
 			
-			protected function btnAccept_Click(event:MouseEvent):void
+			protected function addedKeywords(event:CrudEvent):void
 			{
+				if (event.errored)
+				{
+					Database.removeEventListener(CrudEvent.ADD_KEYWORDS,addedKeywords);
+					Alert.show("Error adding keywords - " + event.errorMsg, "check keywords!");
+					return;
+				}
+				//whatever... now update product
 				productFields.status = 1; //create
 				AssignFields();
-				
+				trace("modify product");
 				Modify_Product();
+			}
+			private function AddKeywordList():void
+			{
+				
+				Database.addEventListener(CrudEvent.ADD_KEYWORDS,addedKeywords);
+				var keywords:String = "";
+				var key:TblProductKeywords;
+				for each (key in Database.go_KeywordFields)
+				{
+					keywords += key.Keyword + " ";	
+				}
+				keywords += (this.txtCategory.text != Database.pc_Category ? "," + this.txtCategory.text : "");
+				Database.AddKeywords(null,keywords,productFields.RowID);
+			}
+			
+			protected function btnAccept_Click(event:MouseEvent):void
+			{
+				
+				AddKeywordList();
+
 			}
 			
 			protected function btnCancel(event:MouseEvent):void
 			{
-				var lo_Alert:Alert = new Alert();
-				lo_Alert = Alert.show("Are you sure?","Going back will discard all changes!", Alert.YES | Alert.NO);
-				lo_Alert.addEventListener(CloseEvent.CLOSE, Alert_Closed);
+				if (pb_textChanged)
+				{
+					var lo_Alert:Alert = new Alert();
+					lo_Alert = Alert.show("Are you sure?","Going back will discard all changes!", Alert.YES | Alert.NO);
+					lo_Alert.addEventListener(CloseEvent.CLOSE, Alert_Closed);
+				}else{
+					currentState ="viewProducts";
+				}
 			}
 			
 			protected function Alert_Closed(event:CloseEvent):void
@@ -123,10 +253,17 @@
 			
 			private function Modify_Product():void
 			{
-				trace('update user');
+				if (!productFields.ItemName || this.txtCompanyName.text == Database.pc_companyName)
+				{
+					Alert.show("Must enter company name!","Error un-assigned field");
+					return;
+				}
+				
+				trace("RowID: " + productFields.RowID);
+				
 				Database.addEventListener(CrudEvent.PRODUCT_CREATED, Product_Changed);
 				Database.addEventListener(CrudEvent.PRODUCT_UPDATED, Product_Changed);
-				
+					
 				if (productFields.RowID == 0)
 					Database.CreateProduct(null, productFields);
 				else
@@ -140,7 +277,8 @@
 				
 				Database.removeEventListener(CrudEvent.PRODUCT_CREATED, Product_Changed);
 				Database.removeEventListener(CrudEvent.PRODUCT_UPDATED, Product_Changed);
-				trace('create product');
+
+				currentState = "viewProducts";
 			}
 			
 	
@@ -178,9 +316,9 @@
 				uVars.action = 'upload';
 				uVars.filename = Database.go_LoginFields.MemberID.toString() + '_' + po_fileRef.name;
 				
-				urlUpload = new URLRequest("services/upload.php");
-				urlUpload.data = uVars;
-				urlUpload.method = URLRequestMethod.POST;
+				po_urlUpload = new URLRequest("services/upload.php");
+				po_urlUpload.data = uVars;
+				po_urlUpload.method = URLRequestMethod.POST;
 				
 				// = new URLRequest("services/upload.php");
 				po_fileRef.addEventListener(ProgressEvent.PROGRESS,Upload_Progress);
@@ -189,7 +327,7 @@
 				po_fileRef.addEventListener(DataEvent.UPLOAD_COMPLETE_DATA, Upload_CompleteData);
 				
 			 	lblProgress.text = "Uploading Picture... 0%";
-				po_fileRef.upload(urlUpload,'file');
+				po_fileRef.upload(po_urlUpload,'file');
 			}
 			
 			private function Upload_CompleteData(e:DataEvent):void
@@ -237,22 +375,12 @@
 				po_fileRef.addEventListener(Event.SELECT, Upload_FileSelect);
 			}
 			
-			
-			protected function reset():void
+			/*
+			protected function lstKeywords_Change(event:ListEvent):void
 			{
-				txtAddressName.text = Database.pc_name;
-				txtAddressStreet.text == Database.pc_street;
-				txtAddressTown.text == Database.pc_town;
-				txtAddressCounty.text = Database.pc_county;
-				txtAddressPostCode.text = Database.pc_postcode;
-				txtAddressEmail.text = Database.pc_email;
-				txtAddressTel.text = Database.pc_tel;
-				txtAddressMob.text = Database.pc_mob;
-				txtAddressFax.text = Database.pc_fax;
-				txtCompanyName.text = Database.pc_companyName;
-				txtCompanyDesc.text = Database.pc_companyDesc;
-			}
-			
+				trace("testing");	
+			}*/
+
 			protected function txt_focusIn(e:FocusEvent):void
 			{
 				
@@ -260,10 +388,13 @@
 					e.currentTarget.selectionBeginIndex = 0;
 					e.currentTarget.selectionEndIndex = e.currentTarget.length;
 				}
-
 				
 				switch (e.currentTarget.id)
 				{
+					case 'txtCategory':
+						if (e.currentTarget.text == Database.pc_Category)
+							e.currentTarget.text = '';
+						break;
 					case 'txtMAPPostCode':
 						if (e.currentTarget.text == Database.pc_mapsPostCode)
 							e.currentTarget.text = '';
@@ -321,16 +452,57 @@
 				}
 			}
 
+	
+			private var ps_CustomPostCode:String = "";
+			
+						
+				
+			private function AssignCustomPostCode():void
+			{
+				//find if post code was auto generated
+				if (this.txtMAPPostCode.text == Database.pc_mapsPostCode || 
+					this.txtMAPPostCode.text == this.txtAddressStreet.text  ||
+					this.txtMAPPostCode.text == this.txtAddressPostCode.text ||
+					this.txtMAPPostCode.text == (this.txtAddressStreet + "," + this.txtAddressPostCode))
+				{
+					ps_CustomPostCode = "";
+				}else{
+					ps_CustomPostCode = this.txtMAPPostCode.text;
+				}
+			}
+				
+			private function AssignPostCode():void
+			{
+				if (ps_CustomPostCode != "" && this.txtMAPPostCode.text == ps_CustomPostCode)
+					return;
+				
+				txtMAPPostCode.text = Database.pc_mapsPostCode;
+
+				
+				if (this.txtAddressStreet.text != Database.pc_street)
+					this.txtMAPPostCode.text = txtAddressStreet.text;
+					
+				if (this.txtAddressPostCode.text != Database.pc_postcode)
+					this.txtMAPPostCode.text = this.txtMAPPostCode.text + (this.txtMAPPostCode.text=="" ? "" : ",") + this.txtAddressPostCode.text;
+					
+			}
 			
 			
 			protected function focusOut(e:FocusEvent):void
 			{
-	
+				pb_textChanged = true;
+				
 				switch (e.currentTarget.id)
 				{
+					case 'txtCategory':
+						if (e.currentTarget.text == '')
+							e.currentTarget.text = Database.pc_Category;
+					break;
 					case 'txtMAPPostCode':
 						if (e.currentTarget.text == '')
 							e.currentTarget.text = Database.pc_mapsPostCode;
+						else
+							this.AssignCustomPostCode();//user entered post code
 						break;
 					case 'txtVideoURL':
 						if (e.currentTarget.text == '')
@@ -382,6 +554,7 @@
 						break;
 					
 				}
+				this.AssignPostCode();
 			}
 
 			private var ProductList:ArrayCollection = new ArrayCollection();
@@ -393,7 +566,9 @@
 					Alert.show(event.errorMsg, "Error getting products");
 				}else{
 					trace("got product view: " + Database.go_ProductsView.length);
-				
+					if (Database.go_ProductsView.length == 0)
+						return;
+					
 					
 					var tmp:TblProductsView = Database.go_ProductsView[0];
 					
@@ -420,28 +595,12 @@
 
 
 			
-			protected function editProducts_EnterState(event:FlexEvent):void
-			{
-				reset();
-				this.txtAddressCounty.text = this.productFields.AddressCounty;
-				this.txtAddressEmail.text = this.productFields.AddressEmail;
-				this.txtAddressFax.text = this.productFields.AddressFax;
-				this.txtAddressMob.text = this.productFields.AddressMob;
-				this.txtAddressName.text = this.productFields.AddressName;
-				this.txtAddressPostCode.text = this.productFields.AddressPostCode;
-				this.txtAddressStreet.text = this.productFields.AddressStreet;
-				this.txtAddressTel.text = this.productFields.AddressTel;
-				this.txtAddressTown.text = this.productFields.AddressTown;
-			
-				this.txtCompanyName.text = this.productFields.ItemName;
-				this.txtCompanyDesc.text = this.productFields.ItemDesc;
-				this.txtMAPPostCode.text = this.productFields.GooglePostCode;
-				this.txtPicUrl.text = "";
-				this.txtVideoURL.text = this.productFields.YoutubeVideoUrl;
-			}
 			
 			protected function viewProducts_EnterState(event:FlexEvent):void
 			{
+			
+				trace("Getting products for: " + Database.go_LoginFields.MemberID);
+				
 				CurrentPage = 0;
 				ProductList.removeAll();
 				
@@ -475,15 +634,108 @@
 			}
 
 	
+			protected function DeleteProduct_Click(event:MouseEvent):void
+			{
+				var pv:TblProductsView = this.dataGrid.selectedItem as TblProductsView;
+				if (pv.RowID <= 0)
+				{
+					Alert.show("Please select an item to delete.","No Item Selected!");
+				}else{
+					var lo_Alert:Alert = new Alert();
+					lo_Alert = Alert.show("Are you sure you want to delete this item?","You will not be able to undo this!", Alert.YES | Alert.NO);
+					lo_Alert.addEventListener(CloseEvent.CLOSE, AlertDelete_Closed);
+				}
+			}
+			
+			protected function AlertDelete_Closed(event:CloseEvent):void
+			{
+				if (event.detail==Alert.YES) {
+					trace('delete product');
+				}
+			}
+			
+			protected function btnAdd_Click(event:MouseEvent):void
+			{
+				var ls_Keywords:String = txtKeywords.text;
+				txtKeywords.text = "";
+				if (ls_Keywords.length <= 0)
+				{
+					Alert.show("Error must enter a keyword","Enter Keyword");
+				}else{
+					
+					//replace spaces with delimiter 
+					while (ls_Keywords.search(" ")>0)
+						ls_Keywords = ls_Keywords.replace(" ",",");
+					
+					//split up keywords into array
+					var la_Keywords:Array = ls_Keywords.split(",");
+					la_Keywords = la_Keywords.sort(0);
+					
+					//add keywords to arrayCollection
+					var key:String = "";
+					var keyProduct:TblProductKeywords;
+					
+					for each (key in la_Keywords)
+					{
+						key = key.toLowerCase();
+						if (key.length > 0)
+						{
+							//ass-ign keywords if not already ass-igned
+							var found:Boolean = false;
+							var keyword:TblProductKeywords = new TblProductKeywords;
+							keyword.Keyword = key;
+							for each (keyProduct in Database.go_KeywordFields)
+							{
+								if (keyProduct.Keyword.toLowerCase() == key)
+								{
+									found = true;
+								}
+							}
+							//keyword was not found!
+							if (!found)
+							{
+								Database.go_KeywordFields.addItem(keyword);	
+								trace(keyword.Keyword);	
+							}
+						}
+					}
+					
+				}
+			}
+			           
+			protected function btnRemoveKeyword_Click(event:MouseEvent):void
+			{
+				if (!Database.go_KeywordFields || 
+					listKeywords.selectedIndex == -1 || 
+					listKeywords.selectedIndex > Database.go_KeywordFields.length || 
+					Database.go_KeywordFields.length < 0)
+				{
+					Alert.show("Please select a keyword to delete.", "No keyword selected. " + listKeywords.selectedIndex.toString() + " " + Database.go_KeywordFields.length.toString());
+					
+				}else{
+					var po_Keywords:TblProductKeywords = Database.go_KeywordFields[ listKeywords.selectedIndex ];
+					Database.go_KeywordFields.removeItemAt(listKeywords.selectedIndex);
+					trace(po_Keywords.Keyword);
+				}
+			}
+
+			protected function CreateProduct_Click(event:MouseEvent):void
+			{
+
+				this.productFields = new TblProducts;
+				currentState ="newProduct";
+				reset();
+			}
 
 		]]>
 	</fx:Script>
 	
 
 	<s:Label x="410.8" y="23.4" text="Edit Products" fontSize="18" verticalAlign="middle" fontWeight="bold" includeIn="viewProducts" />
-	<s:Button includeIn="viewProducts" label="New Product"  id="btnNewProuct" x="655.65" y="345.3" />
+	<s:Button includeIn="viewProducts" label="New Product"  id="btnNewProuct" x="655.65" y="345.3" click="CreateProduct_Click(event)" />
 	<s:Button includeIn="viewProducts" x="753.75" y="345.3" id="btnDelete"  label="Delete"  />
-	<s:Button includeIn="viewProducts" x="116" y="346" label="Edit Product" id="btnEditProduct" click="currentState='editProduct'"/>
+	<s:Button includeIn="viewProducts" label="Delete Product"  id="btnDeleteProduct" x="545.65" y="345.3" click="DeleteProduct_Click(event)" />
+	
 	<mx:DataGrid includeIn="viewProducts" 
 				 id="dataGrid" 
 				 width="708"
@@ -503,59 +755,75 @@
 	
 	
 	
-	<s:Border id="brdLogo" x="0" y="0" width="200" height="200" borderWeight="2"  includeIn="editProduct">
+	<s:Border id="brdLogo" x="0" y="0" width="200" height="200" borderWeight="2"  includeIn="editProduct,newProduct">
 		<mx:Label x="10" y="38" text="Upload Image" width="180" textAlign="center" />
 		<mx:Button id="btnBrowse" x="65" y="70" label="Browse" click="LocateFile();" />
 		<mx:Label id="lblSize" x="10" y="106" text="Size: 0kb" width="180"  textAlign="center"/>
 		<mx:Label id="lblProgress" x="10" y="134"  text="Progress 0%" width="180" textAlign="center" height="22"/>
 		<mx:Text  text="Upload Picture" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"/>
 		<mx:TextInput id="txtPicUrl" x="20" y="168" visible="false"/>
-	
+		
 	</s:Border>
-
 	
-	<s:Border id="brdDetails" width="432"  x="214" y="0" height="410" borderWeight="2"  includeIn="editProduct" >
 	
-		<mx:TextArea  id="txtCompanyName" focusOut="focusOut(event)"   focusIn="txt_focusIn(event)" condenseWhite="true" textAlign="center"  borderVisible="false"  fontAntiAliasType="advanced" fontSize="19"   fontWeight="bold"  color="#0036FF"  includeIn="editProduct"  x="3" y="1" height="30" width="422"/>
-		<mx:TextArea  id="txtCompanyDesc" focusOut="focusOut(event)"  focusIn="txt_focusIn(event)" borderVisible="false" includeIn="editProduct" top="33" left="0" right="0" bottom="38" condenseWhite="true"   fontAntiAliasType="advanced" />
+	<s:Border id="brdDetails" width="432"  x="214" y="0" height="410" borderWeight="2"  includeIn="editProduct,newProduct" >
+		
+		<mx:TextArea  id="txtCompanyName" focusOut="focusOut(event)"   focusIn="txt_focusIn(event)" condenseWhite="true" textAlign="center"  borderVisible="false"  fontAntiAliasType="advanced" fontSize="19"   fontWeight="bold"  color="#0036FF"  includeIn="editProduct,newProduct"  x="3" y="1" height="30" width="422"/>
+		<mx:TextArea  id="txtCompanyDesc" focusOut="focusOut(event)"  focusIn="txt_focusIn(event)" borderVisible="false" includeIn="editProduct,newProduct" top="33" left="0" right="0" bottom="38" condenseWhite="true"   fontAntiAliasType="advanced" />
 		
 		
 		<s:Button label="Cancel"   x="7" y="379" click="btnCancel(event);" />
 		<mx:Button click="btnAccept_Click(event)" x="352" y="379" label="Accept" />
-		<s:Button x="84" y="379" label="Keywords"  />
-		<s:Label x="163" y="384" text="0 Keywords"/>
-	
+		
 	</s:Border>
 	
-	<s:Border id="brdContactDetails" width="200"  x="0" y="210" height="200" borderWeight="2"  includeIn="editProduct">
+	<s:Border id="brdContactDetails" width="200"  x="0" y="210" height="200" borderWeight="2"  includeIn="editProduct,newProduct">
 		
-		<mx:Text  text="Contact Details" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"  includeIn="editProduct" />
-
+		<mx:Text  text="Contact Details" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"  includeIn="editProduct,newProduct" />
+		
 		
 		<mx:TextInput id="txtAddressName" focusOut="focusOut(event)" focusIn="txt_focusIn(event)"  x="20" y="26" borderVisible="false"  textAlign="center" />
 		<mx:TextInput id="txtAddressStreet" focusOut="focusOut(event)"  focusIn="txt_focusIn(event)" x="20" y="44" borderVisible="false"  textAlign="center" />
 		<mx:TextInput id="txtAddressTown" focusOut="focusOut(event)"  focusIn="txt_focusIn(event)" x="20" y="62" borderVisible="false"  textAlign="center" />
 		<mx:TextInput id="txtAddressCounty"   focusOut="focusOut(event)" focusIn="txt_focusIn(event)" x="20" y="80" borderVisible="false"  textAlign="center" />
 		<mx:TextInput id="txtAddressPostCode"  focusOut="focusOut(event)"  focusIn="txt_focusIn(event)" x="20" y="98" borderVisible="false"  textAlign="center" />
-					  
+		
 		<mx:TextInput id="txtAddressEmail" focusOut="focusOut(event)"  focusIn="txt_focusIn(event)" x="20" y="120" borderVisible="false"  textAlign="center" />
 		<mx:TextInput id="txtAddressTel"  focusOut="focusOut(event)" focusIn="txt_focusIn(event)" x="20" y="138" borderVisible="false"  textAlign="center" />
 		<mx:TextInput id="txtAddressMob"  focusOut="focusOut(event)"  focusIn="txt_focusIn(event)"  x="20" y="156" borderVisible="false"  textAlign="center" />
 		<mx:TextInput id="txtAddressFax" focusOut="focusOut(event)" focusIn="txt_focusIn(event)"  x="20" y="174" borderVisible="false"  textAlign="center" />
-
+		
 	</s:Border>
 	
-	<s:Border id="brdMap" x="659" y="210" width="280" height="200" borderWeight="2"  includeIn="editProduct" >
-		<mx:TextInput id="txtMAPPostCode" x="43" y="84" textAlign="center" height="19"  width="194" focusOut="focusOut(event)" focusIn="txt_focusIn(event)"  />
-		<mx:Label x="15" y="50" text="Enter street and post code for Google Maps"/>
-		<mx:Text  text="Google Maps" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"/>
+	<s:Border id="brdMap" x="659" y="210" width="280" height="200" borderWeight="2"  includeIn="editProduct,newProduct" >
+		<mx:Text top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF" text="Keywords"/>
+		<s:Label x="89" y="140" text="Enter list of keywords" x.newProduct="83" y.newProduct="141"/>
+		<s:TextInput x="41" y="158" width="140" text="Keyword1, Keyword2" x.newProduct="37" y.newProduct="158" id="txtKeywords"/>
+		<s:Button label="Add" width="52" x="183" y="158" click="btnAdd_Click(event)" />
+		<s:Button label="Remove" width="66" x="189" y="107" click="btnRemoveKeyword_Click(event)" />
+		<mx:HRule  width="233" height="1"  x="21" y="132"/>
+		<mx:DataGrid 
+					 id="listKeywords" 
+					 doubleClickEnabled="true" dataProvider="{productsView}" itemDoubleClick="dataGrid_itemDoubleClickHandler(event)" width="169" height="104" x="15.15" y="24">
+			<mx:columns>
+				<mx:DataGridColumn dataField="Keyword" headerText="Keyword"/>
+			</mx:columns>
+		</mx:DataGrid>
 	</s:Border>
 	
 	
-	<s:Border id="brdVideo" x="659" y="0" width="280" height="199" borderVisible="true"  borderWeight="2" includeIn="editProduct"  >	
-		<mx:TextArea id="txtVideoURL" x="71" y="86"  height="19" focusOut="focusOut(event)" focusIn="txt_focusIn(event)"  width="138"/>
-		<mx:Label x="68" y="54" text="Enter Youtube Video URL"/>
-		<mx:Text  text="YouTube Video" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"/>
+	<s:Border id="brdVideo" x="659" y="0" width="280" height="199" borderVisible="true"  borderWeight="2" includeIn="editProduct,newProduct"  >	
+		<mx:Text  top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF" text="Extras"/>
+		
+		<mx:Label text="Enter Youtube Video URL" x="68" y="25" x.newProduct="68" y.newProduct="25"/>
+		<mx:TextArea id="txtVideoURL"  height="19" focusOut="focusOut(event)" focusIn="txt_focusIn(event)"  width="138" x="71" y="44"/>
+		
+		<mx:Label  text="Enter street and post code for Google Maps" x="15" y="80" x.newProduct="15" y.newProduct="79" x.editProduct="15" y.editProduct="79"/>
+		<mx:TextInput id="txtMAPPostCode" textAlign="center" height="19"  width="194" focusOut="focusOut(event)" focusIn="txt_focusIn(event)"   x="43" y="99"/>
+		
+		<mx:Label  text="Enter Category for this item" x="64" y="134"/>
+		<mx:TextInput id="txtCategory" textAlign="center" height="19"  width="194" focusOut="focusOut(event)" focusIn="txt_focusIn(event)"   x="43" y="154"/>
+		
 	</s:Border>
 	
 	

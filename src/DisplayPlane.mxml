@@ -385,13 +385,7 @@
 
 	<s:Border id="brdDetails" width="432"  x="214" y="0" height="410" borderWeight="2" >
 		<mx:Text  top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="19"   fontWeight="bold"  color="#0036FF" id="txtItemName">
-			<mx:htmlText>
-				<![CDATA[
-				<p align="center">
-				Apple
-				</p>
-				]]>
-			</mx:htmlText>
+
 		</mx:Text>
 		
 		<mx:Text  top="32" left="0" right="0" bottom="0" condenseWhite="true"   fontAntiAliasType="advanced" id="txtDesc"/>
@@ -404,69 +398,29 @@
 	
 	<s:Border id="brdContactDetails" width="200"  x="0" y="210" height="200" borderWeight="2">
 		
-		<mx:Text  top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF">
-			<mx:htmlText>
-				<![CDATA[
-				<p align="center">
-					Contact Details
-				</p>
-				]]>
-			</mx:htmlText>
+		<mx:Text  top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF" text="Contact Details">
+
 		</mx:Text>
 		
 		
 		<mx:Text  top="28" left="0" right="4" bottom="67" condenseWhite="true" textAlign="center" fontAntiAliasType="advanced"  id="txtAddress">
-			<mx:htmlText>
-				<![CDATA[
-				<p align="center">
 
-				Apple Inc.<br>
-				1 Infinite Loop<br>
-				Cupertino, CA 95014<br>
-				United States<br>
-				</p>
-				]]>
-			</mx:htmlText>
 		</mx:Text>
 		
 		
 		<mx:Text  top="135" left="0" right="0" bottom="79" condenseWhite="true" textAlign="center" fontAntiAliasType="advanced"   id="txtEmail">
-			<mx:htmlText>
-				<![CDATA[
-				<p align="center">
-					<a href="mailto:sales@apple.com">Click to Email</a>
-				</p>
-				]]>
-			</mx:htmlText>
+
 		</mx:Text>
 	
 		<mx:Text  top="150" left="0" right="0" bottom="49" condenseWhite="true" textAlign="center" fontAntiAliasType="advanced"   id="txtTel">
-			<mx:htmlText>
-				<![CDATA[
-				<p align="center">
-				Tel:  0800 048 0408
-				</p>
-				]]>
-			</mx:htmlText>
+
 		</mx:Text>
 		<mx:Text  top="165" left="0" right="0" bottom="49" condenseWhite="true" textAlign="center"  fontAntiAliasType="advanced"   id="txtMob">
-			<mx:htmlText>
-				<![CDATA[
-				<p align="center">
-				Mob: 
-				</p>
-				]]>
-			</mx:htmlText>
+
 		</mx:Text>
 		
 		<mx:Text  top="180" left="0" right="0" bottom="49" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced"  id="txtFax">
-			<mx:htmlText>
-				<![CDATA[
-				<p align="center">
-				Fax: 
-				</p>
-				]]>
-			</mx:htmlText>
+
 		</mx:Text>
 		
 	</s:Border>

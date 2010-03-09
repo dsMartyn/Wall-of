@@ -244,7 +244,11 @@
 					cmpDisplay3D.Display3D_Show(null);
 				}
 				
-				
+				/*if (Database.go_LoginFields.MemberID > 0)
+					this.cmpDisplayMenu.currentState = "menu";
+				else
+					this.cmpDisplayMenu.currentState = "userMenu";
+				*/
 				if (cmpDisplay3D.currentState == "ImagesLoading")
 					currentState = ps_CurrentState;
 			}
@@ -297,6 +301,7 @@
 			private var po_base:Base64 = new Base64();
 			private function ProcessProduct(product:SearchFields, idx:Number, length:Number):void
 			{
+				
 				var loader:Loader = new Loader();
 				//decodeFromHex(product.Image);
 				
@@ -379,7 +384,7 @@
 			
 			protected function search_Click(event:MouseEvent):void
 			{
-				if (event && txtSearch.text =="")
+				if ((event && txtSearch.text =="") || ps_PreviousSearch == search)
 					return;
 				//check new search
 				if (ps_PreviousSearch != search)

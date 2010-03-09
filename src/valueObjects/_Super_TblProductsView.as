@@ -40,13 +40,13 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
 	/**
 	 * properties
 	 */
-	private var _internal_Map : int;
-	private var _internal_Image : int;
-	private var _internal_Clicks : Object;
+	private var _internal_Map : Boolean;
+	private var _internal_Image : Boolean;
+	private var _internal_Clicks : int;
 	private var _internal_RowID : int;
 	private var _internal_Keywords : int;
-	private var _internal_YouTube : int;
-	private var _internal_Category : Object;
+	private var _internal_YouTube : Boolean;
+	private var _internal_Category : String;
 	private var _internal_Name : String;
 	private var _internal_count : int;
 
@@ -71,17 +71,17 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
      * data property getters
      */
 	[Bindable(event="propertyChange")] 
-    public function get Map() : int    
+    public function get Map() : Boolean    
     {
             return _internal_Map;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get Image() : int    
+    public function get Image() : Boolean    
     {
             return _internal_Image;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get Clicks() : Object    
+    public function get Clicks() : int    
     {
             return _internal_Clicks;
     }    
@@ -96,12 +96,12 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
             return _internal_Keywords;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get YouTube() : int    
+    public function get YouTube() : Boolean    
     {
             return _internal_YouTube;
     }    
 	[Bindable(event="propertyChange")] 
-    public function get Category() : Object    
+    public function get Category() : String    
     {
             return _internal_Category;
     }    
@@ -119,12 +119,12 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
     /**
      * data property setters
      */      
-    public function set Map(value:int) : void 
+    public function set Map(value:Boolean) : void 
     {    	
         var recalcValid:Boolean = false;
     	
     	
-    	var oldValue:int = _internal_Map;               
+    	var oldValue:Boolean = _internal_Map;               
         if (oldValue !== value)
         {
         	_internal_Map = value;
@@ -136,12 +136,12 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set Image(value:int) : void 
+    public function set Image(value:Boolean) : void 
     {    	
         var recalcValid:Boolean = false;
     	
     	
-    	var oldValue:int = _internal_Image;               
+    	var oldValue:Boolean = _internal_Image;               
         if (oldValue !== value)
         {
         	_internal_Image = value;
@@ -153,16 +153,12 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set Clicks(value:Object) : void 
+    public function set Clicks(value:int) : void 
     {    	
         var recalcValid:Boolean = false;
-    	if (value == null || _internal_Clicks == null)
-    	{
-    		recalcValid = true;
-    	}	
     	
     	
-    	var oldValue:Object = _internal_Clicks;               
+    	var oldValue:int = _internal_Clicks;               
         if (oldValue !== value)
         {
         	_internal_Clicks = value;
@@ -208,12 +204,12 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set YouTube(value:int) : void 
+    public function set YouTube(value:Boolean) : void 
     {    	
         var recalcValid:Boolean = false;
     	
     	
-    	var oldValue:int = _internal_YouTube;               
+    	var oldValue:Boolean = _internal_YouTube;               
         if (oldValue !== value)
         {
         	_internal_YouTube = value;
@@ -225,7 +221,7 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
             model_internal::isValid_der = model_internal::calculateIsValid();
         }  
     }    
-    public function set Category(value:Object) : void 
+    public function set Category(value:String) : void 
     {    	
         var recalcValid:Boolean = false;
     	if (value == null || _internal_Category == null)
@@ -234,7 +230,7 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
     	}	
     	
     	
-    	var oldValue:Object = _internal_Category;               
+    	var oldValue:String = _internal_Category;               
         if (oldValue !== value)
         {
         	_internal_Category = value;
@@ -316,11 +312,6 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
         var violatedConsts:Array = new Array();    
         var validationFailureMessages:Array = new Array();    
 
-		if (_model.isClicksAvailable && _internal_Clicks == null)
-		{
-			violatedConsts.push("ClicksIsRequired");
-			validationFailureMessages.push("Clicks is required");
-		}
 		if (_model.isCategoryAvailable && _internal_Category == null)
 		{
 			violatedConsts.push("CategoryIsRequired");

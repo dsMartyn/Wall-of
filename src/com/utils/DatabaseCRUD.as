@@ -21,7 +21,6 @@ package com.utils
 	import valueObjects.LoginFields;
 	import valueObjects.TblMembers;
 	import valueObjects.TblProducts;
-	import valueObjects.TblProductsView;
 
 	public class DatabaseCRUD extends EventDispatcher
 	{
@@ -43,10 +42,10 @@ package com.utils
 		public const pc_mob:String = "Enter Mobile";
 		public const pc_fax:String = "Enter Fax";
 		public const pc_companyName:String = "Enter Company name";
-		public const pc_companyDesc:String = "Enter company Descrption\nYear it was established\nany offers.";
-		public const pc_mapsPostCode:String = "LS12 1QB";
-		public const pc_youTubeURL:String = "http://www.youtube.com/watch?v=Va8Sh4Agr58";
-		
+		public const pc_companyDesc:String = "Enter company Descrption\n\nYear it was established\nother company information\nany offers.";
+		public const pc_mapsPostCode:String = "Street Name, Post Code";
+		public const pc_youTubeURL:String = "http://www.youtube.com/watch?v=VideoID";
+		public const pc_Category:String = "Enter Category";
 		
 		//private variables
 		private var pc_CrudEmailLog:TblEmailLogService = new TblEmailLogService();
@@ -55,7 +54,7 @@ package com.utils
 		private var pc_CrudKeywords:TblKeywordsService = new TblKeywordsService();
 		private var pc_CrudHistory:TblHistoryService = new TblHistoryService();
 		private var pc_CrudLogin:TblLoginService = new TblLoginService();
-	
+
 		//global variables
 		/** 
 		 * Login fields contains memberID + SessionID when logging in  
@@ -77,6 +76,7 @@ package com.utils
 		**/
 		public var go_ProductFields:TblProducts;
 		
+		public var go_KeywordFields:ArrayCollection;
 	
 		[bindable]
 		/**
@@ -262,7 +262,7 @@ package com.utils
 				//why does this return member fields instead of rowid?
 				var ln_Value:TblMembers = pc_RegisterUser.token.result as TblMembers;
 				le_Event.memberId = ln_Value.RowID;
-
+				le_Event.valid = true;
 				this.dispatchEvent(le_Event);
 			}
 			
@@ -340,7 +340,7 @@ package com.utils
 				}else{
 					le_Event.sessionId = lo_LoginFields.SessionID;
 					le_Event.memberId = lo_LoginFields.MemberID;
-					
+					le_Event.valid = true;
 					this.go_LoginFields.SessionID = lo_LoginFields.SessionID;
 					this.go_LoginFields.MemberID = lo_LoginFields.MemberID;
 					this.dispatchEvent(le_Event);
@@ -380,10 +380,19 @@ package com.utils
 			if (event is ResultEvent)	
 			{
 				var ln_MemberID:Number = this.pc_GetMemberID.token.result as Number;
-				le_Event.memberId = ln_MemberID;
-				trace('memberId received - ' + ln_MemberID);
-				this.go_LoginFields.MemberID = ln_MemberID;
-				this.dispatchEvent(le_Event);
+				if (!ln_MemberID)
+				{
+					le_Event.memberId = 0;
+					this.go_LoginFields.MemberID = 0;
+					le_Event.valid = false;
+					this.dispatchEvent(le_Event);
+				}else{
+					le_Event.memberId = ln_MemberID;
+					le_Event.valid = true;
+					trace('memberId received - ' + ln_MemberID);
+					this.go_LoginFields.MemberID = ln_MemberID;
+					this.dispatchEvent(le_Event);
+				}
 			}
 			
 			if (event is FaultEvent)
@@ -436,6 +445,7 @@ package com.utils
 				}else{
 					trace('dispatching GET_MEMBERINFO event');
 					le_Event.memberFields = ln_Member;
+					le_Event.valid = true;
 					this.go_MemberFields = ln_Member;
 					this.dispatchEvent(le_Event);
 					trace("Executing event loggedIn");
@@ -456,6 +466,52 @@ package com.utils
 			this.pc_GetMember.removeEventListener(FaultEvent.FAULT, this.GetMember);
 		}
 	
+		
+		private var pc_ProductKeywords:CallResponder = new CallResponder();
+		public function GetProductKeywords(event:Object, productID:Number=-1):void
+		{
+			var le_Event:CrudEvent = new CrudEvent(CrudEvent.GET_PRODUCT_KEYWORDS);
+
+			if (productID > 0)
+			{
+				this.pc_ProductKeywords.addEventListener(ResultEvent.RESULT, GetProductKeywords);
+				this.pc_ProductKeywords.addEventListener(FaultEvent.FAULT, GetProductKeywords);
+				this.pc_ProductKeywords.token = pc_CrudKeywords.getKeywordsByProductID(productID);
+				trace('GetProductKeywords: ' + productID);
+				return;
+			}
+			
+			trace('GetProductKeywords completed');
+			if (event is ResultEvent)	
+			{
+				var ln_Value:ArrayCollection = pc_ProductKeywords.token.result as ArrayCollection;
+				if (!ln_Value)
+				{
+					trace("no keyword list");
+					le_Event.valid = true;
+					this.go_KeywordFields = ln_Value;
+					this.dispatchEvent(le_Event);
+				}else{
+					this.go_KeywordFields = ln_Value;
+					trace("got keyword list");
+					le_Event.valid = true;
+					this.dispatchEvent(le_Event);
+				}
+			}
+			
+			if (event is FaultEvent)
+			{
+				trace("GetProductKeywords errored!");
+				var fault:FaultEvent = event as FaultEvent;
+				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
+				le_Event.errored = true;
+				le_Event.valid = false;
+				this.dispatchEvent(le_Event);
+			}
+			
+			this.pc_ProductKeywords.removeEventListener(ResultEvent.RESULT, this.GetProductKeywords);
+			this.pc_ProductKeywords.removeEventListener(FaultEvent.FAULT, this.GetProductKeywords);
+		}
 		
 		
 		private var pc_EmailFriends:CallResponder = new CallResponder();
@@ -509,8 +565,8 @@ package com.utils
 			if (event is ResultEvent)	
 			{
 				//why does this return member fields instead of rowid?
-				var ln_Value:TblProducts = pc_CreateProduct.token.result as TblProducts;
-				le_Event.productId = ln_Value.RowID;
+				var ln_Value:Number = pc_CreateProduct.token.result as Number;
+				le_Event.productId = ln_Value;
 				
 				this.dispatchEvent(le_Event);
 			}
@@ -528,34 +584,39 @@ package com.utils
 		}
 		
 		
+
 		private var pc_UpdateProduct:CallResponder = new CallResponder();
 		public function UpdateProduct(event:Object, product:TblProducts=null):void
 		{
+
 			if (product)
 			{
-				this.pc_UpdateProduct.addEventListener(ResultEvent.RESULT, this.UpdateProduct);
-				this.pc_UpdateProduct.addEventListener(FaultEvent.FAULT, this.UpdateProduct);
+				trace("updating " + product.RowID);
+				this.pc_UpdateProduct.addEventListener(ResultEvent.RESULT, UpdateProduct);
+				this.pc_UpdateProduct.addEventListener(FaultEvent.FAULT, UpdateProduct);
 				this.pc_UpdateProduct.token =  pc_CrudProducts.updateTblProducts(product);
-				trace('update product');
 				return;
 			}
 			
 			var le_Event:CrudEvent = new CrudEvent(CrudEvent.PRODUCT_UPDATED);
-			trace('update product completed');
 			if (event is ResultEvent)	
 			{
+				trace("updated product");
+				le_Event.errored = false;
 				le_Event.valid = true;
 				this.dispatchEvent(le_Event);
 			}
 			
 			if (event is FaultEvent)
 			{
+				trace("Error updating product");
 				var fault:FaultEvent = event as FaultEvent;
 				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
 				le_Event.errored = true;
 				this.dispatchEvent(le_Event);
 			}
 			
+			trace("removing listeners");
 			this.pc_UpdateProduct.removeEventListener(ResultEvent.RESULT, this.UpdateProduct);
 			this.pc_UpdateProduct.removeEventListener(FaultEvent.FAULT, this.UpdateProduct);
 		}
@@ -582,7 +643,7 @@ package com.utils
 				var ln_Value:TblProducts = pc_GetProduct.token.result as  TblProducts;
 				if (!ln_Value)
 				{
-					trace("errored");
+					trace("GetProduct errored");
 					fault = event as FaultEvent;
 					le_Event.errorMsg = "Error allocating data";
 					le_Event.errored = true;
@@ -599,7 +660,7 @@ package com.utils
 			
 			if (event is FaultEvent)
 			{
-				trace("errored");
+				trace("GetProduct errored");
 				fault = event as FaultEvent;
 				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
 				le_Event.errored = true;
@@ -627,11 +688,18 @@ package com.utils
 			if (event is ResultEvent && pc_Search && pc_Search.token.result)	
 			{
 				var ln_Value:ArrayCollection = pc_Search.token.result as  ArrayCollection;
-				this.go_SearchFields = ln_Value;
-				le_Event.valid = true;
-
-				trace("dispatched");
-				this.dispatchEvent(le_Event);
+				if (!ln_Value)
+				{
+					trace("no search results");
+					le_Event.valid = true;
+					this.dispatchEvent(le_Event);
+				}else{
+					this.go_SearchFields = ln_Value;
+					le_Event.valid = true;
+	
+					trace("dispatched");
+					this.dispatchEvent(le_Event);
+				}
 			}
 			
 			if (event is FaultEvent)
@@ -640,11 +708,12 @@ package com.utils
 				var fault:FaultEvent = event as FaultEvent;
 				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
 				le_Event.errored = true;
+				le_Event.valid = false;
 				this.dispatchEvent(le_Event);
 			}
 			
-			this.pc_UpdateProduct.removeEventListener(ResultEvent.RESULT, this.Search);
-			this.pc_UpdateProduct.removeEventListener(FaultEvent.FAULT, this.Search);
+			this.pc_Search.removeEventListener(ResultEvent.RESULT, this.Search);
+			this.pc_Search.removeEventListener(FaultEvent.FAULT, this.Search);
 		}
 		
 		
@@ -697,6 +766,43 @@ package com.utils
 			
 			this.pc_GetProductView.removeEventListener(ResultEvent.RESULT, this.GetProductView);
 			this.pc_GetProductView.removeEventListener(FaultEvent.FAULT, this.GetProductView);
+		}
+		
+		
+		
+		
+		private var pc_AddKeywords:CallResponder = new CallResponder();
+		public function AddKeywords(event:Object, keywords:String="", productId:Number=-1):void
+		{
+			var fault:FaultEvent;
+			
+			if (productId > 0)
+			{
+				this.pc_AddKeywords.addEventListener(ResultEvent.RESULT, this.AddKeywords);
+				this.pc_AddKeywords.addEventListener(FaultEvent.FAULT, this.AddKeywords);
+				this.pc_AddKeywords.token =  pc_CrudProducts.addKeywords(keywords,productId);
+				trace('Add Keywords: ' + productId);
+				return;
+			}
+			
+			var le_Event:CrudEvent = new CrudEvent(CrudEvent.ADD_KEYWORDS);
+			
+			if (event is FaultEvent)
+			{
+				trace("AddKeywords errored");
+				fault = event as FaultEvent;
+				le_Event.errorMsg = fault.fault.faultDetail + ' ' + fault.fault.faultString;
+				le_Event.errored = true;
+				le_Event.valid = false;
+				this.dispatchEvent(le_Event);
+			}else{
+				trace("dispatched event");
+				le_Event.valid = true;
+				this.dispatchEvent(le_Event);
+			}
+			
+			this.pc_GetProduct.removeEventListener(ResultEvent.RESULT, this.AddKeywords);
+			this.pc_GetProduct.removeEventListener(FaultEvent.FAULT, this.AddKeywords);
 		}
 		
 		
