@@ -4,7 +4,7 @@ package com.utils
 	import flash.events.Event;
 	import org.papervision3d.events.FileLoadEvent;
 	import org.papervision3d.materials.BitmapFileMaterial;
-
+	
 	
 	//this class will load an array of images
 	public class ImageLoader extends EventDispatcher
@@ -30,7 +30,7 @@ package com.utils
 			pb_Dbg = Debug;
 			pa_Images = new Array();
 		}
-
+		
 		public function ClearImages():void
 		{
 			_trace('clearing images');
@@ -106,7 +106,7 @@ package com.utils
 		{
 			dispatchEvent(new FileLoadEvent(gs_ImageLoaded,event.file)); // Event(gs_ImageLoaded));
 			RemoveEventListeners(event.target as BitmapFileMaterial);
-				
+			
 			_trace('Complete');
 		}
 		

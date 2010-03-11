@@ -23,7 +23,6 @@
 			import caurina.transitions.Tweener;
 			
 			import com.utils.DatabaseCRUD;
-			
 			import com.utils.ImageLoader;
 			
 			import flash.filters.*;

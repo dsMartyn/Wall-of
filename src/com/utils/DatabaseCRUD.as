@@ -5,6 +5,10 @@ package com.utils
 	import flash.events.Event;
 	import flash.events.EventDispatcher;
 	import flash.net.SharedObject;
+	import flash.net.URLLoader;
+	import flash.net.URLRequest;
+	import flash.net.URLVariables;
+	import flash.utils.ByteArray;
 	
 	import mx.collections.ArrayCollection;
 	import mx.rpc.CallResponder;
@@ -69,8 +73,8 @@ package com.utils
 		/**
 		 * SearchFields contains Image which is Base64 Encoded *change this*
 		**/
-		public var go_SearchFields:ArrayCollection;
-		
+		public var go_SearchFields:ArrayCollection = new ArrayCollection();
+		public var go_SearchCount:Number = 0;
 		/**
 		 * ProductFields this contain the product information for the clicked product
 		**/
@@ -102,7 +106,6 @@ package com.utils
 		 **/
 		public const MAX_RESULTS_VIEW:Number = 10;
 		
-
 		
 		public function DatabaseCRUD()
 		{
@@ -837,9 +840,12 @@ package com.utils
 				this.dispatchEvent(le_Event);
 			}
 			
+			
 			this.pc_DeleteProduct.removeEventListener(ResultEvent.RESULT, this.DeleteProduct);
-			this.pc_DeleteProduct.removeEventListener(FaultEvent.FAULT, this.DeleteProduct);
+			this.pc_DeleteProduct.removeEventListener(FaultEvent.FAULT, this.DeleteProduct);	
 		}
+		
 		
 	}
 }
+

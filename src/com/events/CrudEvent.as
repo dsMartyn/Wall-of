@@ -22,7 +22,8 @@ package com.events
 		public static const EMAIL_FRIEND:String = "emailFriend";
 		
 		public static const SEARCH:String = "search"
-		
+		public static const JSON_SEARCH:String = "jsonSearch"
+			
 		public static const GET_PRODUCTINFO:String = "getProductInfo";
 		public static const GET_PRODUCTVIEW_INFO:String = "getProductViewInfo";
 		

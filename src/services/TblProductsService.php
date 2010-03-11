@@ -135,7 +135,7 @@ class TblProductsService {
 		for ($i=0; $i< count($rows); $i++)
 		{
 			$rows[$i]->count = $ctr;
-			$rows[$i]->Image =  $this->FixEncoding($rows[$i]->Image);
+			//$rows[$i]->Image =  $this->FixEncoding($rows[$i]->Image);
 		}
 	    
 	    return $rows;
@@ -180,7 +180,7 @@ class TblProductsService {
 		for ($i=0; $i< count($rows); $i++)
 		{
 			$rows[$i]->count = $ctr;
-			$rows[$i]->Image =  $this->FixEncoding($rows[$i]->Image);
+			//$rows[$i]->Image =  $this->FixEncoding($rows[$i]->Image);
 		}
 		
 	    return $rows;
@@ -378,7 +378,7 @@ class TblProductsService {
 
   private function FixEncoding($str)
   {
-	return base64_encode($str);
+	return ($str);
   }
   
   function search($str, $start, $limit)
@@ -560,7 +560,8 @@ class TblProductsService {
 	    return $rows;
 	    
   }
-	
+  
+  
 	/**
 	 * Utitity function to throw an exception if an error occurs 
 	 * while running a mysql command.
