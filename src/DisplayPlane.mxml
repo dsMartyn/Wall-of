@@ -112,12 +112,13 @@
 				}	
 				
 				var pf:TblProducts = Database.go_ProductFields;
-				var sf:SearchFields = Database.go_SearchFields[Database.gi_CurrentIndex];
+				var sf:ImageData = Database.go_SearchFields[Database.gi_CurrentIndex];
 
 				var b:Base64 = new Base64();
 				var loader:Loader = new Loader();
 				
-				loader.loadBytes(b.decode(sf.Image));
+				if (sf.imageData.length > 0)
+					loader.loadBytes(sf.imageData);
 				loader.contentLoaderInfo.addEventListener( Event.COMPLETE, loadBitmapCompleteHandler );
 				
 				this.txtDesc.text = pf.ItemDesc;
@@ -181,12 +182,16 @@
 						
 					Alert.show("Can't initialize google information","Error loading info");
 					return;
-				}	
+				}
 				
 				var pf:TblProducts = Database.go_ProductFields;
+				if (!pf)
+					return;
 				
-				if (pf.GooglePostCode.length <= 0)
-					return;//no post code!
+				if (pf.GooglePostCode.length < 3)//not a valid post code
+					return;
+				
+				trace("google post code", pf.GooglePostCode);
 				
 				map.addEventListener(MapEvent.MAP_PREINITIALIZE, onMapPreinitialize);
 				
