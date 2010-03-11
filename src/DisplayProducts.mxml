@@ -150,6 +150,20 @@
 				productFields = new  TblProducts;
 				productFields.RowID = tmpRowID;
 				productFields.MemberID = Database.go_LoginFields.MemberID;
+				productFields.AddressCounty = "";
+				productFields.AddressEmail = "";
+				productFields.AddressFax = "";
+				productFields.AddressMob = "";
+				productFields.AddressName = "";
+				productFields.AddressPostCode = "";
+				productFields.AddressStreet = "";
+				productFields.AddressTel = "";
+				productFields.AddressTown = "";
+				productFields.Category = "";
+				productFields.GooglePostCode = "";
+				productFields.YoutubeVideoUrl = "";
+				productFields.ItemDesc = "";
+				productFields.ItemName = "";
 				
 				if (txtCategory.text != Database.pc_Category)
 					productFields.Category = this.txtCategory.text;
@@ -175,8 +189,7 @@
 					productFields.ItemDesc = this.txtCompanyDesc.text;
 				if (txtCompanyName.text != Database.pc_companyName)
 					productFields.ItemName = this.txtCompanyName.text;
-			
-				
+
 			//	productFields.picUrl = this.txtPicUrl.text;
 				
 				if (this.txtMAPPostCode.text != Database.pc_mapsPostCode)
