@@ -361,6 +361,9 @@
 			{
 				currentState='login'; 
 				dispatchEvent(new Event(gcs_DisplayMenu_Show));
+				
+				if (currentState == 'login')
+					dispatchEvent(new Event(gcs_Display3D_Show));
 			}
 			protected function Login_Click():void
 			{
@@ -476,6 +479,17 @@
 				// TODO Auto-generated method stub
 			}
 
+
+			protected function linkbutton1_clickHandler(event:MouseEvent):void
+			{
+				if (this.userNameTextInput.text == "")
+				{
+					Alert.show("Error please enter a valid email address.","Error sending password request.",Alert.OK );
+				}else{
+				//send email with forgotton password to email address
+				}
+			}
+
 		]]>
 	</fx:Script>
 	
@@ -581,7 +595,7 @@
 	
 	
 	
-	<mx:Form id="form" alpha="0.6" defaultButton="{btnRegister}"  x="11" y="14" backgroundColor="#FFFFFF" width.register="368" x.login="323.5" y.login="134" x.register="286" y.register="47" x.update="286" y.update="47">
+	<mx:Form id="form" alpha="0.6" defaultButton="{btnRegister}"  x="11" y="14" backgroundColor="#FFFFFF" width.register="368" x.login="323.5" y.login="134" x.register="286" y.register="47" x.update="286" y.update="47" height.login="192">
 		<mx:FormHeading  id="lblLabel" label.update="Update Member Details" label.register="Register at Wall Of" label.login="Sign in Wall Of" width="249"/>
 		
 		<mx:FormItem id="itmfirstName" label="FirstName" required="true" includeIn="register,update" >
@@ -604,11 +618,11 @@
 
 		
 		<mx:FormItem  id="itmEmail" label="Email Address" required="true">
-			<s:TextInput id="userNameTextInput"   text="@{memberFields.UserName}" width.register="210" width.update="210"/>
+			<s:TextInput id="userNameTextInput"   text="@{memberFields.UserName}" width.register="210" width.update="210" width.login="170"/>
 		</mx:FormItem>
 
 		<mx:FormItem  id="itmPassword" label="Password"  required="true">
-			<s:TextInput displayAsPassword="true"   id="passwordTextInput" text="@{memberFields.Password}"  width.register="210" width.update="210"/>
+			<s:TextInput displayAsPassword="true"   id="passwordTextInput" text="@{memberFields.Password}"  width.register="210" width.update="210" width.login="170"/>
 		</mx:FormItem>
 
 		<mx:FormItem  id="itmconfirm_password" label="Confirm Password"   required="true" includeIn="register,update" >
@@ -635,6 +649,8 @@
 		</s:Group>
 		
 		<mx:CheckBox   id="chkRememberMe" includeIn="login" label="Remember me on this computer"  x="10" y="300" width="246" selected="false" />
+	
+		<mx:LinkButton label="Forgot Password" label.login="Forgot Password?" width.login="279" textAlign.login="right" click="linkbutton1_clickHandler(event)" />
 		
 	</mx:Form>
 	

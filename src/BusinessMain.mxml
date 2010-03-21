@@ -3,13 +3,13 @@
 			   xmlns:mx="library://ns.adobe.com/flex/halo"
 			   xmlns:s="library://ns.adobe.com/flex/spark" 
 			   xmlns:fx1="org.ascollada.fx.*"
-	
+			   xmlns:utils="com.utils.*"
 			   minWidth="1024" minHeight="768" 
 			   xmlns:ns1="*"
-			   width="1024" height="601"
-			   backgroundColor="0x000000"
+			   width="1128" height="625"
 			   currentState="Display3D"
-			   frameRate="60"  xmlns:utils="com.utils.*">
+			   frameRate="60"  
+			   backgroundColor="#000000"  width.Display3D="1052">
 	<s:states>
 		<s:State name="Display3D"/>
 		<s:State name="DisplayPlane" enterState="state1_enterStateHandler(event)" />
@@ -20,7 +20,7 @@
 		<!-- Place non-visual elements (e.g., services, value objects) here -->
 	</fx:Declarations>
 	
-	
+
 	<s:transitions>
 		<s:Transition toState="Display3D">    
 			<s:Sequence>
@@ -36,46 +36,41 @@
 			</s:Sequence>
 		</s:Transition>
 	</s:transitions>
-	
-	<mx:HRule width="950" strokeColor="#000000" shadowColor="#2F2F2F" x="38" y="74"/>
-	<mx:Image id="logo_header" width="210" height="90"  source="@Embed('assets/embedded/gui/logoheader.png')"  x="33" y="1"/>
-	<s:Label  text="Business" color="#ABABAB" width="143" textAlign="right" x="37" y="77" />
-	<mx:Label text="35fps" id="lblFps" color="#ABABAB" fontSize="10" x="2" y="2" />
-	
-	<mx:MenuBar id="myMenuBar" labelField="@label" 
-				width="598"
-				 height="40" x="390.05" y="30" 
-				 baseColor.Display3D="#071769" 
-				 selectionColor.Display3D="#297AE9"
-				 rollOverColor.Display3D="#066AFF"
-				 color.Display3D="#FFFFFF"
-				 visible="false"
-				 >
-		
-		<fx:XMLList >
-			<menuitem label="Home"/>
-			<menuitem label="About"/>
-			<menuitem label="Stats"/>
-			<menuitem label="Help"/>
-			<menuitem label="SEO"/>
-			<menuitem label="Email a friend"/>
-			<menuitem label="Contact Us"/>
-			<menuitem label="Advertise"/>
-			<menuitem label="Login"/>
-		</fx:XMLList>
-	</mx:MenuBar>
-	
-	<s:Border  id="brdDisplay" backgroundColor="0xFFFFFF" height="437" width="964"  x="32" y="92" cornerRadius="10" />
-	<!-- Display components to be shown inside the tv display region -->
-	<ns1:Display3D id="cmpDisplay3D" displayVisible="Display3D_Visible(event)" displayPlane="Display3D_Plane(event)" initialize="Display3D_Init(event);" includeIn="Display3D"  x="42" y="103"  width="945" height="415"/>
-	<ns1:DisplayMenu id="cmpDisplayMenu" displayShow="cmpDisplay3D.Display3D_Show(event)" includeIn="MenuPlane"  x="42" y="103"  width="945" height="415"/>
-	<ns1:DisplayPlane id="cmpDisplayPlane" displayShow="cmpDisplay3D.Display3D_Show(event)" includeIn="DisplayPlane"  x="42" y="103"  width="945" height="415"/>
 
+	
+	<!--
+	<mx:Image  width.Display3D="1128" height.Display3D="601" maintainAspectRatio="false" x="0" y="0" smoothBitmapContent="true" source="@Embed('assets/embedded/gui/full_background.png')"/>
+	-->
+	
+	<mx:Label text="35fps" id="lblFps" color="#ABABAB" fontSize="10" x="2" y="2" includeIn="DisplayPlane,MenuPlane"/>
+	
+ 
+	<s:Border  id="brdDisplay" backgroundColor="0xFFFFFF"
+			   cornerRadius="5"  
+			   width="955"  height="425" 
+			   x="85" y="98"/>
+	
+	<mx:Image includeIn="Display3D" x="32.45" y="71.6" smoothBitmapContent="true" source="@Embed('assets/embedded/gui/layer_background.png')" alpha="0.6"/>
+	
+	
+	<!-- Display components to be shown inside the tv display region -->
+	<ns1:Display3D id="cmpDisplay3D" displayVisible="Display3D_Visible(event)" displayPlane="Display3D_Plane(event)" initialize="Display3D_Init(event);" includeIn="Display3D"  x="90" y="103"  width="945" height="415"/>
+	<ns1:DisplayMenu id="cmpDisplayMenu" displayShow="cmpDisplay3D.Display3D_Show(event)" includeIn="MenuPlane"   x="90" y="103"  width="945" height="415"/>
+	<ns1:DisplayPlane id="cmpDisplayPlane" displayShow="cmpDisplay3D.Display3D_Show(event)" includeIn="DisplayPlane"   x="90" y="106"  width="945" height="415"/>
+
+	<mx:Image width="945" height="415" includeIn="Display3D, MenuPlane"
+			  source="@Embed('assets/embedded/gui/shadow.png')" 
+			  mouseChildren="true" hasFocusableChildren="true" mouseEnabled="false"  
+			  x="90" y="103"/> 
+	
+	
+	<mx:Image  x="10.45" y="9.6" width="200" height="200" smoothBitmapContent="true" source="@Embed('assets/embedded/gui/logo_top.png')"/>
+	
 	
 	<s:DropDownList  includeIn="Display3D" width="99"
 					id="ddlSort"
 					prompt="Order By" 
-					x="42.2" y="551">
+					x="90.2" y="569">
 		<s:ArrayCollection>
 			<fx:String>Price High</fx:String>
 			<fx:String>Price Low</fx:String>
@@ -86,10 +81,10 @@
 	<s:Button  includeIn="Display3D" label="&lt;" 
 			   id="btnBack"
 			   width="28" 
-			   x="870.85" y="551"/>
+			   x="918.85" y="569"/>
 	
 	 
-	<s:DropDownList includeIn="Display3D" id="cmbPages" width="62" x="898.35" y="551"  >
+	<s:DropDownList includeIn="Display3D" id="cmbPages" width="62" x="946.35" y="569"  >
 		<s:ArrayCollection id="cmbPagesArray" />
 	</s:DropDownList>
 	
@@ -97,15 +92,20 @@
 	<s:Button includeIn="Display3D" label="&gt;"
 			   id="btnForward"
 			   width="28" 
-			   x="958.7" y="551"/>
+			   x="1006.7" y="569"/>
 	
-	<mx:TextInput includeIn="Display3D" id="txtSearch" height="20" width="288" x="336" y="552" keyUp="txtSearch_keyUpHandler(event)" />
-	<s:Button includeIn="Display3D" id="btnSearch" x="623" y="551" label="Search" click="search_Click(event)" />
-	<mx:HRule width="950" strokeColor="#000000" shadowColor="#2F2F2F" x="38" y="540"/>
-	<mx:LinkButton  click="btnMenu_Click(event)"  label="Menu" id="btnMenu"  fontAntiAliasType="advanced" color="#0631D1" fontSize="18" width="76" x="919.95" y="48" enabled="false"/>
-	<s:Label  x="694" y="33" text="Not logged in." color="#C10000" width="291" textAlign="right" id="lblLoggedIn" />
-	<s:Label includeIn="Display3D" x="853" y="579" text="Showing page 0 of 0" color="#2407FF" id="lblResults" verticalAlign="top" width="150" textAlign="center" fontWeight="bold"/>
-	<s:Label includeIn="Display3D" x="307" y="579" text="Search found 0 results in 0.00 seconds" width="402" textAlign="center" color="#2407FF" fontWeight="bold" id="lblSearchRes" textDecoration="none" fontStyle="normal" verticalAlign="top"/>
+	<mx:TextInput includeIn="Display3D" id="txtSearch" height="20" width="288" x="384" y="570" keyUp="txtSearch_keyUpHandler(event)" />
+	<s:Button includeIn="Display3D" id="btnSearch" x="671" y="569" label="Search" click="search_Click(event)" />
+	
+	<mx:LinkButton  click="btnMenu_Click(event)"  label="Menu" id="btnMenu"  fontAntiAliasType="advanced" color="#0631D1" fontSize="18" width="76" x="919.95" y="48" enabled="false" x.Display3D="967.95" y.Display3D="48"/>
+	
+	<s:Label  text="Not logged in." width="291" textAlign="right" id="lblLoggedIn"  
+			  x="742" y="33"  color="#B0AFAF"/>
+	
+	<s:Label includeIn="Display3D" x="901" y="597" text="Showing page 0 of 0" color="#2407FF" id="lblResults" verticalAlign="top" width="150" textAlign="center" fontWeight="bold"/>
+	<s:Label includeIn="Display3D" x="355" y="597" text="Search found 0 results in 0.00 seconds" width="402" textAlign="center" color="#2407FF" fontWeight="bold" id="lblSearchRes" textDecoration="none" fontStyle="normal" verticalAlign="top"/>
+	
+	
 
 	<!--
 	<s:HSlider x="457" y="11"  id="sldZoomer" maximum="15" minimum="5" change="c_Display3D.Zoom(sldZoomer.value)" />
@@ -121,9 +121,6 @@
 	<s:HSlider  id="sldPitcher" maximum="160" minimum="-160" change="c_Display3D.Pitch(sldPitcher.value)"  x="606" y="42"/>
 	<s:Label text="Pitch" x="570" y="41" color="#B2B2B2"/>
 	-->
-	
-	
-	
 	
 	<fx:Script>
 		<![CDATA[
@@ -148,13 +145,12 @@
 			
 			protected function Display3D_Init(event:Event):void
 			{
-				
 				//setup display border effects
-				var myBevel:BevelFilter = new BevelFilter(3.0,45,0x000000,1.0,0,1.0,10,4.0,1,1,BitmapFilterType.FULL);
-				var myGlow:GlowFilter = new GlowFilter(0xFFFFFF,0.1,6.0,6.0,2,1,false,false);
+			//	var myBevel:BevelFilter = new BevelFilter(3.0,45,0x000000,1.0,0,1.0,10,4.0,1,1,BitmapFilterType.FULL);
+				var myGlow:GlowFilter = new GlowFilter(0xFFFFFF,0.1,6.0,6.0,2,1,true,false);
 				var myBlur:BlurFilter = new BlurFilter();
-				brdDisplay.filters = [myBevel, myGlow, myBlur];
-				
+				brdDisplay.filters = [myGlow, myBlur];
+			
 				ps_CurrentState = "Display3D";
 
 				//initialize display

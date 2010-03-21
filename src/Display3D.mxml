@@ -10,6 +10,8 @@
 		<s:State name="ViewDisplay" enterState="Display3D_ViewDisplay(event)" />
 	</s:states>
 	
+	
+	
 	<fx:Metadata>			
 		/** display_hidden raised when the display has stopped rendering completly */	
 		[Event(name="displayVisible",type="flash.events.Event")]
@@ -219,9 +221,13 @@
 				switch (event.type)
 				{
 					case "mousePress":
-						if (!event.face3d)
-							return;
 						
+						trace("mouse press");
+						if (!event.face3d)
+						{
+							trace("no face");
+							return;
+						}
 						
 						//set back previous clicked plane
 						if (pa_PlaneClicked.length > 0)
@@ -234,13 +240,17 @@
 
 						}
 						
+						trace("Getting child");
 						pp_Holder = pp_View.scene.getChildByName(event.face3d.material.name);
 						if (pp_Holder)
 						{
+							trace("got holder");
 							Database.gi_CurrentIndex = int(event.face3d.material.name.substr(7));
 							pa_PlaneClicked.push(pp_Holder.getChildByName(event.face3d.material.name));
 							trace(Database.gi_CurrentIndex);
 							dispatchEvent( new Event(pcs_DisplayPlane));
+						}else{
+							trace("no holder");
 						}
 						
 					break;
@@ -257,7 +267,7 @@
 						//add a border filter
 						pp_Holder = pp_View.scene.getChildByName(event.face3d.material.name);
 						if (pp_Holder)
-							pp_Holder.filters = [new GlowFilter(0x005cc3, 20, 10, 10, 40, 1,true)];
+							pp_Holder.filters = [new GlowFilter(0xE4E4E4, 20, 10, 10, 40, 1,true)];//0x005cc3
 					break;
 
 					case "mouseOut":
@@ -677,5 +687,6 @@
 		]]>
 	</fx:Script>
 	<mx:Label includeIn="ImagesLoading" x="408" y="194" text="Searching..." fontSize="22" color="#0517FF" fontWeight="bold" textAlign="center"/>
+
 
 </s:Group>
