@@ -5,35 +5,30 @@
 
 package valueObjects
 {
+import com.adobe.fiber.services.IFiberManagingService;
+import com.adobe.fiber.valueobjects.IValueObject;
+import flash.events.Event;
 import flash.events.EventDispatcher;
+import mx.events.PropertyChangeEvent;
+
 import flash.net.registerClassAlias;
 import flash.net.getClassByAlias;
 import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.valueobjects.IPropertyIterator;
-import com.adobe.fiber.valueobjects.IValueObject;
 import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
-import com.adobe.fiber.services.IFiberManagingService;
-import mx.binding.utils.ChangeWatcher;
-import mx.rpc.AbstractService;
-
-
-import flash.events.Event;
-import mx.events.CollectionEvent;
-import mx.events.PropertyChangeEvent;
-
 
 use namespace model_internal;
 
 [Managed]
 [ExcludeClass]
-public class _Super_TblMembers extends EventDispatcher implements IValueObject
+public class _Super_TblMembers extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
     model_internal static function initRemoteClassAliasSingle(cz:Class) : void 
     {
-     }   
+    }   
      
     model_internal static function initRemoteClassAliasAllRelated() : void 
-    {     
+    {
     }
 
 	model_internal var _dminternal_model : _TblMembersEntityMetadata;
@@ -122,7 +117,7 @@ public class _Super_TblMembers extends EventDispatcher implements IValueObject
     	var oldValue:int = _internal_RowID;               
         if (oldValue !== value)
         {
-        	_internal_RowID = value;
+            _internal_RowID = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -142,7 +137,7 @@ public class _Super_TblMembers extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_UserName;               
         if (oldValue !== value)
         {
-        	_internal_UserName = value;
+            _internal_UserName = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -162,7 +157,7 @@ public class _Super_TblMembers extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_Password;               
         if (oldValue !== value)
         {
-        	_internal_Password = value;
+            _internal_Password = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -182,7 +177,7 @@ public class _Super_TblMembers extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_FirstName;               
         if (oldValue !== value)
         {
-        	_internal_FirstName = value;
+            _internal_FirstName = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -202,7 +197,7 @@ public class _Super_TblMembers extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_LastName;               
         if (oldValue !== value)
         {
-        	_internal_LastName = value;
+            _internal_LastName = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -222,7 +217,7 @@ public class _Super_TblMembers extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_DOB;               
         if (oldValue !== value)
         {
-        	_internal_DOB = value;
+            _internal_DOB = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -242,7 +237,7 @@ public class _Super_TblMembers extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_ContactNumber;               
         if (oldValue !== value)
         {
-        	_internal_ContactNumber = value;
+            _internal_ContactNumber = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -262,7 +257,7 @@ public class _Super_TblMembers extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_StartDate;               
         if (oldValue !== value)
         {
-        	_internal_StartDate = value;
+            _internal_StartDate = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -275,7 +270,7 @@ public class _Super_TblMembers extends EventDispatcher implements IValueObject
      * data property setter listeners
      */   
 
-   model_internal function setterListenerAnyConstraint(value:Event):void
+   model_internal function setterListenerAnyConstraint(value:flash.events.Event):void
    {
         if (model_internal::_cacheInitialized_isValid)
         {
@@ -397,9 +392,9 @@ public class _Super_TblMembers extends EventDispatcher implements IValueObject
     /**
      *  services
      */                  
-     private var _managingService:IFiberManagingService;
+     private var _managingService:com.adobe.fiber.services.IFiberManagingService;
     
-     public function set managingService(managingService:IFiberManagingService):void
+     public function set managingService(managingService:com.adobe.fiber.services.IFiberManagingService):void
      {
          _managingService = managingService;
      }                      

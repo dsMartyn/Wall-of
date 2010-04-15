@@ -4,31 +4,32 @@
  */
 package services.tblemaillogservice
 {
-import mx.rpc.AsyncToken;
 import com.adobe.fiber.core.model_internal;
-import mx.rpc.AbstractOperation;
-import valueObjects.TblEmailLog;
-import mx.data.RPCDataManager;
-import mx.data.ManagedOperation;
-import mx.data.ManagedAssociation;
-import mx.data.ManagedQuery;
-import mx.data.ItemReference;
-import mx.collections.ItemResponder;
-import mx.rpc.remoting.RemoteObject; 
-import mx.rpc.remoting.Operation;
 import com.adobe.fiber.services.wrapper.RemoteObjectServiceWrapper;
-import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 import com.adobe.serializers.utility.TypeUtility;
+import mx.data.ItemReference;
+import mx.data.ManagedAssociation;
+import mx.data.ManagedOperation;
+import mx.data.ManagedQuery;
+import mx.data.RPCDataManager;
+import mx.rpc.AbstractOperation;
+import mx.rpc.AsyncToken;
+import mx.rpc.remoting.Operation;
+import mx.rpc.remoting.RemoteObject;
+import valueObjects.TblEmailLog;
+
+import mx.collections.ItemResponder;
+import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 
 [ExcludeClass]
-internal class _Super_TblEmailLogService extends RemoteObjectServiceWrapper
+internal class _Super_TblEmailLogService extends com.adobe.fiber.services.wrapper.RemoteObjectServiceWrapper
 {      
-    private var _tblEmailLogRPCDataManager : RPCDataManager;         
+    private var _tblEmailLogRPCDataManager : mx.data.RPCDataManager;
     private var managersArray : Array = new Array();
         
     public const DATA_MANAGER_TBLEMAILLOG : String = "TblEmailLog";         
         
-    public function getDataManager(dataManagerName:String) : RPCDataManager
+    public function getDataManager(dataManagerName:String) : mx.data.RPCDataManager
     {
         switch (dataManagerName)
         {
@@ -66,7 +67,7 @@ internal class _Super_TblEmailLogService extends RemoteObjectServiceWrapper
      *  during the event handling phase.  If no changes have been made
      *  to the relevant items, null is returned instead of an AsyncToken.
      */
-    public function commit(itemsOrCollections:Array=null, cascadeCommit:Boolean=false):AsyncToken
+    public function commit(itemsOrCollections:Array=null, cascadeCommit:Boolean=false):mx.rpc.AsyncToken
     {
     	return _tblEmailLogRPCDataManager.dataStore.commit(itemsOrCollections, cascadeCommit);
     }
@@ -91,54 +92,62 @@ internal class _Super_TblEmailLogService extends RemoteObjectServiceWrapper
     public function _Super_TblEmailLogService()
     {
         // initialize service control
-        _serviceControl = new RemoteObject(); 
+        _serviceControl = new mx.rpc.remoting.RemoteObject();
         
         var operations:Object = new Object();
-        var operation:Operation;         
+        var operation:mx.rpc.remoting.Operation;
          
-        operation = new Operation(null, "getAllTblEmailLog");
+        operation = new mx.rpc.remoting.Operation(null, "getAllTblEmailLog");
 		 operation.resultElementType = valueObjects.TblEmailLog;
         operations["getAllTblEmailLog"] = operation;
-         
-     valueObjects.TblEmailLog._initRemoteClassAlias();
-        operation = new Operation(null, "getTblEmailLogByID");
+
+        valueObjects.TblEmailLog._initRemoteClassAlias();
+        operation = new mx.rpc.remoting.Operation(null, "getTblEmailLogByID");
 		 operation.resultElementType = valueObjects.TblEmailLog;
         operations["getTblEmailLogByID"] = operation;
-         
-     valueObjects.TblEmailLog._initRemoteClassAlias();
-        operation = new Operation(null, "createTblEmailLog");
+
+        valueObjects.TblEmailLog._initRemoteClassAlias();
+        operation = new mx.rpc.remoting.Operation(null, "createTblEmailLog");
 		 operation.resultType = int; 		 
         operations["createTblEmailLog"] = operation;
-         
-        operation = new Operation(null, "updateTblEmailLog");
+
+        operation = new mx.rpc.remoting.Operation(null, "updateTblEmailLog");
         operations["updateTblEmailLog"] = operation;
-         
-        operation = new Operation(null, "deleteTblEmailLog");
+
+        operation = new mx.rpc.remoting.Operation(null, "deleteTblEmailLog");
         operations["deleteTblEmailLog"] = operation;
-         
-        operation = new Operation(null, "count");
+
+        operation = new mx.rpc.remoting.Operation(null, "count");
 		 operation.resultType = int; 		 
         operations["count"] = operation;
-         
-        operation = new Operation(null, "getTblEmailLog_paged");
+
+        operation = new mx.rpc.remoting.Operation(null, "getTblEmailLog_paged");
 		 operation.resultElementType = valueObjects.TblEmailLog;
         operations["getTblEmailLog_paged"] = operation;
-         
-     valueObjects.TblEmailLog._initRemoteClassAlias();
-        operation = new Operation(null, "email_friend");
+
+        valueObjects.TblEmailLog._initRemoteClassAlias();
+        operation = new mx.rpc.remoting.Operation(null, "email_friend");
         operations["email_friend"] = operation;
-         
+
+        operation = new mx.rpc.remoting.Operation(null, "email_reg_info");
+		 operation.resultType = Object; 		 
+        operations["email_reg_info"] = operation;
+
+        operation = new mx.rpc.remoting.Operation(null, "email_update_info");
+		 operation.resultType = Object; 		 
+        operations["email_update_info"] = operation;
+
     
         _serviceControl.operations = operations;   
-		_serviceControl.convertResultHandler = TypeUtility.convertResultHandler;
+		_serviceControl.convertResultHandler = com.adobe.serializers.utility.TypeUtility.convertResultHandler;
         _serviceControl.source = "TblEmailLogService";
         _serviceControl.endpoint = "gateway.php";
-		_serviceControl.destination = "TblEmailLogService";
+		destination = "TblEmailLogService";
         
-        var managedAssociation : ManagedAssociation;
+        var managedAssociation : mx.data.ManagedAssociation;
     	var managedAssocsArray : Array;
         // initialize TblEmailLog data manager     
-        _tblEmailLogRPCDataManager = new RPCDataManager();        
+        _tblEmailLogRPCDataManager = new mx.data.RPCDataManager();
         managersArray.push(_tblEmailLogRPCDataManager);
         
         managedAssocsArray = new Array();
@@ -150,26 +159,19 @@ internal class _Super_TblEmailLogService extends RemoteObjectServiceWrapper
         
                    
     
-        var dmOperation : ManagedOperation;
-        var dmQuery : ManagedQuery;
+        var dmOperation : mx.data.ManagedOperation;
+        var dmQuery : mx.data.ManagedQuery;
          
-        dmOperation = new ManagedOperation("updateTblEmailLog", "update");
+        dmQuery = new mx.data.ManagedQuery("getAllTblEmailLog");
+        dmQuery.propertySpecifier = "RowID,To,From,Subject,Body,Headers,MemberID";
+        dmQuery.parameters = "";
+        _tblEmailLogRPCDataManager.addManagedOperation(dmQuery);                 
+
+        dmOperation = new mx.data.ManagedOperation("updateTblEmailLog", "update");
         dmOperation.parameters = "item";
         _tblEmailLogRPCDataManager.addManagedOperation(dmOperation);     
             
-        dmOperation = new ManagedOperation("deleteTblEmailLog", "delete");
-        dmOperation.parameters = "id";
-        _tblEmailLogRPCDataManager.addManagedOperation(dmOperation);     
-            
-        dmOperation = new ManagedOperation("createTblEmailLog", "create");
-        dmOperation.parameters = "item";
-        _tblEmailLogRPCDataManager.addManagedOperation(dmOperation);     
-            
-        dmOperation = new ManagedOperation("getTblEmailLogByID", "get");
-        dmOperation.parameters = "RowID";
-        _tblEmailLogRPCDataManager.addManagedOperation(dmOperation);     
-            
-        dmQuery = new ManagedQuery("getTblEmailLog_paged");
+        dmQuery = new mx.data.ManagedQuery("getTblEmailLog_paged");
         dmQuery.propertySpecifier = "RowID,To,From,Subject,Body,Headers,MemberID";
         dmQuery.countOperation = "count";
         dmQuery.pagingEnabled = true;
@@ -177,18 +179,25 @@ internal class _Super_TblEmailLogService extends RemoteObjectServiceWrapper
         dmQuery.parameters = "startIndex,numItems";
         _tblEmailLogRPCDataManager.addManagedOperation(dmQuery);                 
 
-        dmQuery = new ManagedQuery("getAllTblEmailLog");
-        dmQuery.propertySpecifier = "RowID,To,From,Subject,Body,Headers,MemberID";
-        dmQuery.parameters = "";
-        _tblEmailLogRPCDataManager.addManagedOperation(dmQuery);                 
-
+        dmOperation = new mx.data.ManagedOperation("createTblEmailLog", "create");
+        dmOperation.parameters = "item";
+        _tblEmailLogRPCDataManager.addManagedOperation(dmOperation);     
+            
+        dmOperation = new mx.data.ManagedOperation("getTblEmailLogByID", "get");
+        dmOperation.parameters = "RowID";
+        _tblEmailLogRPCDataManager.addManagedOperation(dmOperation);     
+            
+        dmOperation = new mx.data.ManagedOperation("deleteTblEmailLog", "delete");
+        dmOperation.parameters = "id";
+        _tblEmailLogRPCDataManager.addManagedOperation(dmOperation);     
+            
         _serviceControl.managers = managersArray;
                       
          model_internal::initialize();
     }
 
 	/**
-	  * This method is a generated wrapper used to call the 'getAllTblEmailLog' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'getAllTblEmailLog' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -196,18 +205,18 @@ internal class _Super_TblEmailLogService extends RemoteObjectServiceWrapper
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function getAllTblEmailLog() : AsyncToken
+	public function getAllTblEmailLog() : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getAllTblEmailLog");
-		var _internal_token:AsyncToken = _internal_operation.send() ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getAllTblEmailLog");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'getTblEmailLogByID' operation. It returns an ItemReference whose 
+	  * This method is a generated wrapper used to call the 'getTblEmailLogByID' operation. It returns an mx.data.ItemReference whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -215,18 +224,18 @@ internal class _Super_TblEmailLogService extends RemoteObjectServiceWrapper
       * @see mx.data.ItemReference
       * @see mx.rpc.CallResponder 
       *
-      * @return an ItemReference whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.data.ItemReference whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function getTblEmailLogByID(itemID:int) : ItemReference
+	public function getTblEmailLogByID(itemID:int) : mx.data.ItemReference
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getTblEmailLogByID");
-		var _internal_token:ItemReference = _internal_operation.send(itemID) as ItemReference;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getTblEmailLogByID");
+		var _internal_token:mx.data.ItemReference = _internal_operation.send(itemID) as mx.data.ItemReference;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'createTblEmailLog' operation. It returns an ItemReference whose 
+	  * This method is a generated wrapper used to call the 'createTblEmailLog' operation. It returns an mx.data.ItemReference whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -234,18 +243,18 @@ internal class _Super_TblEmailLogService extends RemoteObjectServiceWrapper
       * @see mx.data.ItemReference
       * @see mx.rpc.CallResponder 
       *
-      * @return an ItemReference whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.data.ItemReference whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function createTblEmailLog(item:valueObjects.TblEmailLog) : ItemReference
+	public function createTblEmailLog(item:valueObjects.TblEmailLog) : mx.data.ItemReference
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("createTblEmailLog");
-		var _internal_token:ItemReference = _internal_operation.send(item) as ItemReference;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("createTblEmailLog");
+		var _internal_token:mx.data.ItemReference = _internal_operation.send(item) as mx.data.ItemReference;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'updateTblEmailLog' operation. It returns an ItemReference whose 
+	  * This method is a generated wrapper used to call the 'updateTblEmailLog' operation. It returns an mx.data.ItemReference whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -253,18 +262,18 @@ internal class _Super_TblEmailLogService extends RemoteObjectServiceWrapper
       * @see mx.data.ItemReference
       * @see mx.rpc.CallResponder 
       *
-      * @return an ItemReference whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.data.ItemReference whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function updateTblEmailLog(item:valueObjects.TblEmailLog) : ItemReference
+	public function updateTblEmailLog(item:valueObjects.TblEmailLog) : mx.data.ItemReference
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("updateTblEmailLog");
-		var _internal_token:ItemReference = _internal_operation.send(item) as ItemReference;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("updateTblEmailLog");
+		var _internal_token:mx.data.ItemReference = _internal_operation.send(item) as mx.data.ItemReference;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'deleteTblEmailLog' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'deleteTblEmailLog' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -272,18 +281,18 @@ internal class _Super_TblEmailLogService extends RemoteObjectServiceWrapper
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function deleteTblEmailLog(itemID:int) : AsyncToken
+	public function deleteTblEmailLog(itemID:int) : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("deleteTblEmailLog");
-		var _internal_token:AsyncToken = _internal_operation.send(itemID) ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("deleteTblEmailLog");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(itemID) ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'count' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'count' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -291,18 +300,18 @@ internal class _Super_TblEmailLogService extends RemoteObjectServiceWrapper
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function count() : AsyncToken
+	public function count() : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("count");
-		var _internal_token:AsyncToken = _internal_operation.send() ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("count");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'getTblEmailLog_paged' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'getTblEmailLog_paged' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -310,18 +319,18 @@ internal class _Super_TblEmailLogService extends RemoteObjectServiceWrapper
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function getTblEmailLog_paged() : AsyncToken
+	public function getTblEmailLog_paged() : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getTblEmailLog_paged");
-		var _internal_token:AsyncToken = _internal_operation.send() ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getTblEmailLog_paged");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'email_friend' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'email_friend' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -329,12 +338,50 @@ internal class _Super_TblEmailLogService extends RemoteObjectServiceWrapper
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function email_friend(to:String, name:String, comment:String, memberID:int) : AsyncToken
+	public function email_friend(to:String, name:String, comment:String, memberID:int) : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("email_friend");
-		var _internal_token:AsyncToken = _internal_operation.send(to,name,comment,memberID) ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("email_friend");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(to,name,comment,memberID) ;
+
+		return _internal_token;
+	}   
+	 
+	/**
+	  * This method is a generated wrapper used to call the 'email_reg_info' operation. It returns an mx.rpc.AsyncToken whose 
+	  * result property will be populated with the result of the operation when the server response is received. 
+	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+	  */          
+	public function email_reg_info(to:Object, name:Object, memberID:Object) : mx.rpc.AsyncToken
+	{
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("email_reg_info");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(to,name,memberID) ;
+
+		return _internal_token;
+	}   
+	 
+	/**
+	  * This method is a generated wrapper used to call the 'email_update_info' operation. It returns an mx.rpc.AsyncToken whose 
+	  * result property will be populated with the result of the operation when the server response is received. 
+	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
+	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
+      *
+      * @see mx.rpc.AsyncToken
+      * @see mx.rpc.CallResponder 
+      *
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+	  */          
+	public function email_update_info(to:Object, name:Object, memberID:Object) : mx.rpc.AsyncToken
+	{
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("email_update_info");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(to,name,memberID) ;
 
 		return _internal_token;
 	}   

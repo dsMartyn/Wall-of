@@ -19,52 +19,52 @@
 		<link>
 			<name>[source path] ActionScript</name>
 			<type>2</type>
-			<location>/Users/martyngilbertson/Developer/Flex/ActionScript</location>
+			<location>/Users/Martyn/Developer/Flex/ActionScript</location>
 		</link>
 		<link>
 			<name>bin-debug</name>
 			<type>2</type>
-			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug</location>
+			<location>/Users/Martyn/Sites/wallof/debug</location>
 		</link>
 		<link>
 			<name>bin-release</name>
 			<type>2</type>
-			<location>/Users/martyngilbertson/Sites/wall-of/release</location>
+			<location>/Users/Martyn/Sites/wallof/release</location>
 		</link>
 		<link>
 			<name>services/TblEmailLogService.php</name>
 			<type>1</type>
-			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblEmailLogService.php</location>
+			<location>/Users/Martyn/Sites/wallof/debug/services/TblEmailLogService.php</location>
 		</link>
 		<link>
 			<name>services/TblHistoryService.php</name>
 			<type>1</type>
-			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblHistoryService.php</location>
+			<location>/Users/Martyn/Sites/wallof/debug/services/TblHistoryService.php</location>
 		</link>
 		<link>
 			<name>services/TblKeywordsService.php</name>
 			<type>1</type>
-			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblKeywordsService.php</location>
+			<location>/Users/Martyn/Sites/wallof/debug/services/TblKeywordsService.php</location>
 		</link>
 		<link>
 			<name>services/TblLnkKeywordProductsService.php</name>
 			<type>1</type>
-			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblLnkKeywordProductsService.php</location>
+			<location>/Users/Martyn/Sites/wallof/debug/services/TblLnkKeywordProductsService.php</location>
 		</link>
 		<link>
 			<name>services/TblLoginService.php</name>
 			<type>1</type>
-			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblLoginService.php</location>
+			<location>/Users/Martyn/Sites/wallof/debug/services/TblLoginService.php</location>
 		</link>
 		<link>
 			<name>services/TblMembersService.php</name>
 			<type>1</type>
-			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblMembersService.php</location>
+			<location>/Users/Martyn/Sites/wallof/debug/services/TblMembersService.php</location>
 		</link>
 		<link>
 			<name>services/TblProductsService.php</name>
 			<type>1</type>
-			<location>/Users/martyngilbertson/Sites/wall-of/TestDev-debug/services/TblProductsService.php</location>
+			<location>/Users/Martyn/Sites/wallof/debug/services/TblProductsService.php</location>
 		</link>
 	</linkedResources>
 </projectDescription>

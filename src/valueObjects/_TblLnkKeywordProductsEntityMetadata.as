@@ -4,20 +4,19 @@
  */
 package valueObjects
 {
-import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.styles.IStyle;
 import com.adobe.fiber.styles.Style;
-import com.adobe.fiber.styles.LocalizeableMessage;
-import com.adobe.fiber.valueobjects.IModelType;
-import com.adobe.fiber.valueobjects.IPropertyIterator;
-import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 import com.adobe.fiber.valueobjects.AbstractEntityMetadata;
+import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
+import com.adobe.fiber.valueobjects.IPropertyIterator;
+import com.adobe.fiber.core.model_internal;
+import com.adobe.fiber.valueobjects.IModelType;
 import mx.events.PropertyChangeEvent;
 
 use namespace model_internal;
 
 [ExcludeClass]
-internal class _TblLnkKeywordProductsEntityMetadata extends AbstractEntityMetadata
+internal class _TblLnkKeywordProductsEntityMetadata extends com.adobe.fiber.valueobjects.AbstractEntityMetadata
 {
 	private static var emptyArray:Array = new Array();
 
@@ -36,7 +35,7 @@ internal class _TblLnkKeywordProductsEntityMetadata extends AbstractEntityMetada
     
     
     model_internal var _instance:_Super_TblLnkKeywordProducts;
-    model_internal static var _nullStyle:Style = new Style();
+    model_internal static var _nullStyle:com.adobe.fiber.styles.Style = new com.adobe.fiber.styles.Style();
     
     public function _TblLnkKeywordProductsEntityMetadata(tblLnkKeywordProducts : _Super_TblLnkKeywordProducts)
     {
@@ -117,9 +116,9 @@ internal class _TblLnkKeywordProductsEntityMetadata extends AbstractEntityMetada
        return model_internal::collectionBaseMap[propertyName];
     }                
     
-     override public function getAvailableProperties():IPropertyIterator
+     override public function getAvailableProperties():com.adobe.fiber.valueobjects.IPropertyIterator
      {
-     	return new AvailablePropertyIterator(this); 
+     	return new com.adobe.fiber.valueobjects.AvailablePropertyIterator(this);
      }  
      
      override public function getValue(propertyName:String):*    
@@ -294,19 +293,19 @@ internal class _TblLnkKeywordProductsEntityMetadata extends AbstractEntityMetada
      }
 
     [Bindable(event="propertyChange")]   
-    public function get ProductIDStyle():Style
+    public function get ProductIDStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get KeywordIDStyle():Style
+    public function get KeywordIDStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get RowIDStyle():Style
+    public function get RowIDStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
@@ -316,7 +315,7 @@ internal class _TblLnkKeywordProductsEntityMetadata extends AbstractEntityMetada
      * 
      * @inheritDoc 
      */ 
-     override public function getStyle(propertyName:String):IStyle
+     override public function getStyle(propertyName:String):com.adobe.fiber.styles.IStyle
      {
          switch(propertyName)
          {

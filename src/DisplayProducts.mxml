@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/halo" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 width="940" height="415" xmlns:events="flashx.textLayout.events.*" 
-		 xmlns:local="*" xmlns:utils="com.utils.*" xmlns:valueObjects="valueObjects.*">
+		 xmlns:local="*" xmlns:utils="com.utils.*" xmlns:valueObjects="valueObjects.*" >
 	
 	
 	<s:states>
@@ -780,7 +780,7 @@
 	
 	
 	
-	<s:Border id="brdLogo" x="0" y="0" width="200" height="200" borderWeight="2"  includeIn="editProduct,newProduct">
+	<s:BorderContainer id="brdLogo" x="0" y="0" width="200" height="200" borderWeight="2"  includeIn="editProduct,newProduct">
 		<mx:Label x="10" y="38" text="Upload Image" width="180" textAlign="center" />
 		<mx:Button id="btnBrowse" x="65" y="70" label="Browse" click="LocateFile();" />
 		<mx:Label id="lblSize" x="10" y="106" text="Size: 0kb" width="180"  textAlign="center"/>
@@ -788,10 +788,10 @@
 		<mx:Text  text="Upload Picture" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"/>
 		<mx:TextInput id="txtPicUrl" x="20" y="168" visible="false"/>
 		
-	</s:Border>
+	</s:BorderContainer>
 	
 	
-	<s:Border id="brdDetails" width="432"  x="214" y="0" height="410" borderWeight="2"  includeIn="editProduct,newProduct" >
+	<s:BorderContainer id="brdDetails" width="432"  x="214" y="0" height="410" borderWeight="2"  includeIn="editProduct,newProduct" >
 		
 		<mx:TextArea  id="txtCompanyName" focusOut="focusOut(event)"   focusIn="txt_focusIn(event)" condenseWhite="true" textAlign="center"  borderVisible="false"  fontAntiAliasType="advanced" fontSize="19"   fontWeight="bold"  color="#0036FF"  includeIn="editProduct,newProduct"  x="3" y="1" height="30" width="422"/>
 		<mx:TextArea  id="txtCompanyDesc" focusOut="focusOut(event)"  focusIn="txt_focusIn(event)" borderVisible="false" includeIn="editProduct,newProduct" top="33" left="0" right="0" bottom="38" condenseWhite="true"   fontAntiAliasType="advanced" />
@@ -800,9 +800,9 @@
 		<s:Button label="Cancel"   x="7" y="379" click="btnCancel(event);" />
 		<mx:Button click="btnAccept_Click(event)" x="352" y="379" label="Accept" />
 		
-	</s:Border>
+	</s:BorderContainer>
 	
-	<s:Border id="brdContactDetails" width="200"  x="0" y="210" height="200" borderWeight="2"  includeIn="editProduct,newProduct">
+	<s:BorderContainer id="brdContactDetails" width="200"  x="0" y="210" height="200" borderWeight="2"  includeIn="editProduct,newProduct">
 		
 		<mx:Text  text="Contact Details" top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF"  includeIn="editProduct,newProduct" />
 		
@@ -818,9 +818,9 @@
 		<mx:TextInput id="txtAddressMob"  focusOut="focusOut(event)"  focusIn="txt_focusIn(event)"  x="20" y="156" borderVisible="false"  textAlign="center" />
 		<mx:TextInput id="txtAddressFax" focusOut="focusOut(event)" focusIn="txt_focusIn(event)"  x="20" y="174" borderVisible="false"  textAlign="center" />
 		
-	</s:Border>
+	</s:BorderContainer>
 	
-	<s:Border id="brdMap" x="659" y="210" width="280" height="200" borderWeight="2"  includeIn="editProduct,newProduct" >
+	<s:BorderContainer id="brdMap" x="659" y="210" width="280" height="200" borderWeight="2"  includeIn="editProduct,newProduct" >
 		<mx:Text top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF" text="Keywords"/>
 		<s:Label x="89" y="140" text="Enter list of keywords" x.newProduct="83" y.newProduct="141"/>
 		<s:TextInput x="41" y="158" width="140" text="Keyword1, Keyword2" x.newProduct="37" y.newProduct="158" id="txtKeywords"/>
@@ -834,10 +834,10 @@
 				<mx:DataGridColumn dataField="Keyword" headerText="Keyword"/>
 			</mx:columns>
 		</mx:DataGrid>
-	</s:Border>
+	</s:BorderContainer>
 	
 	
-	<s:Border id="brdVideo" x="659" y="0" width="280" height="199" borderVisible="true"  borderWeight="2" includeIn="editProduct,newProduct"  >	
+	<s:BorderContainer id="brdVideo" x="659" y="0" width="280" height="199" borderVisible="true"  borderWeight="2" includeIn="editProduct,newProduct"  >	
 		<mx:Text  top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF" text="Extras"/>
 		
 		<mx:Label text="Enter Youtube Video URL" x="68" y="25" x.newProduct="68" y.newProduct="25"/>
@@ -849,7 +849,7 @@
 		<mx:Label  text="Enter Category for this item" x="64" y="134"/>
 		<mx:TextInput id="txtCategory" textAlign="center" height="19"  width="194" focusOut="focusOut(event)" focusIn="txt_focusIn(event)"   x="43" y="154"/>
 		
-	</s:Border>
+	</s:BorderContainer>
 	
 	
 	

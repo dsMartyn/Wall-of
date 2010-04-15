@@ -4,31 +4,32 @@
  */
 package services.tblmembersservice
 {
-import mx.rpc.AsyncToken;
 import com.adobe.fiber.core.model_internal;
-import mx.rpc.AbstractOperation;
-import valueObjects.TblMembers;
-import mx.data.RPCDataManager;
-import mx.data.ManagedOperation;
-import mx.data.ManagedAssociation;
-import mx.data.ManagedQuery;
-import mx.data.ItemReference;
-import mx.collections.ItemResponder;
-import mx.rpc.remoting.RemoteObject; 
-import mx.rpc.remoting.Operation;
 import com.adobe.fiber.services.wrapper.RemoteObjectServiceWrapper;
-import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 import com.adobe.serializers.utility.TypeUtility;
+import mx.data.ItemReference;
+import mx.data.ManagedAssociation;
+import mx.data.ManagedOperation;
+import mx.data.ManagedQuery;
+import mx.data.RPCDataManager;
+import mx.rpc.AbstractOperation;
+import mx.rpc.AsyncToken;
+import mx.rpc.remoting.Operation;
+import mx.rpc.remoting.RemoteObject;
+import valueObjects.TblMembers;
+
+import mx.collections.ItemResponder;
+import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 
 [ExcludeClass]
-internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
+internal class _Super_TblMembersService extends com.adobe.fiber.services.wrapper.RemoteObjectServiceWrapper
 {      
-    private var _tblMembersRPCDataManager : RPCDataManager;         
+    private var _tblMembersRPCDataManager : mx.data.RPCDataManager;
     private var managersArray : Array = new Array();
         
     public const DATA_MANAGER_TBLMEMBERS : String = "TblMembers";         
         
-    public function getDataManager(dataManagerName:String) : RPCDataManager
+    public function getDataManager(dataManagerName:String) : mx.data.RPCDataManager
     {
         switch (dataManagerName)
         {
@@ -66,7 +67,7 @@ internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
      *  during the event handling phase.  If no changes have been made
      *  to the relevant items, null is returned instead of an AsyncToken.
      */
-    public function commit(itemsOrCollections:Array=null, cascadeCommit:Boolean=false):AsyncToken
+    public function commit(itemsOrCollections:Array=null, cascadeCommit:Boolean=false):mx.rpc.AsyncToken
     {
     	return _tblMembersRPCDataManager.dataStore.commit(itemsOrCollections, cascadeCommit);
     }
@@ -91,56 +92,56 @@ internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
     public function _Super_TblMembersService()
     {
         // initialize service control
-        _serviceControl = new RemoteObject(); 
+        _serviceControl = new mx.rpc.remoting.RemoteObject();
         
         var operations:Object = new Object();
-        var operation:Operation;         
+        var operation:mx.rpc.remoting.Operation;
          
-        operation = new Operation(null, "getAllTblMembers");
+        operation = new mx.rpc.remoting.Operation(null, "getAllTblMembers");
 		 operation.resultElementType = valueObjects.TblMembers;
         operations["getAllTblMembers"] = operation;
-         
-     valueObjects.TblMembers._initRemoteClassAlias();
-        operation = new Operation(null, "getTblMembersByID");
+
+        valueObjects.TblMembers._initRemoteClassAlias();
+        operation = new mx.rpc.remoting.Operation(null, "getTblMembersByID");
 		 operation.resultType = valueObjects.TblMembers; 		 
         operations["getTblMembersByID"] = operation;
-         
-     valueObjects.TblMembers._initRemoteClassAlias();
-        operation = new Operation(null, "createTblMembers");
+
+        valueObjects.TblMembers._initRemoteClassAlias();
+        operation = new mx.rpc.remoting.Operation(null, "createTblMembers");
 		 operation.resultType = int; 		 
         operations["createTblMembers"] = operation;
-         
-        operation = new Operation(null, "updateTblMembers");
+
+        operation = new mx.rpc.remoting.Operation(null, "updateTblMembers");
 		 operation.resultType = int; 		 
         operations["updateTblMembers"] = operation;
-         
-        operation = new Operation(null, "deleteTblMembers");
+
+        operation = new mx.rpc.remoting.Operation(null, "deleteTblMembers");
         operations["deleteTblMembers"] = operation;
-         
-        operation = new Operation(null, "count");
+
+        operation = new mx.rpc.remoting.Operation(null, "count");
 		 operation.resultType = int; 		 
         operations["count"] = operation;
-         
-        operation = new Operation(null, "getTblMembers_paged");
+
+        operation = new mx.rpc.remoting.Operation(null, "getTblMembers_paged");
 		 operation.resultElementType = valueObjects.TblMembers;
         operations["getTblMembers_paged"] = operation;
-         
-     valueObjects.TblMembers._initRemoteClassAlias();
-        operation = new Operation(null, "FindEmail");
+
+        valueObjects.TblMembers._initRemoteClassAlias();
+        operation = new mx.rpc.remoting.Operation(null, "FindEmail");
 		 operation.resultType = int; 		 
         operations["FindEmail"] = operation;
-         
+
     
         _serviceControl.operations = operations;   
-		_serviceControl.convertResultHandler = TypeUtility.convertResultHandler;
+		_serviceControl.convertResultHandler = com.adobe.serializers.utility.TypeUtility.convertResultHandler;
         _serviceControl.source = "TblMembersService";
         _serviceControl.endpoint = "gateway.php";
-		_serviceControl.destination = "TblMembersService";
+		destination = "TblMembersService";
         
-        var managedAssociation : ManagedAssociation;
+        var managedAssociation : mx.data.ManagedAssociation;
     	var managedAssocsArray : Array;
         // initialize TblMembers data manager     
-        _tblMembersRPCDataManager = new RPCDataManager();        
+        _tblMembersRPCDataManager = new mx.data.RPCDataManager();
         managersArray.push(_tblMembersRPCDataManager);
         
         managedAssocsArray = new Array();
@@ -152,15 +153,27 @@ internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
         
                    
     
-        var dmOperation : ManagedOperation;
-        var dmQuery : ManagedQuery;
+        var dmOperation : mx.data.ManagedOperation;
+        var dmQuery : mx.data.ManagedQuery;
          
-        dmQuery = new ManagedQuery("getAllTblMembers");
+        dmOperation = new mx.data.ManagedOperation("getTblMembersByID", "get");
+        dmOperation.parameters = "RowID";
+        _tblMembersRPCDataManager.addManagedOperation(dmOperation);     
+            
+        dmQuery = new mx.data.ManagedQuery("getAllTblMembers");
         dmQuery.propertySpecifier = "RowID,UserName,Password,FirstName,LastName,DOB,ContactNumber,StartDate";
         dmQuery.parameters = "";
         _tblMembersRPCDataManager.addManagedOperation(dmQuery);                 
 
-        dmQuery = new ManagedQuery("getTblMembers_paged");
+        dmOperation = new mx.data.ManagedOperation("deleteTblMembers", "delete");
+        dmOperation.parameters = "id";
+        _tblMembersRPCDataManager.addManagedOperation(dmOperation);     
+            
+        dmOperation = new mx.data.ManagedOperation("createTblMembers", "create");
+        dmOperation.parameters = "item";
+        _tblMembersRPCDataManager.addManagedOperation(dmOperation);     
+            
+        dmQuery = new mx.data.ManagedQuery("getTblMembers_paged");
         dmQuery.propertySpecifier = "RowID,UserName,Password,FirstName,LastName,DOB,ContactNumber,StartDate";
         dmQuery.countOperation = "count";
         dmQuery.pagingEnabled = true;
@@ -168,25 +181,13 @@ internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
         dmQuery.parameters = "startIndex,numItems";
         _tblMembersRPCDataManager.addManagedOperation(dmQuery);                 
 
-        dmOperation = new ManagedOperation("createTblMembers", "create");
-        dmOperation.parameters = "item";
-        _tblMembersRPCDataManager.addManagedOperation(dmOperation);     
-            
-        dmOperation = new ManagedOperation("getTblMembersByID", "get");
-        dmOperation.parameters = "RowID";
-        _tblMembersRPCDataManager.addManagedOperation(dmOperation);     
-            
-        dmOperation = new ManagedOperation("deleteTblMembers", "delete");
-        dmOperation.parameters = "id";
-        _tblMembersRPCDataManager.addManagedOperation(dmOperation);     
-            
         _serviceControl.managers = managersArray;
                       
          model_internal::initialize();
     }
 
 	/**
-	  * This method is a generated wrapper used to call the 'getAllTblMembers' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'getAllTblMembers' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -194,18 +195,18 @@ internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function getAllTblMembers() : AsyncToken
+	public function getAllTblMembers() : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getAllTblMembers");
-		var _internal_token:AsyncToken = _internal_operation.send() ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getAllTblMembers");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'getTblMembersByID' operation. It returns an ItemReference whose 
+	  * This method is a generated wrapper used to call the 'getTblMembersByID' operation. It returns an mx.data.ItemReference whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -213,18 +214,18 @@ internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
       * @see mx.data.ItemReference
       * @see mx.rpc.CallResponder 
       *
-      * @return an ItemReference whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.data.ItemReference whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function getTblMembersByID(itemID:int) : ItemReference
+	public function getTblMembersByID(itemID:int) : mx.data.ItemReference
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getTblMembersByID");
-		var _internal_token:ItemReference = _internal_operation.send(itemID) as ItemReference;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getTblMembersByID");
+		var _internal_token:mx.data.ItemReference = _internal_operation.send(itemID) as mx.data.ItemReference;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'createTblMembers' operation. It returns an ItemReference whose 
+	  * This method is a generated wrapper used to call the 'createTblMembers' operation. It returns an mx.data.ItemReference whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -232,18 +233,18 @@ internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
       * @see mx.data.ItemReference
       * @see mx.rpc.CallResponder 
       *
-      * @return an ItemReference whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.data.ItemReference whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function createTblMembers(item:valueObjects.TblMembers) : ItemReference
+	public function createTblMembers(item:valueObjects.TblMembers) : mx.data.ItemReference
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("createTblMembers");
-		var _internal_token:ItemReference = _internal_operation.send(item) as ItemReference;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("createTblMembers");
+		var _internal_token:mx.data.ItemReference = _internal_operation.send(item) as mx.data.ItemReference;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'updateTblMembers' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'updateTblMembers' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -251,18 +252,18 @@ internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function updateTblMembers(item:valueObjects.TblMembers) : AsyncToken
+	public function updateTblMembers(item:valueObjects.TblMembers) : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("updateTblMembers");
-		var _internal_token:AsyncToken = _internal_operation.send(item) ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("updateTblMembers");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(item) ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'deleteTblMembers' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'deleteTblMembers' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -270,18 +271,18 @@ internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function deleteTblMembers(itemID:int) : AsyncToken
+	public function deleteTblMembers(itemID:int) : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("deleteTblMembers");
-		var _internal_token:AsyncToken = _internal_operation.send(itemID) ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("deleteTblMembers");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(itemID) ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'count' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'count' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -289,18 +290,18 @@ internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function count() : AsyncToken
+	public function count() : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("count");
-		var _internal_token:AsyncToken = _internal_operation.send() ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("count");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'getTblMembers_paged' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'getTblMembers_paged' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -308,18 +309,18 @@ internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function getTblMembers_paged() : AsyncToken
+	public function getTblMembers_paged() : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getTblMembers_paged");
-		var _internal_token:AsyncToken = _internal_operation.send() ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getTblMembers_paged");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'FindEmail' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'FindEmail' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -327,12 +328,12 @@ internal class _Super_TblMembersService extends RemoteObjectServiceWrapper
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function FindEmail(Email:String) : AsyncToken
+	public function FindEmail(Email:String) : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("FindEmail");
-		var _internal_token:AsyncToken = _internal_operation.send(Email) ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("FindEmail");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(Email) ;
 
 		return _internal_token;
 	}   

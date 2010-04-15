@@ -4,31 +4,32 @@
  */
 package services.tbllnkkeywordproductsservice
 {
-import mx.rpc.AsyncToken;
 import com.adobe.fiber.core.model_internal;
-import mx.rpc.AbstractOperation;
-import valueObjects.TblLnkKeywordProducts;
-import mx.data.RPCDataManager;
-import mx.data.ManagedOperation;
-import mx.data.ManagedAssociation;
-import mx.data.ManagedQuery;
-import mx.data.ItemReference;
-import mx.collections.ItemResponder;
-import mx.rpc.remoting.RemoteObject; 
-import mx.rpc.remoting.Operation;
 import com.adobe.fiber.services.wrapper.RemoteObjectServiceWrapper;
-import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 import com.adobe.serializers.utility.TypeUtility;
+import mx.data.ItemReference;
+import mx.data.ManagedAssociation;
+import mx.data.ManagedOperation;
+import mx.data.ManagedQuery;
+import mx.data.RPCDataManager;
+import mx.rpc.AbstractOperation;
+import mx.rpc.AsyncToken;
+import mx.rpc.remoting.Operation;
+import mx.rpc.remoting.RemoteObject;
+import valueObjects.TblLnkKeywordProducts;
+
+import mx.collections.ItemResponder;
+import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 
 [ExcludeClass]
-internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWrapper
+internal class _Super_TblLnkKeywordProductsService extends com.adobe.fiber.services.wrapper.RemoteObjectServiceWrapper
 {      
-    private var _tblLnkKeywordProductsRPCDataManager : RPCDataManager;         
+    private var _tblLnkKeywordProductsRPCDataManager : mx.data.RPCDataManager;
     private var managersArray : Array = new Array();
         
     public const DATA_MANAGER_TBLLNKKEYWORDPRODUCTS : String = "TblLnkKeywordProducts";         
         
-    public function getDataManager(dataManagerName:String) : RPCDataManager
+    public function getDataManager(dataManagerName:String) : mx.data.RPCDataManager
     {
         switch (dataManagerName)
         {
@@ -66,7 +67,7 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
      *  during the event handling phase.  If no changes have been made
      *  to the relevant items, null is returned instead of an AsyncToken.
      */
-    public function commit(itemsOrCollections:Array=null, cascadeCommit:Boolean=false):AsyncToken
+    public function commit(itemsOrCollections:Array=null, cascadeCommit:Boolean=false):mx.rpc.AsyncToken
     {
     	return _tblLnkKeywordProductsRPCDataManager.dataStore.commit(itemsOrCollections, cascadeCommit);
     }
@@ -91,59 +92,59 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
     public function _Super_TblLnkKeywordProductsService()
     {
         // initialize service control
-        _serviceControl = new RemoteObject(); 
+        _serviceControl = new mx.rpc.remoting.RemoteObject();
         
         var operations:Object = new Object();
-        var operation:Operation;         
+        var operation:mx.rpc.remoting.Operation;
          
-        operation = new Operation(null, "getAllTblLnkKeywordProducts");
+        operation = new mx.rpc.remoting.Operation(null, "getAllTblLnkKeywordProducts");
 		 operation.resultElementType = valueObjects.TblLnkKeywordProducts;
         operations["getAllTblLnkKeywordProducts"] = operation;
-         
-     valueObjects.TblLnkKeywordProducts._initRemoteClassAlias();
-        operation = new Operation(null, "getTblLnkKeywordProductsByID");
+
+        valueObjects.TblLnkKeywordProducts._initRemoteClassAlias();
+        operation = new mx.rpc.remoting.Operation(null, "getTblLnkKeywordProductsByID");
 		 operation.resultType = valueObjects.TblLnkKeywordProducts; 		 
         operations["getTblLnkKeywordProductsByID"] = operation;
-         
-     valueObjects.TblLnkKeywordProducts._initRemoteClassAlias();
-        operation = new Operation(null, "createTblLnkKeywordProducts");
+
+        valueObjects.TblLnkKeywordProducts._initRemoteClassAlias();
+        operation = new mx.rpc.remoting.Operation(null, "createTblLnkKeywordProducts");
 		 operation.resultType = int; 		 
         operations["createTblLnkKeywordProducts"] = operation;
-         
-        operation = new Operation(null, "updateTblLnkKeywordProducts");
+
+        operation = new mx.rpc.remoting.Operation(null, "updateTblLnkKeywordProducts");
         operations["updateTblLnkKeywordProducts"] = operation;
-         
-        operation = new Operation(null, "count");
+
+        operation = new mx.rpc.remoting.Operation(null, "count");
 		 operation.resultType = int; 		 
         operations["count"] = operation;
-         
-        operation = new Operation(null, "getTblLnkKeywordProducts_paged");
+
+        operation = new mx.rpc.remoting.Operation(null, "getTblLnkKeywordProducts_paged");
 		 operation.resultElementType = valueObjects.TblLnkKeywordProducts;
         operations["getTblLnkKeywordProducts_paged"] = operation;
-         
-     valueObjects.TblLnkKeywordProducts._initRemoteClassAlias();
-        operation = new Operation(null, "deleteTblProduct");
+
+        valueObjects.TblLnkKeywordProducts._initRemoteClassAlias();
+        operation = new mx.rpc.remoting.Operation(null, "deleteTblProduct");
         operations["deleteTblProduct"] = operation;
-         
-        operation = new Operation(null, "deleteTblKeyword");
+
+        operation = new mx.rpc.remoting.Operation(null, "deleteTblKeyword");
         operations["deleteTblKeyword"] = operation;
-         
-        operation = new Operation(null, "getTblLnkKeywordProductsList");
+
+        operation = new mx.rpc.remoting.Operation(null, "getTblLnkKeywordProductsList");
 		 operation.resultElementType = valueObjects.TblLnkKeywordProducts;
         operations["getTblLnkKeywordProductsList"] = operation;
-         
-     valueObjects.TblLnkKeywordProducts._initRemoteClassAlias();
+
+        valueObjects.TblLnkKeywordProducts._initRemoteClassAlias();
     
         _serviceControl.operations = operations;   
-		_serviceControl.convertResultHandler = TypeUtility.convertResultHandler;
+		_serviceControl.convertResultHandler = com.adobe.serializers.utility.TypeUtility.convertResultHandler;
         _serviceControl.source = "TblLnkKeywordProductsService";
         _serviceControl.endpoint = "gateway.php";
-		_serviceControl.destination = "TblLnkKeywordProductsService";
+		destination = "TblLnkKeywordProductsService";
         
-        var managedAssociation : ManagedAssociation;
+        var managedAssociation : mx.data.ManagedAssociation;
     	var managedAssocsArray : Array;
         // initialize TblLnkKeywordProducts data manager     
-        _tblLnkKeywordProductsRPCDataManager = new RPCDataManager();        
+        _tblLnkKeywordProductsRPCDataManager = new mx.data.RPCDataManager();
         managersArray.push(_tblLnkKeywordProductsRPCDataManager);
         
         managedAssocsArray = new Array();
@@ -155,15 +156,28 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
         
                    
     
-        var dmOperation : ManagedOperation;
-        var dmQuery : ManagedQuery;
+        var dmOperation : mx.data.ManagedOperation;
+        var dmQuery : mx.data.ManagedQuery;
          
-        dmQuery = new ManagedQuery("getAllTblLnkKeywordProducts");
+        dmOperation = new mx.data.ManagedOperation("createTblLnkKeywordProducts", "create");
+        dmOperation.parameters = "item";
+        _tblLnkKeywordProductsRPCDataManager.addManagedOperation(dmOperation);     
+            
+        dmOperation = new mx.data.ManagedOperation("updateTblLnkKeywordProducts", "update");
+        dmOperation.parameters = "item";
+        _tblLnkKeywordProductsRPCDataManager.addManagedOperation(dmOperation);     
+            
+        dmQuery = new mx.data.ManagedQuery("getAllTblLnkKeywordProducts");
         dmQuery.propertySpecifier = "ProductID,KeywordID,RowID";
         dmQuery.parameters = "";
         _tblLnkKeywordProductsRPCDataManager.addManagedOperation(dmQuery);                 
 
-        dmQuery = new ManagedQuery("getTblLnkKeywordProducts_paged");
+        dmQuery = new mx.data.ManagedQuery("getTblLnkKeywordProductsList");
+        dmQuery.propertySpecifier = "ProductID,KeywordID,RowID";
+        dmQuery.parameters = "searchStr";
+        _tblLnkKeywordProductsRPCDataManager.addManagedOperation(dmQuery);                 
+
+        dmQuery = new mx.data.ManagedQuery("getTblLnkKeywordProducts_paged");
         dmQuery.propertySpecifier = "ProductID,KeywordID,RowID";
         dmQuery.countOperation = "count";
         dmQuery.pagingEnabled = true;
@@ -171,20 +185,7 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
         dmQuery.parameters = "startIndex,numItems";
         _tblLnkKeywordProductsRPCDataManager.addManagedOperation(dmQuery);                 
 
-        dmQuery = new ManagedQuery("getTblLnkKeywordProductsList");
-        dmQuery.propertySpecifier = "ProductID,KeywordID,RowID";
-        dmQuery.parameters = "searchStr";
-        _tblLnkKeywordProductsRPCDataManager.addManagedOperation(dmQuery);                 
-
-        dmOperation = new ManagedOperation("updateTblLnkKeywordProducts", "update");
-        dmOperation.parameters = "item";
-        _tblLnkKeywordProductsRPCDataManager.addManagedOperation(dmOperation);     
-            
-        dmOperation = new ManagedOperation("createTblLnkKeywordProducts", "create");
-        dmOperation.parameters = "item";
-        _tblLnkKeywordProductsRPCDataManager.addManagedOperation(dmOperation);     
-            
-        dmQuery = new ManagedQuery("getTblLnkKeywordProductsByID");
+        dmQuery = new mx.data.ManagedQuery("getTblLnkKeywordProductsByID");
         dmQuery.propertySpecifier = "ProductID,KeywordID,RowID";
         dmQuery.parameters = "keywordId,productId";
 		dmQuery.type="findItem";                
@@ -196,7 +197,7 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
     }
 
 	/**
-	  * This method is a generated wrapper used to call the 'getAllTblLnkKeywordProducts' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'getAllTblLnkKeywordProducts' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -204,18 +205,18 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function getAllTblLnkKeywordProducts() : AsyncToken
+	public function getAllTblLnkKeywordProducts() : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getAllTblLnkKeywordProducts");
-		var _internal_token:AsyncToken = _internal_operation.send() ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getAllTblLnkKeywordProducts");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'getTblLnkKeywordProductsByID' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'getTblLnkKeywordProductsByID' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -223,18 +224,18 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function getTblLnkKeywordProductsByID(keywordId:int, productId:int) : AsyncToken
+	public function getTblLnkKeywordProductsByID(keywordId:int, productId:int) : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getTblLnkKeywordProductsByID");
-		var _internal_token:AsyncToken = _internal_operation.send(keywordId,productId) ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getTblLnkKeywordProductsByID");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(keywordId,productId) ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'createTblLnkKeywordProducts' operation. It returns an ItemReference whose 
+	  * This method is a generated wrapper used to call the 'createTblLnkKeywordProducts' operation. It returns an mx.data.ItemReference whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -242,18 +243,18 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
       * @see mx.data.ItemReference
       * @see mx.rpc.CallResponder 
       *
-      * @return an ItemReference whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.data.ItemReference whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function createTblLnkKeywordProducts(item:valueObjects.TblLnkKeywordProducts) : ItemReference
+	public function createTblLnkKeywordProducts(item:valueObjects.TblLnkKeywordProducts) : mx.data.ItemReference
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("createTblLnkKeywordProducts");
-		var _internal_token:ItemReference = _internal_operation.send(item) as ItemReference;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("createTblLnkKeywordProducts");
+		var _internal_token:mx.data.ItemReference = _internal_operation.send(item) as mx.data.ItemReference;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'updateTblLnkKeywordProducts' operation. It returns an ItemReference whose 
+	  * This method is a generated wrapper used to call the 'updateTblLnkKeywordProducts' operation. It returns an mx.data.ItemReference whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -261,18 +262,18 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
       * @see mx.data.ItemReference
       * @see mx.rpc.CallResponder 
       *
-      * @return an ItemReference whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.data.ItemReference whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function updateTblLnkKeywordProducts(item:valueObjects.TblLnkKeywordProducts) : ItemReference
+	public function updateTblLnkKeywordProducts(item:valueObjects.TblLnkKeywordProducts) : mx.data.ItemReference
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("updateTblLnkKeywordProducts");
-		var _internal_token:ItemReference = _internal_operation.send(item) as ItemReference;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("updateTblLnkKeywordProducts");
+		var _internal_token:mx.data.ItemReference = _internal_operation.send(item) as mx.data.ItemReference;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'count' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'count' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -280,18 +281,18 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function count() : AsyncToken
+	public function count() : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("count");
-		var _internal_token:AsyncToken = _internal_operation.send() ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("count");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'getTblLnkKeywordProducts_paged' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'getTblLnkKeywordProducts_paged' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -299,18 +300,18 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function getTblLnkKeywordProducts_paged() : AsyncToken
+	public function getTblLnkKeywordProducts_paged() : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getTblLnkKeywordProducts_paged");
-		var _internal_token:AsyncToken = _internal_operation.send() ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getTblLnkKeywordProducts_paged");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send() ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'deleteTblProduct' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'deleteTblProduct' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -318,18 +319,18 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function deleteTblProduct(productID:int) : AsyncToken
+	public function deleteTblProduct(productID:int) : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("deleteTblProduct");
-		var _internal_token:AsyncToken = _internal_operation.send(productID) ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("deleteTblProduct");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(productID) ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'deleteTblKeyword' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'deleteTblKeyword' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -337,18 +338,18 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function deleteTblKeyword(keywordID:int) : AsyncToken
+	public function deleteTblKeyword(keywordID:int) : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("deleteTblKeyword");
-		var _internal_token:AsyncToken = _internal_operation.send(keywordID) ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("deleteTblKeyword");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(keywordID) ;
 
 		return _internal_token;
 	}   
 	 
 	/**
-	  * This method is a generated wrapper used to call the 'getTblLnkKeywordProductsList' operation. It returns an AsyncToken whose 
+	  * This method is a generated wrapper used to call the 'getTblLnkKeywordProductsList' operation. It returns an mx.rpc.AsyncToken whose 
 	  * result property will be populated with the result of the operation when the server response is received. 
 	  * To use this result from MXML code, define a CallResponder component and assign its token property to this method's return value. 
 	  * You can then bind to CallResponder.lastResult or listen for the CallResponder.result or fault events.
@@ -356,12 +357,12 @@ internal class _Super_TblLnkKeywordProductsService extends RemoteObjectServiceWr
       * @see mx.rpc.AsyncToken
       * @see mx.rpc.CallResponder 
       *
-      * @return an AsyncToken whose result property will be populated with the result of the operation when the server response is received.
+      * @return an mx.rpc.AsyncToken whose result property will be populated with the result of the operation when the server response is received.
 	  */          
-	public function getTblLnkKeywordProductsList(searchStr:String) : AsyncToken
+	public function getTblLnkKeywordProductsList(searchStr:String) : mx.rpc.AsyncToken
 	{
-		var _internal_operation:AbstractOperation = _serviceControl.getOperation("getTblLnkKeywordProductsList");
-		var _internal_token:AsyncToken = _internal_operation.send(searchStr) ;
+		var _internal_operation:mx.rpc.AbstractOperation = _serviceControl.getOperation("getTblLnkKeywordProductsList");
+		var _internal_token:mx.rpc.AsyncToken = _internal_operation.send(searchStr) ;
 
 		return _internal_token;
 	}   

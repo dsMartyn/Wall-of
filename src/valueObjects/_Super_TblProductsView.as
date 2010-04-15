@@ -5,34 +5,29 @@
 
 package valueObjects
 {
+import com.adobe.fiber.services.IFiberManagingService;
+import com.adobe.fiber.valueobjects.IValueObject;
+import flash.events.Event;
 import flash.events.EventDispatcher;
+import mx.events.PropertyChangeEvent;
+
 import flash.net.registerClassAlias;
 import flash.net.getClassByAlias;
 import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.valueobjects.IPropertyIterator;
-import com.adobe.fiber.valueobjects.IValueObject;
 import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
-import com.adobe.fiber.services.IFiberManagingService;
-import mx.binding.utils.ChangeWatcher;
-import mx.rpc.AbstractService;
-
-
-import flash.events.Event;
-import mx.events.CollectionEvent;
-import mx.events.PropertyChangeEvent;
-
 
 use namespace model_internal;
 
 [ExcludeClass]
-public class _Super_TblProductsView extends EventDispatcher implements IValueObject
+public class _Super_TblProductsView extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
     model_internal static function initRemoteClassAliasSingle(cz:Class) : void 
     {
-     }   
+    }   
      
     model_internal static function initRemoteClassAliasAllRelated() : void 
-    {     
+    {
     }
 
 	model_internal var _dminternal_model : _TblProductsViewEntityMetadata;
@@ -127,7 +122,7 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
     	var oldValue:Boolean = _internal_Map;               
         if (oldValue !== value)
         {
-        	_internal_Map = value;
+            _internal_Map = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Map", oldValue, _internal_Map));
         }    	     
         
@@ -144,7 +139,7 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
     	var oldValue:Boolean = _internal_Image;               
         if (oldValue !== value)
         {
-        	_internal_Image = value;
+            _internal_Image = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Image", oldValue, _internal_Image));
         }    	     
         
@@ -161,7 +156,7 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
     	var oldValue:int = _internal_Clicks;               
         if (oldValue !== value)
         {
-        	_internal_Clicks = value;
+            _internal_Clicks = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Clicks", oldValue, _internal_Clicks));
         }    	     
         
@@ -178,7 +173,7 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
     	var oldValue:int = _internal_RowID;               
         if (oldValue !== value)
         {
-        	_internal_RowID = value;
+            _internal_RowID = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "RowID", oldValue, _internal_RowID));
         }    	     
         
@@ -195,7 +190,7 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
     	var oldValue:int = _internal_Keywords;               
         if (oldValue !== value)
         {
-        	_internal_Keywords = value;
+            _internal_Keywords = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Keywords", oldValue, _internal_Keywords));
         }    	     
         
@@ -212,7 +207,7 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
     	var oldValue:Boolean = _internal_YouTube;               
         if (oldValue !== value)
         {
-        	_internal_YouTube = value;
+            _internal_YouTube = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "YouTube", oldValue, _internal_YouTube));
         }    	     
         
@@ -233,7 +228,7 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
     	var oldValue:String = _internal_Category;               
         if (oldValue !== value)
         {
-        	_internal_Category = value;
+            _internal_Category = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Category", oldValue, _internal_Category));
         }    	     
         
@@ -254,7 +249,7 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
     	var oldValue:String = _internal_Name;               
         if (oldValue !== value)
         {
-        	_internal_Name = value;
+            _internal_Name = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Name", oldValue, _internal_Name));
         }    	     
         
@@ -271,7 +266,7 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
     	var oldValue:int = _internal_count;               
         if (oldValue !== value)
         {
-        	_internal_count = value;
+            _internal_count = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "count", oldValue, _internal_count));
         }    	     
         
@@ -285,7 +280,7 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
      * data property setter listeners
      */   
 
-   model_internal function setterListenerAnyConstraint(value:Event):void
+   model_internal function setterListenerAnyConstraint(value:flash.events.Event):void
    {
         if (model_internal::_cacheInitialized_isValid)
         {
@@ -383,9 +378,9 @@ public class _Super_TblProductsView extends EventDispatcher implements IValueObj
     /**
      *  services
      */                  
-     private var _managingService:IFiberManagingService;
+     private var _managingService:com.adobe.fiber.services.IFiberManagingService;
     
-     public function set managingService(managingService:IFiberManagingService):void
+     public function set managingService(managingService:com.adobe.fiber.services.IFiberManagingService):void
      {
          _managingService = managingService;
      }                      

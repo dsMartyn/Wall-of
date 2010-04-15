@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/halo" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:utils="com.utils.*"
-		 width="502" height="25"
+		 width="502" height="25" 
 		 >
 
 	
@@ -187,7 +187,7 @@
 	<mx:Image id="nuget" mouseMove="prg_MouseMove(event)" mouseDown="pn_Down=true" mouseUp="prg_MouseUp(event);" mouseOut="pn_Down=false"  source="@Embed('assets/embedded/player/nugit.png')"   x="33" y="-2"/>
 	<s:VSlider y="-95" value="50" maximum="100" minimum="0" mouseMove="sld_Move(event)" change="prgVolume_change(event)" height="99" right="74" width="11" id="prgVolume" visible="false"/>
 	
-	<s:Border id="brdTool" width="104" height="25" right="1" top="0" borderVisible="false" >
+	<s:BorderContainer id="brdTool" width="104" height="25" right="1" top="0" borderVisible="false" >
 		
 		<mx:Image source="@Embed('assets/embedded/player/Seperator.png')" width="3" height="25" x="7" y="0"/>		
 		<utils:PlayerButton buttonClick="button_Click(event)" buttonOver="Volume_Over(event)" id="btnVolume" initialize="btnVolume.SetButtonType(com.utils.ButtonType.VOLUME);"  width="30" height="20"  x="10" y="4" />
@@ -198,7 +198,7 @@
 		<mx:Image source="@Embed('assets/embedded/player/Seperator.png')" width="3" height="25" x="70" y="0"/>
 		<utils:PlayerButton buttonClick="button_Click(event)" buttonOver="button_Over(event)" id="btnFullScreen" initialize="btnFullScreen.SetButtonType(com.utils.ButtonType.FULLSCREEN);"  width="30" height="22" x="78" y="3"/>
 				
-	</s:Border>
+	</s:BorderContainer>
 	<s:Label id="lblTime" text="00:00 / 00:00" fontFamily="Arial" fontSize="9" top="9" right="104"/>
 	
 	

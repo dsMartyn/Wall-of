@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/halo" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 xmlns:utils="com.utils.*"
 		 xmlns:maps="com.google.maps.*" 
 		 width="940" height="415" xmlns:ns1="*"
-		 xmlns:valueObjects="valueObjects.*">
+		 xmlns:valueObjects="valueObjects.*" >
 
 	<fx:Metadata>
 		/** display_show raised when the display should be rendered again */	
@@ -383,12 +383,12 @@
 	
 	
 	
-	<s:Border id="brdLogo" x="0" y="0" width="200" height="200" borderWeight="2">
+	<s:BorderContainer id="brdLogo" x="0" y="0" width="200" height="200" borderWeight="2">
 		<mx:Image maintainAspectRatio="true"  smoothBitmapContent="true"  id="picImage" />
-	</s:Border>
+	</s:BorderContainer>
 	
 
-	<s:Border id="brdDetails" width="432"  x="214" y="0" height="410" borderWeight="2" >
+	<s:BorderContainer id="brdDetails" width="432"  x="214" y="0" height="410" borderWeight="2" >
 		<mx:Text  top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="19"   fontWeight="bold"  color="#0036FF" id="txtItemName">
 
 		</mx:Text>
@@ -396,12 +396,12 @@
 		<mx:Text  top="32" left="0" right="0" bottom="0" condenseWhite="true"   fontAntiAliasType="advanced" id="txtDesc"/>
 		
 		<s:Button label="Back"  click="btnBack_Click(event)" x="10" y="379"/>
-	</s:Border>
+	</s:BorderContainer>
 	
 	
 	
 	
-	<s:Border id="brdContactDetails" width="200"  x="0" y="210" height="200" borderWeight="2">
+	<s:BorderContainer id="brdContactDetails" width="200"  x="0" y="210" height="200" borderWeight="2">
 		
 		<mx:Text  top="0" left="0" right="0" bottom="380" condenseWhite="true" textAlign="center"   fontAntiAliasType="advanced" fontSize="14"   fontWeight="bold" textDecoration="none" color="#0018FF" text="Contact Details">
 
@@ -428,9 +428,9 @@
 
 		</mx:Text>
 		
-	</s:Border>
+	</s:BorderContainer>
 	
-	<s:Border id="brdMap" x="659" y="210" width="280" height="200" borderWeight="2" >
+	<s:BorderContainer id="brdMap" x="659" y="210" width="280" height="200" borderWeight="2" >
 		<maps:Map 
 			id="map" 
 			key="ABQIAAAAHwh9srwjPeuXQxD4mp-h2xSLqpdYARPcqm42NaxkNDpu43T8ZRR_faH5tvSCMzUAmKWyn66_k1IUbQ" 
@@ -441,13 +441,13 @@
 		<s:Button id="btnMapPrint" click="mapPrint_Click(event);" label="Print" height="21" width="66" bottom="25" right="94"/>
 		<s:Button id="btnMapSize" click="mapSize_Click(event);" label="Maximize" height="21" width="77" right="12" bottom="25"/>
 		
-	</s:Border>
+	</s:BorderContainer>
 	
 
-	<s:Border id="brdVideoTemp" x="659" y="0" width="280" height="200" borderWeight="2" >
-	</s:Border>
+	<s:BorderContainer id="brdVideoTemp" x="659" y="0" width="280" height="200" borderWeight="2" >
+	</s:BorderContainer>
 			
-	<s:Border id="brdVideo" x="658" y="1" width="279" height="199" borderVisible="false"  >	
+	<s:BorderContainer id="brdVideo" x="658" y="1" width="279" height="199" borderVisible="false"  >	
 		<utils:PlayerToolBar  seekTo="toolBar_seekTo(event)" 
 							  buttonClick="button_Click(event)"
 							  volumeTo="toolBar_VolumeTo(event)"
@@ -458,7 +458,7 @@
 		</utils:PlayerToolBar>
 		
 		<!--video player added by code -->
-	</s:Border>
+	</s:BorderContainer>
 		
 	<!--
 		

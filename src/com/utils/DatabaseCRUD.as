@@ -344,11 +344,13 @@ package com.utils
 					le_Event.sessionId = lo_LoginFields.SessionID;
 					le_Event.memberId = lo_LoginFields.MemberID;
 					le_Event.valid = true;
+					le_Event.errored = false;
 					this.go_LoginFields.SessionID = lo_LoginFields.SessionID;
 					this.go_LoginFields.MemberID = lo_LoginFields.MemberID;
-					this.dispatchEvent(le_Event);
 					
-
+					trace(le_Event.sessionId = lo_LoginFields.SessionID, le_Event.memberId = lo_LoginFields.MemberID);
+					trace("dispatched login event");
+					this.dispatchEvent(le_Event);
 				}
 			}
 			
@@ -361,6 +363,7 @@ package com.utils
 				this.dispatchEvent(le_Event);
 			}
 			
+			trace("removing login event listeners");
 			this.pc_LoginUser.removeEventListener(ResultEvent.RESULT, this.LoginUser);
 			this.pc_LoginUser.removeEventListener(FaultEvent.FAULT, this.LoginUser);
 

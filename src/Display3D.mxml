@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/halo" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 width="940" height="415"
 		 currentState="ImagesLoading">
 	
@@ -29,7 +29,6 @@
 			
 			import flash.filters.*;
 			
-			import mx.controls.Label;
 			import mx.core.UIComponent;
 			
 			import org.papervision3d.Papervision3D;
@@ -41,6 +40,8 @@
 			import org.papervision3d.materials.BitmapMaterial;
 			import org.papervision3d.objects.DisplayObject3D;
 			import org.papervision3d.objects.primitives.Plane;
+			
+			import spark.components.Label;
 			
 			
 			/*
@@ -108,7 +109,7 @@
 
 			private var pi_Debug:Number = 0;
 			
-			private var po_lblFps:Label;
+			private var po_lblFps:Object;
 			private var po_comp:UIComponent = new UIComponent();
 			private var pp_Holder:DisplayObject3D = null;
 			private var pa_PlaneClicked:Array = new Array();
@@ -139,7 +140,7 @@
 			 * 
 			 * @see pi_Debug
 			*/
-			public function Display3D_Init(lblFps:Label = null, Debug:Number = 2):void
+			public function Display3D_Init(lblFps:Object = null, Debug:Number = 2):void
 			{	
 				pi_Debug = Debug;
 				
@@ -285,7 +286,7 @@
 			public function Display3D_Hide():void
 			{
 				//var k:Tweener
-				if (currentState == "ViewDisplay")
+				//if (currentState == "ViewDisplay")
 					Tweener.addTween( pp_View, {alpha: 0, time: 1.8, transition:"easeOutExpo"} );
 			}
 
@@ -295,13 +296,11 @@
 			 */
 			public function Display3D_Show(e:Event = null):void
 			{
-				if (currentState == "ViewDisplay")
-				{
 					pb_Render = true;
 					pp_View.alpha = 0.1;
 					Tweener.addTween( pp_View, {alpha: 1, time: 1.0, transition:"easeInExpo"} );
 					dispatchEvent(new Event(pcs_DisplayVisible,true));	
-				}
+				
 			}
 			
 			/**
@@ -353,19 +352,22 @@
 						po_lblFps.text = "fps " + fps + " max fps " + pi_MaxFps ;
 					
 					//rotation calculated from mouse
-					var ori:Number = stage.mouseX;
-					if (ori < 15 || ori > 1000 || stage.mouseY > 530 || stage.mouseY < 100)
+					if (stage != null)
 					{
-						//_trace('no mouse');
-					}else{
-						var distance_x:Number = (ori  - this.stage.width * 0.5) * 0.004;
-						pi_angle -= distance_x;
+						var ori:Number = stage.mouseX;
+						if (ori < 15 || ori > 1000 || stage.mouseY > 530 || stage.mouseY < 100)
+						{
+							//_trace('no mouse');
+						}else{
+							var distance_x:Number = (ori  - this.stage.width * 0.5) * 0.004;
+							pi_angle -= distance_x;
+							
 						
-					
-						//trace(pi_Pitch, pi_Yaw , pi_angle, pi_Yaw + pi_angle);
-						pp_View.camera.orbit(pi_Pitch, pi_Yaw + pi_angle);
+							//trace(pi_Pitch, pi_Yaw , pi_angle, pi_Yaw + pi_angle);
+							pp_View.camera.orbit(pi_Pitch, pi_Yaw + pi_angle);
+						}
+						
 					}
-					
 					//render scene and debug info
 					//trace(	pi_Pitch + " " + pi_Yaw + " " + pp_Cam.x + " " + pp_Cam.z + " " + pp_Cam.zoom + " " + pp_Cam.focus );
 					pp_View.singleRender();

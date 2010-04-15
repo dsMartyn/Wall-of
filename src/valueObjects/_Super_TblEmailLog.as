@@ -5,35 +5,30 @@
 
 package valueObjects
 {
+import com.adobe.fiber.services.IFiberManagingService;
+import com.adobe.fiber.valueobjects.IValueObject;
+import flash.events.Event;
 import flash.events.EventDispatcher;
+import mx.events.PropertyChangeEvent;
+
 import flash.net.registerClassAlias;
 import flash.net.getClassByAlias;
 import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.valueobjects.IPropertyIterator;
-import com.adobe.fiber.valueobjects.IValueObject;
 import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
-import com.adobe.fiber.services.IFiberManagingService;
-import mx.binding.utils.ChangeWatcher;
-import mx.rpc.AbstractService;
-
-
-import flash.events.Event;
-import mx.events.CollectionEvent;
-import mx.events.PropertyChangeEvent;
-
 
 use namespace model_internal;
 
 [Managed]
 [ExcludeClass]
-public class _Super_TblEmailLog extends EventDispatcher implements IValueObject
+public class _Super_TblEmailLog extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
     model_internal static function initRemoteClassAliasSingle(cz:Class) : void 
     {
-     }   
+    }   
      
     model_internal static function initRemoteClassAliasAllRelated() : void 
-    {     
+    {
     }
 
 	model_internal var _dminternal_model : _TblEmailLogEntityMetadata;
@@ -116,7 +111,7 @@ public class _Super_TblEmailLog extends EventDispatcher implements IValueObject
     	var oldValue:int = _internal_RowID;               
         if (oldValue !== value)
         {
-        	_internal_RowID = value;
+            _internal_RowID = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -136,7 +131,7 @@ public class _Super_TblEmailLog extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_To;               
         if (oldValue !== value)
         {
-        	_internal_To = value;
+            _internal_To = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -156,7 +151,7 @@ public class _Super_TblEmailLog extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_From;               
         if (oldValue !== value)
         {
-        	_internal_From = value;
+            _internal_From = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -176,7 +171,7 @@ public class _Super_TblEmailLog extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_Subject;               
         if (oldValue !== value)
         {
-        	_internal_Subject = value;
+            _internal_Subject = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -196,7 +191,7 @@ public class _Super_TblEmailLog extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_Body;               
         if (oldValue !== value)
         {
-        	_internal_Body = value;
+            _internal_Body = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -216,7 +211,7 @@ public class _Super_TblEmailLog extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_Headers;               
         if (oldValue !== value)
         {
-        	_internal_Headers = value;
+            _internal_Headers = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -232,7 +227,7 @@ public class _Super_TblEmailLog extends EventDispatcher implements IValueObject
     	var oldValue:int = _internal_MemberID;               
         if (oldValue !== value)
         {
-        	_internal_MemberID = value;
+            _internal_MemberID = value;
         }    	     
         
         if (recalcValid && model_internal::_cacheInitialized_isValid)
@@ -245,7 +240,7 @@ public class _Super_TblEmailLog extends EventDispatcher implements IValueObject
      * data property setter listeners
      */   
 
-   model_internal function setterListenerAnyConstraint(value:Event):void
+   model_internal function setterListenerAnyConstraint(value:flash.events.Event):void
    {
         if (model_internal::_cacheInitialized_isValid)
         {
@@ -356,9 +351,9 @@ public class _Super_TblEmailLog extends EventDispatcher implements IValueObject
     /**
      *  services
      */                  
-     private var _managingService:IFiberManagingService;
+     private var _managingService:com.adobe.fiber.services.IFiberManagingService;
     
-     public function set managingService(managingService:IFiberManagingService):void
+     public function set managingService(managingService:com.adobe.fiber.services.IFiberManagingService):void
      {
          _managingService = managingService;
      }                      

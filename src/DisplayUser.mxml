@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <s:Group xmlns:fx="http://ns.adobe.com/mxml/2009" 
 		 xmlns:s="library://ns.adobe.com/flex/spark" 
-		 xmlns:mx="library://ns.adobe.com/flex/halo" 
+		 xmlns:mx="library://ns.adobe.com/flex/mx" 
 		 width="940" height="415" xmlns:events="flashx.textLayout.events.*" 
 		 initialize="currentState='login'"
-		 xmlns:utils="com.utils.*" xmlns:valueObjects="valueObjects.*">
+		 xmlns:utils="com.utils.*" xmlns:valueObjects="valueObjects.*" >
 
 	<s:states>
 		<s:State name="register"  enterState="register_enterState(event)"  />
@@ -28,10 +28,13 @@
 			import com.events.CrudEvent;
 			import com.utils.*;
 			
+			import mx.collections.IList;
 			import mx.controls.Alert;
 			import mx.events.FlexEvent;
 			import mx.events.ValidationResultEvent;
 			import mx.validators.EmailValidator;
+			
+			import org.papervision3d.materials.shaders.ILightShader;
 
 			[bindable]
 			private var Database:DatabaseCRUD = DatabaseCRUD.getInstance();
@@ -169,26 +172,26 @@
 				}
 				
 				
-				if (this.cmbDays.text == "Day:")
+				if (this.cmbDays.textInput.text == "Day:")
 				{
 					Alert.show("Date of birth required.","Invalid Entry");
 					return;
 				}
 				
-				if (this.cmbMonths.text == "Month:")
+				if (this.cmbMonths.textInput.text == "Month:")
 				{
 					Alert.show("Date of birth required.","Invalid Entry");
 					return;
 				}
 				
-				if (this.cmbYears.text == "Year:")
+				if (this.cmbYears.textInput.text == "Year:")
 				{
 					Alert.show("Date of birth required.","Invalid Entry");
 					return;
 				}
 				
 				//get DOB
-				memberFields.DOB = this.cmbYears.text + "/" + this.cmbMonths.selectedIndex + "/" + this.cmbDays.selectedIndex;
+				memberFields.DOB = this.cmbYears.textInput.text + "/" + this.cmbMonths.selectedIndex + "/" + this.cmbDays.selectedIndex;
 				if (memberFields.DOB.length < 8)
 				{
 					Alert.show("Date of birth required." + memberFields.DOB,"Invalid Entry");
@@ -266,26 +269,26 @@
 				}
 				
 				
-				if (this.cmbDays.text == "Day:")
+				if (this.cmbDays.textInput.text == "Day:")
 				{
 					Alert.show("Date of birth required.","Invalid Entry");
 					return;
 				}
 				
-				if (this.cmbMonths.text == "Month:")
+				if (this.cmbMonths.textInput.text == "Month:")
 				{
 					Alert.show("Date of birth required.","Invalid Entry");
 					return;
 				}
 				
-				if (this.cmbYears.text == "Year:")
+				if (this.cmbYears.textInput.text == "Year:")
 				{
 					Alert.show("Date of birth required.","Invalid Entry");
 					return;
 				}
 				
 				//get DOB
-				memberFields.DOB = this.cmbYears.text + "/" + this.cmbMonths.selectedIndex + "/" + this.cmbDays.selectedIndex;
+				memberFields.DOB = this.cmbYears.textInput.text + "/" + this.cmbMonths.selectedIndex + "/" + this.cmbDays.selectedIndex;
 				if (memberFields.DOB.length < 8)
 				{
 					Alert.show("Date of birth required." + memberFields.DOB,"Invalid Entry");
@@ -324,6 +327,8 @@
 			
 			protected function userlogin(event:CrudEvent):void
 			{
+				trace("user logged in");
+				
 				if (event.errored)
 				{
 					Alert.show("User Login Error please contact an administrator.\n" + event.errorMsg);
@@ -348,12 +353,14 @@
 						
 						if (this.chkRememberMe.selected)
 							Database.StoreSessionID();
-						dispatchEvent(new Event(gcs_DisplayMenu_Show));		
+						
+						//trace(gcs_DisplayMenu_Show);
+						show_Menu(null);		
 					}
 					
 				}
 				
-				
+				trace("removing...");
 				Database.removeEventListener(CrudEvent.USER_LOGIN, userlogin);
 			}
 			
@@ -372,12 +379,9 @@
 				this.btnBack.enabled = false;
 				this.btnRegister.enabled = false;
 				this.form.alpha = 0.5;
-				
 
 				Database.addEventListener(CrudEvent.USER_LOGIN, userlogin);
 				Database.LoginUser(null,memberFields);
-				
-				
 			}
 			
 			protected function btnBack_Click(event:MouseEvent):void
@@ -422,9 +426,9 @@
 				this.btnRegister.enabled = false;
 				this.form.alpha = 1;
 				
-				cmbDays.dataProvider = Database.ga_Days;
-				cmbMonths.dataProvider = Database.ga_Months;
-				cmbYears.dataProvider = Database.ga_Years;
+				cmbDays.dataProvider = Database.ga_Days as IList;
+				cmbMonths.dataProvider = Database.ga_Months as IList;
+				cmbYears.dataProvider = Database.ga_Years as IList;
 			}
 
 			protected function btn_BacktoLogin(event:MouseEvent):void
@@ -447,9 +451,9 @@
 				this.btnRegister.enabled = false;
 				this.form.alpha = 1;
 				
-				cmbDays.dataProvider = Database.ga_Days;
-				cmbMonths.dataProvider = Database.ga_Months;
-				cmbYears.dataProvider = Database.ga_Years;
+				cmbDays.dataProvider = Database.ga_Days as IList;
+				cmbMonths.dataProvider = Database.ga_Months as IList;
+				cmbYears.dataProvider = Database.ga_Years as IList;
 				
 				this.memberFields = Database.go_MemberFields;
 				var lv_dob:Array;
@@ -610,9 +614,9 @@
 		
 		<mx:FormItem  id="itmdOB" label="Birthday" required="true"  includeIn="register,update"   width="334">
 			<s:Group width="211">
-				<mx:ComboBox x="2" y="0" width="62"  id="cmbDays" />
-				<mx:ComboBox  x="67" y="0" width="70"  id="cmbMonths" />
-				<mx:ComboBox  x="140" y="0" width="72" id="cmbYears" />
+				<s:ComboBox x="2" y="0" width="62"  id="cmbDays" />
+				<s:ComboBox  x="67" y="0" width="70"  id="cmbMonths" />
+				<s:ComboBox  x="140" y="0" width="72" id="cmbYears" />
 			</s:Group>
 		</mx:FormItem>
 
@@ -648,9 +652,9 @@
 						   includeIn="login" width="115" x="151" y="3"/>
 		</s:Group>
 		
-		<mx:CheckBox   id="chkRememberMe" includeIn="login" label="Remember me on this computer"  x="10" y="300" width="246" selected="false" />
+		<s:CheckBox   id="chkRememberMe" includeIn="login" label="Remember me on this computer"  x="10" y="300" width="246" selected="false" />
 	
-		<mx:LinkButton label="Forgot Password" label.login="Forgot Password?" width.login="279" textAlign.login="right" click="linkbutton1_clickHandler(event)" />
+		<mx:LinkButton label="Forgot Password?" width="279" textAlign="right" click="linkbutton1_clickHandler(event)"  includeIn="login"/>
 		
 	</mx:Form>
 	

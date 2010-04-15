@@ -4,20 +4,19 @@
  */
 package valueObjects
 {
-import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.styles.IStyle;
 import com.adobe.fiber.styles.Style;
-import com.adobe.fiber.styles.LocalizeableMessage;
-import com.adobe.fiber.valueobjects.IModelType;
-import com.adobe.fiber.valueobjects.IPropertyIterator;
-import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 import com.adobe.fiber.valueobjects.AbstractEntityMetadata;
+import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
+import com.adobe.fiber.valueobjects.IPropertyIterator;
+import com.adobe.fiber.core.model_internal;
+import com.adobe.fiber.valueobjects.IModelType;
 import mx.events.PropertyChangeEvent;
 
 use namespace model_internal;
 
 [ExcludeClass]
-internal class _TblProductsViewEntityMetadata extends AbstractEntityMetadata
+internal class _TblProductsViewEntityMetadata extends com.adobe.fiber.valueobjects.AbstractEntityMetadata
 {
 	private static var emptyArray:Array = new Array();
 
@@ -36,7 +35,7 @@ internal class _TblProductsViewEntityMetadata extends AbstractEntityMetadata
     
     
     model_internal var _instance:_Super_TblProductsView;
-    model_internal static var _nullStyle:Style = new Style();
+    model_internal static var _nullStyle:com.adobe.fiber.styles.Style = new com.adobe.fiber.styles.Style();
     
     public function _TblProductsViewEntityMetadata(tblProductsView : _Super_TblProductsView)
     {
@@ -123,9 +122,9 @@ internal class _TblProductsViewEntityMetadata extends AbstractEntityMetadata
        return model_internal::collectionBaseMap[propertyName];
     }                
     
-     override public function getAvailableProperties():IPropertyIterator
+     override public function getAvailableProperties():com.adobe.fiber.valueobjects.IPropertyIterator
      {
-     	return new AvailablePropertyIterator(this); 
+     	return new com.adobe.fiber.valueobjects.AvailablePropertyIterator(this);
      }  
      
      override public function getValue(propertyName:String):*    
@@ -335,55 +334,55 @@ internal class _TblProductsViewEntityMetadata extends AbstractEntityMetadata
      }
 
     [Bindable(event="propertyChange")]   
-    public function get MapStyle():Style
+    public function get MapStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get ImageStyle():Style
+    public function get ImageStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get ClicksStyle():Style
+    public function get ClicksStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get RowIDStyle():Style
+    public function get RowIDStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get KeywordsStyle():Style
+    public function get KeywordsStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get YouTubeStyle():Style
+    public function get YouTubeStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get CategoryStyle():Style
+    public function get CategoryStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get NameStyle():Style
+    public function get NameStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get countStyle():Style
+    public function get countStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
@@ -393,7 +392,7 @@ internal class _TblProductsViewEntityMetadata extends AbstractEntityMetadata
      * 
      * @inheritDoc 
      */ 
-     override public function getStyle(propertyName:String):IStyle
+     override public function getStyle(propertyName:String):com.adobe.fiber.styles.IStyle
      {
          switch(propertyName)
          {

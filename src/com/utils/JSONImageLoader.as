@@ -55,7 +55,9 @@ package com.utils
 				{
 					if (data.position >= data.length || data.position > 20)
 					{
-						dispatchError("Error data invalid!");
+						le_Event.valid = true;
+						this.dispatchEvent(le_Event);
+					//	dispatchError("Error data invalid!");
 						return; //error!
 					}
 				}

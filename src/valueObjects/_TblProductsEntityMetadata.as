@@ -4,20 +4,19 @@
  */
 package valueObjects
 {
-import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.styles.IStyle;
 import com.adobe.fiber.styles.Style;
-import com.adobe.fiber.styles.LocalizeableMessage;
-import com.adobe.fiber.valueobjects.IModelType;
-import com.adobe.fiber.valueobjects.IPropertyIterator;
-import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
 import com.adobe.fiber.valueobjects.AbstractEntityMetadata;
+import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
+import com.adobe.fiber.valueobjects.IPropertyIterator;
+import com.adobe.fiber.core.model_internal;
+import com.adobe.fiber.valueobjects.IModelType;
 import mx.events.PropertyChangeEvent;
 
 use namespace model_internal;
 
 [ExcludeClass]
-internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
+internal class _TblProductsEntityMetadata extends com.adobe.fiber.valueobjects.AbstractEntityMetadata
 {
 	private static var emptyArray:Array = new Array();
 
@@ -36,7 +35,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
     
     
     model_internal var _instance:_Super_TblProducts;
-    model_internal static var _nullStyle:Style = new Style();
+    model_internal static var _nullStyle:com.adobe.fiber.styles.Style = new com.adobe.fiber.styles.Style();
     
     public function _TblProductsEntityMetadata(tblProducts : _Super_TblProducts)
     {
@@ -133,9 +132,9 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
        return model_internal::collectionBaseMap[propertyName];
     }                
     
-     override public function getAvailableProperties():IPropertyIterator
+     override public function getAvailableProperties():com.adobe.fiber.valueobjects.IPropertyIterator
      {
-     	return new AvailablePropertyIterator(this); 
+     	return new com.adobe.fiber.valueobjects.AvailablePropertyIterator(this);
      }  
      
      override public function getValue(propertyName:String):*    
@@ -405,115 +404,115 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      }
 
     [Bindable(event="propertyChange")]   
-    public function get AddressTownStyle():Style
+    public function get AddressTownStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get ClicksStyle():Style
+    public function get ClicksStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get AddressEmailStyle():Style
+    public function get AddressEmailStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get statusStyle():Style
+    public function get statusStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get AddressFaxStyle():Style
+    public function get AddressFaxStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get AddressMobStyle():Style
+    public function get AddressMobStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get AddressTelStyle():Style
+    public function get AddressTelStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get YoutubeVideoUrlStyle():Style
+    public function get YoutubeVideoUrlStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get AddressCountyStyle():Style
+    public function get AddressCountyStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get ItemNameStyle():Style
+    public function get ItemNameStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get AddressNameStyle():Style
+    public function get AddressNameStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get MemberIDStyle():Style
+    public function get MemberIDStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get RowIDStyle():Style
+    public function get RowIDStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get CategoryStyle():Style
+    public function get CategoryStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get ImageIDStyle():Style
+    public function get ImageIDStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get AddressStreetStyle():Style
+    public function get AddressStreetStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get ItemDescStyle():Style
+    public function get ItemDescStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get GooglePostCodeStyle():Style
+    public function get GooglePostCodeStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
     
     [Bindable(event="propertyChange")]   
-    public function get AddressPostCodeStyle():Style
+    public function get AddressPostCodeStyle():com.adobe.fiber.styles.Style
     {
 		return model_internal::_nullStyle;		
     }      
@@ -523,7 +522,7 @@ internal class _TblProductsEntityMetadata extends AbstractEntityMetadata
      * 
      * @inheritDoc 
      */ 
-     override public function getStyle(propertyName:String):IStyle
+     override public function getStyle(propertyName:String):com.adobe.fiber.styles.IStyle
      {
          switch(propertyName)
          {

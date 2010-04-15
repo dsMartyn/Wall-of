@@ -5,34 +5,29 @@
 
 package valueObjects
 {
+import com.adobe.fiber.services.IFiberManagingService;
+import com.adobe.fiber.valueobjects.IValueObject;
+import flash.events.Event;
 import flash.events.EventDispatcher;
+import mx.events.PropertyChangeEvent;
+
 import flash.net.registerClassAlias;
 import flash.net.getClassByAlias;
 import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.valueobjects.IPropertyIterator;
-import com.adobe.fiber.valueobjects.IValueObject;
 import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
-import com.adobe.fiber.services.IFiberManagingService;
-import mx.binding.utils.ChangeWatcher;
-import mx.rpc.AbstractService;
-
-
-import flash.events.Event;
-import mx.events.CollectionEvent;
-import mx.events.PropertyChangeEvent;
-
 
 use namespace model_internal;
 
 [ExcludeClass]
-public class _Super_TblProducts extends EventDispatcher implements IValueObject
+public class _Super_TblProducts extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
     model_internal static function initRemoteClassAliasSingle(cz:Class) : void 
     {
-     }   
+    }   
      
     model_internal static function initRemoteClassAliasAllRelated() : void 
-    {     
+    {
     }
 
 	model_internal var _dminternal_model : _TblProductsEntityMetadata;
@@ -191,7 +186,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_AddressTown;               
         if (oldValue !== value)
         {
-        	_internal_AddressTown = value;
+            _internal_AddressTown = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressTown", oldValue, _internal_AddressTown));
         }    	     
         
@@ -208,7 +203,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:int = _internal_Clicks;               
         if (oldValue !== value)
         {
-        	_internal_Clicks = value;
+            _internal_Clicks = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Clicks", oldValue, _internal_Clicks));
         }    	     
         
@@ -229,7 +224,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_AddressEmail;               
         if (oldValue !== value)
         {
-        	_internal_AddressEmail = value;
+            _internal_AddressEmail = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressEmail", oldValue, _internal_AddressEmail));
         }    	     
         
@@ -246,7 +241,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:int = _internal_status;               
         if (oldValue !== value)
         {
-        	_internal_status = value;
+            _internal_status = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "status", oldValue, _internal_status));
         }    	     
         
@@ -267,7 +262,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_AddressFax;               
         if (oldValue !== value)
         {
-        	_internal_AddressFax = value;
+            _internal_AddressFax = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressFax", oldValue, _internal_AddressFax));
         }    	     
         
@@ -288,7 +283,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_AddressMob;               
         if (oldValue !== value)
         {
-        	_internal_AddressMob = value;
+            _internal_AddressMob = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressMob", oldValue, _internal_AddressMob));
         }    	     
         
@@ -309,7 +304,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_AddressTel;               
         if (oldValue !== value)
         {
-        	_internal_AddressTel = value;
+            _internal_AddressTel = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressTel", oldValue, _internal_AddressTel));
         }    	     
         
@@ -330,7 +325,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_YoutubeVideoUrl;               
         if (oldValue !== value)
         {
-        	_internal_YoutubeVideoUrl = value;
+            _internal_YoutubeVideoUrl = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "YoutubeVideoUrl", oldValue, _internal_YoutubeVideoUrl));
         }    	     
         
@@ -351,7 +346,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_AddressCounty;               
         if (oldValue !== value)
         {
-        	_internal_AddressCounty = value;
+            _internal_AddressCounty = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressCounty", oldValue, _internal_AddressCounty));
         }    	     
         
@@ -372,7 +367,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_ItemName;               
         if (oldValue !== value)
         {
-        	_internal_ItemName = value;
+            _internal_ItemName = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ItemName", oldValue, _internal_ItemName));
         }    	     
         
@@ -393,7 +388,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_AddressName;               
         if (oldValue !== value)
         {
-        	_internal_AddressName = value;
+            _internal_AddressName = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressName", oldValue, _internal_AddressName));
         }    	     
         
@@ -410,7 +405,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:int = _internal_MemberID;               
         if (oldValue !== value)
         {
-        	_internal_MemberID = value;
+            _internal_MemberID = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "MemberID", oldValue, _internal_MemberID));
         }    	     
         
@@ -427,7 +422,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:int = _internal_RowID;               
         if (oldValue !== value)
         {
-        	_internal_RowID = value;
+            _internal_RowID = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "RowID", oldValue, _internal_RowID));
         }    	     
         
@@ -448,7 +443,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_Category;               
         if (oldValue !== value)
         {
-        	_internal_Category = value;
+            _internal_Category = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "Category", oldValue, _internal_Category));
         }    	     
         
@@ -465,7 +460,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:int = _internal_ImageID;               
         if (oldValue !== value)
         {
-        	_internal_ImageID = value;
+            _internal_ImageID = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ImageID", oldValue, _internal_ImageID));
         }    	     
         
@@ -486,7 +481,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_AddressStreet;               
         if (oldValue !== value)
         {
-        	_internal_AddressStreet = value;
+            _internal_AddressStreet = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressStreet", oldValue, _internal_AddressStreet));
         }    	     
         
@@ -507,7 +502,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_ItemDesc;               
         if (oldValue !== value)
         {
-        	_internal_ItemDesc = value;
+            _internal_ItemDesc = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "ItemDesc", oldValue, _internal_ItemDesc));
         }    	     
         
@@ -528,7 +523,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_GooglePostCode;               
         if (oldValue !== value)
         {
-        	_internal_GooglePostCode = value;
+            _internal_GooglePostCode = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "GooglePostCode", oldValue, _internal_GooglePostCode));
         }    	     
         
@@ -549,7 +544,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     	var oldValue:String = _internal_AddressPostCode;               
         if (oldValue !== value)
         {
-        	_internal_AddressPostCode = value;
+            _internal_AddressPostCode = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "AddressPostCode", oldValue, _internal_AddressPostCode));
         }    	     
         
@@ -563,7 +558,7 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
      * data property setter listeners
      */   
 
-   model_internal function setterListenerAnyConstraint(value:Event):void
+   model_internal function setterListenerAnyConstraint(value:flash.events.Event):void
    {
         if (model_internal::_cacheInitialized_isValid)
         {
@@ -731,9 +726,9 @@ public class _Super_TblProducts extends EventDispatcher implements IValueObject
     /**
      *  services
      */                  
-     private var _managingService:IFiberManagingService;
+     private var _managingService:com.adobe.fiber.services.IFiberManagingService;
     
-     public function set managingService(managingService:IFiberManagingService):void
+     public function set managingService(managingService:com.adobe.fiber.services.IFiberManagingService):void
      {
          _managingService = managingService;
      }                      

@@ -5,34 +5,29 @@
 
 package valueObjects
 {
+import com.adobe.fiber.services.IFiberManagingService;
+import com.adobe.fiber.valueobjects.IValueObject;
+import flash.events.Event;
 import flash.events.EventDispatcher;
+import mx.events.PropertyChangeEvent;
+
 import flash.net.registerClassAlias;
 import flash.net.getClassByAlias;
 import com.adobe.fiber.core.model_internal;
 import com.adobe.fiber.valueobjects.IPropertyIterator;
-import com.adobe.fiber.valueobjects.IValueObject;
 import com.adobe.fiber.valueobjects.AvailablePropertyIterator;
-import com.adobe.fiber.services.IFiberManagingService;
-import mx.binding.utils.ChangeWatcher;
-import mx.rpc.AbstractService;
-
-
-import flash.events.Event;
-import mx.events.CollectionEvent;
-import mx.events.PropertyChangeEvent;
-
 
 use namespace model_internal;
 
 [ExcludeClass]
-public class _Super_LoginFields extends EventDispatcher implements IValueObject
+public class _Super_LoginFields extends flash.events.EventDispatcher implements com.adobe.fiber.valueobjects.IValueObject
 {
     model_internal static function initRemoteClassAliasSingle(cz:Class) : void 
     {
-     }   
+    }   
      
     model_internal static function initRemoteClassAliasAllRelated() : void 
-    {     
+    {
     }
 
 	model_internal var _dminternal_model : _LoginFieldsEntityMetadata;
@@ -85,7 +80,7 @@ public class _Super_LoginFields extends EventDispatcher implements IValueObject
     	var oldValue:int = _internal_SessionID;               
         if (oldValue !== value)
         {
-        	_internal_SessionID = value;
+            _internal_SessionID = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "SessionID", oldValue, _internal_SessionID));
         }    	     
         
@@ -102,7 +97,7 @@ public class _Super_LoginFields extends EventDispatcher implements IValueObject
     	var oldValue:int = _internal_MemberID;               
         if (oldValue !== value)
         {
-        	_internal_MemberID = value;
+            _internal_MemberID = value;
         	this.dispatchEvent(mx.events.PropertyChangeEvent.createUpdateEvent(this, "MemberID", oldValue, _internal_MemberID));
         }    	     
         
@@ -116,7 +111,7 @@ public class _Super_LoginFields extends EventDispatcher implements IValueObject
      * data property setter listeners
      */   
 
-   model_internal function setterListenerAnyConstraint(value:Event):void
+   model_internal function setterListenerAnyConstraint(value:flash.events.Event):void
    {
         if (model_internal::_cacheInitialized_isValid)
         {
@@ -197,9 +192,9 @@ public class _Super_LoginFields extends EventDispatcher implements IValueObject
     /**
      *  services
      */                  
-     private var _managingService:IFiberManagingService;
+     private var _managingService:com.adobe.fiber.services.IFiberManagingService;
     
-     public function set managingService(managingService:IFiberManagingService):void
+     public function set managingService(managingService:com.adobe.fiber.services.IFiberManagingService):void
      {
          _managingService = managingService;
      }                      

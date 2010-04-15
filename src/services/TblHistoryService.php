@@ -23,7 +23,7 @@ class TblHistoryService {
 	 * @return array
 	 */
 	public function getAllTblHistory() {
-
+	/*
 		$stmt = mysqli_prepare($this->mysql->connection, "SELECT * FROM $this->tablename");		
 		$this->throwExceptionOnError();
 		
@@ -44,6 +44,7 @@ class TblHistoryService {
 	    $this->mysql->_mysqli_close();
 	
 	    return $rows;
+	   */
 	}
 
 	/**
@@ -55,7 +56,7 @@ class TblHistoryService {
 	 * @return stdClass
 	 */
 	public function getTblHistoryByID($itemID) {
-		
+		/*
 		$stmt = mysqli_prepare($this->mysql->connection, "SELECT * FROM $this->tablename where RowID=?");
 		$this->throwExceptionOnError();
 		
@@ -71,8 +72,10 @@ class TblHistoryService {
 			return $row;
 		} else {
 			return null;
-		}
+		}*/
 	}
+
+
 
 	/**
 	 * Returns the item corresponding to the value specified for the primary key.
@@ -84,10 +87,10 @@ class TblHistoryService {
 	 */
 	public function createTblHistory($item) {
 	
-		$stmt = mysqli_prepare($this->mysql->connection, "INSERT INTO $this->tablename (RowID, IPAddress, Page, Referrer, MemberID) VALUES (?, ?, ?, ?, ?)");		
+		$stmt = mysqli_prepare($this->mysql->connection, "INSERT INTO tblHistory (RowID, IPAddress, Page, Referrer, MemberID, ItemDate, SessionID, Location, agent) VALUES (?, ?, ?, ?, ?, Now(), ?, ?, ?)");		
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'isssi', $item->RowID, $item->IPAddress, $item->Page, $item->Referrer, $item->MemberID);		
+		mysqli_bind_param($stmt, 'isssisss', $item->RowID, $item->IPAddress, $item->Page, $item->Referrer, $item->MemberID, $item->SessionID, $item->Location, $item->agent);		
 		$this->throwExceptionOnError();
 
 		mysqli_stmt_execute($stmt);		
@@ -101,50 +104,49 @@ class TblHistoryService {
 		return $autoid;
 	}
 
-	/**
-	 * Updates the passed item in the table.
-	 *
-	 * Add authroization or any logical checks for secure access to your data 
-	 *
-	 * @param stdClass $item
-	 * @return void
-	 */
-	public function updateTblHistory($item) {
-	
-		$stmt = mysqli_prepare($this->mysql->connection, "UPDATE $this->tablename SET RowID=?, IPAddress=?, Page=?, Referrer=?, MemberID=?	WHERE RowID=?");		
+
+	public function getTblCountry($ipNumber) {
+		
+		$stmt = mysqli_prepare($this->mysql->connection, "SELECT COUNTRY_NAME FROM tblCountries WHERE IP_FROM <= $ipNumber and IP_TO >= $ipNumber");
 		$this->throwExceptionOnError();
 		
-		mysqli_bind_param($stmt, 'isssii', $item->RowID, $item->IPAddress, $item->Page, $item->Referrer, $item->MemberID, $item->RowID);		
+		mysqli_stmt_execute($stmt);
+		$this->throwExceptionOnError();
+		
+		mysqli_stmt_bind_result($stmt, $row->COUNTRY_NAME);
+		
+		if(mysqli_stmt_fetch($stmt)) {
+			return $row->COUNTRY_NAME;
+		} else {
+			return null;
+		}
+	}
+	
+	public function logUserAction($searchStr, $productId, $memberId)
+	{
+		if (!session_id())
+			session_start();
+		
+		$stmt = mysqli_prepare($this->mysql->connection, "INSERT INTO tblWallHistory (RowID, SearchString, ProductId, MemberId, SessionId,IPAddress, ActionDate) VALUES (0, ?, ?, ?,?,?, Now())");		
+		$this->throwExceptionOnError();
+		
+		$sessionID = "id-" . session_id();
+		$ip = $this->getIPAddress();
+		
+		mysqli_bind_param($stmt, 'siiss', $searchStr, $productId, $memberId, $sessionID, $ip);		
 		$this->throwExceptionOnError();
 
 		mysqli_stmt_execute($stmt);		
 		$this->throwExceptionOnError();
 		
+		$autoid = mysqli_stmt_insert_id($stmt);
+		
 		mysqli_stmt_free_result($stmt);		
 		$this->mysql->_mysqli_close();
+		
+		return $autoid;
 	}
 
-	/**
-	 * Deletes the item corresponding to the passed primary key value from 
-	 * the table.
-	 *
-	 * Add authroization or any logical checks for secure access to your data 
-	 *
-	 * 
-	 * @return void
-	 */
-	public function deleteTblHistory($itemID) {
-				
-		$stmt = mysqli_prepare($this->mysql->connection, "DELETE FROM $this->tablename WHERE RowID = ?");
-		$this->throwExceptionOnError();
-		
-		mysqli_bind_param($stmt, 'i', $itemID);
-		mysqli_stmt_execute($stmt);
-		$this->throwExceptionOnError();
-		
-		mysqli_stmt_free_result($stmt);		
-		$this->mysql->_mysqli_close();
-	}
 
 
 	/**
@@ -185,7 +187,7 @@ class TblHistoryService {
 	 * @return array
 	 */
 	public function getTblHistory_paged($startIndex, $numItems) {
-		
+		/*
 		$stmt = mysqli_prepare($this->mysql->connection, "SELECT * FROM $this->tablename LIMIT ?, ?");
 		$this->throwExceptionOnError();
 		
@@ -207,6 +209,7 @@ class TblHistoryService {
 		$this->mysql->_mysqli_close();
 		
 		return $rows;
+		*/
 	}
 	
 	
@@ -223,6 +226,37 @@ class TblHistoryService {
 			throw new Exception('MySQL Error - '. $msg);
 		}		
 	}
+	
+		
+	public function getIPAddress() 
+	{
+		$ip = "UNKNOWN"; 
+		if (getenv("HTTP_CLIENT_IP")) { 
+			$ip = getenv("HTTP_CLIENT_IP"); 
+		} else if (getenv("HTTP_X_FORWARDED_FOR")) {
+			$ip = getenv("HTTP_X_FORWARDED_FOR");
+		} else if(getenv("REMOTE_ADDR")) {
+			$ip = getenv("REMOTE_ADDR");
+		}
+		return $ip;
+	} 
+    
+	public function getReferer()
+	{
+		$ref = "unknown";
+		if (getenv("HTTP_REFERER")){
+			$ref = getenv("HTTP_REFERER");
+		} else if (isset($_SERVER['HTTP_REFERER'])) {
+			$ref = $_SERVER['HTTP_REFERER'];
+		} else if (isset($_SERVER['SCRIPT_URI'])) {
+			$ref = $_SERVER['SCRIPT_URI'];
+		} else if (getenv('SCRIPT_URI')) {
+			$ref = getenv('SCRIPT_URI');
+		}
+		return $ref;
+	}
+	
+	
 }
 
 ?>
